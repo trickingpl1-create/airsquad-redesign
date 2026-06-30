@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "airsquad-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "cashflow",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/Users/fanatyk/Desktop/TWÓRCZOŚĆ/CashFlow/serve.js"],
+      "port": 8777,
+      "autoPort": true
+    }
+  ]
+}
