@@ -10,11 +10,11 @@ import {
   resolveRootSlug,
 } from '@/lib/seo/queries'
 import {
-  CityPageView,
   DisciplineView,
   EventView,
   StaticPageView,
 } from '@/components/seo/views'
+import { CityPageView } from '@/components/seo/city-view'
 
 // Historyczne URL-e WordPressa są root-level (/rzeszow/, /akrobatyka/, /airmeeting/)
 // i wg planu SEO (docs/03-mapa-url.md) NIE mogą zmienić ścieżki. Ten catch-all

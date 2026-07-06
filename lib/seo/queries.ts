@@ -1,4 +1,5 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { getPublicSupabaseClient } from '@/lib/supabase/public'
 import type { CityPage, Event, Discipline, StaticPage } from '@/lib/types/database'
 import type { EnrolmentCity } from '@/components/akrobatyka/city-enrolment'
 import {
@@ -6,22 +7,22 @@ import {
   FALLBACK_ENROLMENT_CITIES,
 } from '@/lib/content/akrobatyka'
 import { FALLBACK_EVENTS } from '@/lib/content/letni'
+import { FALLBACK_CITY_PAGES } from '@/lib/content/cities'
 
+// Cookieless klient z guardem na placeholder (lib/supabase/public.ts):
+// bez skonfigurowanego Supabase zwraca null i wszystkie gettery od razu
+// serwują fallbacki, zamiast czekać ~7 s na timeout martwego hosta.
 function getSupabaseClient(): SupabaseClient | null {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    return null
-  }
-
-  return createClient(supabaseUrl, supabaseAnonKey)
+  return getPublicSupabaseClient()
 }
 
-// City Pages
+// City Pages.
+// Fallback w kodzie (FALLBACK_CITY_PAGES) odpala się tylko, gdy baza nic nie
+// zwróci — /rzeszow/ itd. działają przed podłączeniem Supabase; po seedzie DB
+// ma priorytet (ten sam wzorzec co dyscypliny i eventy).
 export async function getCityPage(slug: string): Promise<CityPage | null> {
   const supabase = getSupabaseClient()
-  if (!supabase) return null
+  if (!supabase) return FALLBACK_CITY_PAGES[slug] ?? null
 
   const { data, error } = await supabase
     .from('city_pages')
@@ -31,12 +32,13 @@ export async function getCityPage(slug: string): Promise<CityPage | null> {
     .maybeSingle()
 
   if (error) console.error('Error fetching city page:', error)
-  return data
+  return data ?? FALLBACK_CITY_PAGES[slug] ?? null
 }
 
 export async function getCityPages(): Promise<CityPage[]> {
+  const fallback = Object.values(FALLBACK_CITY_PAGES)
   const supabase = getSupabaseClient()
-  if (!supabase) return []
+  if (!supabase) return fallback
 
   const { data, error } = await supabase
     .from('city_pages')
@@ -45,7 +47,7 @@ export async function getCityPages(): Promise<CityPage[]> {
     .order('created_at', { ascending: false })
 
   if (error) console.error('Error fetching city pages:', error)
-  return data || []
+  return data && data.length > 0 ? data : fallback
 }
 
 // Lista miast do sekcji zapisów (chipy + per-city form-id AIPAX). Etykietę chipa

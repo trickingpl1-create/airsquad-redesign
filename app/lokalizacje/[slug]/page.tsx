@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { generateSEOMetadata } from '@/lib/seo/metadata'
 import { getCityPage } from '@/lib/seo/queries'
-import { CityPageView } from '@/components/seo/views'
+import { CityPageView } from '@/components/seo/city-view'
 
 // Enable dynamic rendering - don't pre-render at build time
 export const dynamic = 'force-dynamic'

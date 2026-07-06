@@ -184,6 +184,32 @@ export interface CityPage {
   is_published: boolean
   created_at: string
   updated_at: string
+  // Bogaty landing miasta — pola opcjonalne renderowane warunkowo przez CityPageView
+  // (wzorzec jak Discipline; wiersze z DB bez tych pól renderują wersję bazową)
+  hero_tagline?: string | null
+  hero_image_url?: string | null
+  /** Nazwa miasta w mianowniku, np. "Rzeszów" (badge, breadcrumb) */
+  city_name?: string
+  /** Miejscownik do CTA, np. "w Rzeszowie" — "Zapisz dziecko w Rzeszowie" */
+  city_locative?: string
+  hall?: {
+    name: string
+    address: string
+    city: string
+    /** Query do Google Maps (adres lub nazwa obiektu) */
+    mapQuery: string
+    /** np. "zajęcia w SP nr 4 i SP nr 10" */
+    note?: string
+    image_url?: string
+  }
+  trainers?: { name: string; role?: string }[]
+  /** Wspólne zdjęcie kadry sekcji (oryginał ze starej strony) */
+  trainers_image_url?: string | null
+  first_training?: { title: string; desc: string }[]
+  benefits?: string[]
+  gallery?: { url: string; caption?: string }[]
+  /** Filmy „Nasze Zajawki" — oryginalne MP4 linkowane ze starej strony */
+  videos?: { url: string; poster?: string; label?: string }[]
 }
 
 export interface Event {

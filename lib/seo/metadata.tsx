@@ -40,7 +40,14 @@ export function generateSEOMetadata(seo: SEOMetadata): Metadata {
 }
 
 interface StructuredDataProps {
-  type: 'LocalBusiness' | 'Event' | 'Course' | 'WebPage' | 'BreadcrumbList'
+  type:
+    | 'LocalBusiness'
+    | 'Event'
+    | 'Course'
+    | 'WebPage'
+    | 'BreadcrumbList'
+    | 'SportsActivityLocation'
+    | 'FAQPage'
   data: Record<string, any>
 }
 

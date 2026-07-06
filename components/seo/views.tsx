@@ -1,9 +1,8 @@
-import { createClient } from '@/lib/supabase/server'
 import { AipaxWidget } from '@/components/aipax-widget'
 import { CityEnrolment, type EnrolmentCity } from '@/components/akrobatyka/city-enrolment'
 import { StructuredData, Breadcrumb } from '@/lib/seo/metadata'
 import { SITE_URL } from '@/lib/seo/site'
-import { GroupsInfoSection, FAQSection } from '@/components/seo/page-layout'
+import { FAQSection } from '@/components/seo/page-layout'
 import { Button } from '@/components/ui/button'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -16,7 +15,6 @@ import {
   Zap,
 } from 'lucide-react'
 import type {
-  CityPage,
   Discipline,
   Event,
   StaticPage,
@@ -51,151 +49,9 @@ function buildBreadcrumbs(
   ]
 }
 
-export async function CityPageView({
-  data: cityPage,
-  currentPath,
-  parents,
-}: ViewProps<CityPage>) {
-  // Fetch location details
-  const supabase = await createClient()
-  const { data: location } = await supabase
-    .from('locations')
-    .select('*')
-    .eq('id', cityPage.location_id)
-    .maybeSingle()
-
-  const breadcrumbs = buildBreadcrumbs(cityPage.h1_title, currentPath, parents)
-
-  const faqItems = cityPage.faq?.map((item: any) => ({
-    question: item.question || '',
-    answer: item.answer || '',
-  })) || []
-
-  const groupsInfo = cityPage.groups_info?.map((group: any) => ({
-    name: group.name || '',
-    age: group.age || '',
-    schedule: group.schedule || '',
-    price: group.price || '',
-    trainer: group.trainer || '',
-  })) || []
-
-  return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-      <main className="flex-1 bg-background">
-        {/* Structured Data */}
-        <StructuredData
-          type="LocalBusiness"
-          data={{
-            name: cityPage.h1_title,
-            description: cityPage.meta_description,
-            address: {
-              '@type': 'PostalAddress',
-              streetAddress: location?.address || '',
-              addressLocality: location?.city || '',
-              addressCountry: 'PL',
-            },
-            url: `${SITE_URL}${currentPath}/`,
-            image: location?.image_url || '',
-          }}
-        />
-
-        {/* Breadcrumb */}
-        <div className="container pt-8">
-          <Breadcrumb items={breadcrumbs} />
-        </div>
-
-        {/* Hero Section */}
-        {location?.image_url && (
-          <div
-            className="relative h-64 bg-cover bg-center md:h-96"
-            style={{ backgroundImage: `url(${location.image_url})` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-background/40 to-background" />
-            <div className="container relative flex h-full flex-col justify-center">
-              <h1 className="text-4xl font-bold text-white md:text-5xl">
-                {cityPage.h1_title}
-              </h1>
-            </div>
-          </div>
-        )}
-        {!location?.image_url && (
-          <div className="relative h-48 bg-gradient-to-br from-primary to-accent md:h-64">
-            <div className="container relative flex h-full flex-col justify-center">
-              <h1 className="text-4xl font-bold text-white md:text-5xl">
-                {cityPage.h1_title}
-              </h1>
-            </div>
-          </div>
-        )}
-
-        {/* Content Section */}
-        <div className="container space-y-12 py-12">
-          {/* Hero Content */}
-          {cityPage.hero_content && (
-            <section className="prose prose-invert max-w-none">
-              <div
-                dangerouslySetInnerHTML={{ __html: cityPage.hero_content }}
-              />
-            </section>
-          )}
-
-          {/* Main Content */}
-          {cityPage.main_content && (
-            <section className="prose prose-invert max-w-none">
-              <div
-                dangerouslySetInnerHTML={{ __html: cityPage.main_content }}
-              />
-            </section>
-          )}
-
-          {/* Groups Info */}
-          {groupsInfo.length > 0 && (
-            <section>
-              <GroupsInfoSection groups={groupsInfo} />
-            </section>
-          )}
-
-          {/* Schedule */}
-          {cityPage.schedule_content && (
-            <section className="prose prose-invert max-w-none">
-              <h2>Grafik zajęć</h2>
-              <div
-                dangerouslySetInnerHTML={{ __html: cityPage.schedule_content }}
-              />
-            </section>
-          )}
-
-          {/* FAQ */}
-          {faqItems.length > 0 && (
-            <section>
-              <FAQSection items={faqItems} />
-            </section>
-          )}
-
-          {/* CTA Section */}
-          <section className="rounded-lg border border-primary/20 bg-primary/5 p-8 text-center">
-            <h2 className="text-2xl font-bold text-foreground">
-              Gotów do przystąpienia do Air Squad?
-            </h2>
-            <p className="mt-2 text-muted-foreground">
-              Zapisy na bezpłatne zajęcia próbne dostępne teraz
-            </p>
-            <div className="mt-6 flex justify-center gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Zapisz się na zajęcia
-              </Button>
-              <Button variant="outline" size="lg">
-                Skontaktuj się
-              </Button>
-            </div>
-          </section>
-        </div>
-      </main>
-      <Footer />
-    </div>
-  )
-}
+// CityPageView przeniesiony do components/seo/city-view.tsx — nowy landing
+// miasta (statyczny, bez zapytań do Supabase) renderujący fallbacki z
+// lib/content/cities.ts w stylistyce strony głównej.
 
 export function DisciplineView({
   data: discipline,

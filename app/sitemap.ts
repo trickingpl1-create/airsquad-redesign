@@ -1,20 +1,30 @@
 import { MetadataRoute } from 'next'
-import { createClient } from '@/lib/supabase/server'
 import { SITE_URL } from '@/lib/seo/site'
+import {
+  getCityPages,
+  getDisciplines,
+  getEvents,
+  getStaticPages,
+} from '@/lib/seo/queries'
 
 // Sitemapa wystawia wyłącznie kanoniczne URL-e: historyczne slugi root-level
 // ze slashem (zgodnie z trailingSlash i canonicalami z WordPressa) plus nowe huby.
 // Wersje prefiksowane (/lokalizacje/rzeszow/) to duplikaty — celowo ich tu nie ma.
+// Gettery z lib/seo/queries mają fallbacki w kodzie, więc miasta/dyscypliny/eventy
+// trafiają do sitemapy także bez skonfigurowanego Supabase.
+
+// Fallbackowe wiersze mają updated_at: '' — new Date('') to Invalid Date
+// i wywala serializację sitemapy, stąd guard.
+function lastMod(updatedAt?: string): Date {
+  return updatedAt ? new Date(updatedAt) : new Date()
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = await createClient()
-
-  // Fetch all dynamic content
   const [cityPages, events, disciplines, staticPages] = await Promise.all([
-    supabase.from('city_pages').select('slug, updated_at').eq('is_published', true),
-    supabase.from('events').select('slug, updated_at').eq('is_published', true),
-    supabase.from('disciplines').select('slug, updated_at').eq('is_published', true),
-    supabase.from('static_pages').select('slug, updated_at').eq('is_published', true),
+    getCityPages(),
+    getEvents(),
+    getDisciplines(),
+    getStaticPages(),
   ])
 
   // Static pages
@@ -82,41 +92,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   // Historyczne slugi root-level — miasta mają najwyższy priorytet (lokalne SEO)
-  const cityEntries: MetadataRoute.Sitemap = (cityPages.data || []).map(
-    (page: any) => ({
-      url: `${SITE_URL}/${page.slug}/`,
-      lastModified: new Date(page.updated_at),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    })
-  )
+  const cityEntries: MetadataRoute.Sitemap = cityPages.map((page) => ({
+    url: `${SITE_URL}/${page.slug}/`,
+    lastModified: lastMod(page.updated_at),
+    changeFrequency: 'weekly' as const,
+    priority: 0.9,
+  }))
 
-  const disciplineEntries: MetadataRoute.Sitemap = (disciplines.data || []).map(
-    (discipline: any) => ({
+  const disciplineEntries: MetadataRoute.Sitemap = disciplines.map(
+    (discipline) => ({
       url: `${SITE_URL}/${discipline.slug}/`,
-      lastModified: new Date(discipline.updated_at),
+      lastModified: lastMod(discipline.updated_at),
       changeFrequency: 'monthly' as const,
       priority: 0.85,
     })
   )
 
-  const eventEntries: MetadataRoute.Sitemap = (events.data || []).map(
-    (event: any) => ({
-      url: `${SITE_URL}/${event.slug}/`,
-      lastModified: new Date(event.updated_at),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    })
-  )
+  const eventEntries: MetadataRoute.Sitemap = events.map((event) => ({
+    url: `${SITE_URL}/${event.slug}/`,
+    lastModified: lastMod(event.updated_at),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }))
 
-  const staticPageEntries: MetadataRoute.Sitemap = (staticPages.data || []).map(
-    (page: any) => ({
-      url: `${SITE_URL}/${page.slug}/`,
-      lastModified: new Date(page.updated_at),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    })
-  )
+  const staticPageEntries: MetadataRoute.Sitemap = staticPages.map((page) => ({
+    url: `${SITE_URL}/${page.slug}/`,
+    lastModified: lastMod(page.updated_at),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }))
 
   // Deduplikacja po URL — jeden slug może wystąpić tylko raz
   const seen = new Set<string>()
