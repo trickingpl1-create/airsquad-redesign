@@ -12,7 +12,7 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
   meta_title:
     'Akrobatyka dla dzieci i dorosłych — Rzeszów i Podkarpacie | Air Squad',
   meta_description:
-    'Zajęcia akrobatyki od 4 lat w 7 miastach na Podkarpaciu. Małe grupy, dwóch trenerów, ścieżki AirTrack i bezpłatne zajęcia próbne. Zapisz się!',
+    'Zajęcia akrobatyki od 4 lat w 7 miastach na Podkarpaciu. Małe grupy, dwóch trenerów, ścieżki AirTrack. Pierwszy trening za 40 zł. Zapisz się!',
   h1_title: 'Akrobatyka',
   hero_tagline: 'od pierwszego przewrotu do salta.',
   hero_image_url: '/images/akrobatyka/hero-salto.jpg',
@@ -126,7 +126,7 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
     {
       question: 'Czy pierwsze zajęcia są płatne?',
       answer:
-        'Nie — pierwsze zajęcia próbne są bezpłatne. Przyjdź, zobacz salę i sprawdź, czy to coś dla Was.',
+        'Pierwszy trening próbny kosztuje 40 zł. Przyjdź, zobacz salę i sprawdź, czy to coś dla Was.',
     },
     {
       question: 'Moje dziecko już trenowało — do której grupy trafi?',

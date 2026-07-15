@@ -1,9 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import type { Database } from '@/lib/types/database'
-
-type Product = Database['public']['Tables']['products']['Row']
+import type { Product } from '@/lib/types/database'
 
 export interface CartItem extends Product {
   quantity: number

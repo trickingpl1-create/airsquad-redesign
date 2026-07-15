@@ -59,6 +59,68 @@ export const LETNI_EVENT: Event = {
   updated_at: '',
 }
 
+// Fallback treści /airmeeting/ i /gravityjam/ — treść wzięta z już zatwierdzonych
+// opisów na stronie głównej (components/home/promo-section.tsx), żeby nowy
+// dropdown „Obozy i wydarzenia" w menu nie prowadził na puste strony 404.
+// Po podłączeniu i zaseedowaniu bazy wiersz z DB ma priorytet.
+export const AIRMEETING_EVENT: Event = {
+  id: 'fallback-airmeeting',
+  slug: 'airmeeting',
+  title: 'Air Meeting 2026',
+  meta_title: 'Air Meeting 2026 — zlot akrobatyczny | Air Squad',
+  meta_description:
+    'Air Meeting 2026 — spotkanie, zawody i wspólne emocje. Niezapomniane wydarzenie dla członków klubu Air Squad.',
+  event_type: 'airmeeting',
+  event_date: null,
+  event_time: null,
+  location: 'Podkarpacie',
+  tagline: 'spotkanie, zawody, wspólne emocje.',
+  image_url: null,
+  description:
+    '<p>Spotkanie, zawody i wspólne emocje. Niezapomniane, przepełnione pozytywną energią wydarzenie dla członków klubu Air Squad. Szczegóły najbliższej edycji wkrótce.</p>',
+  program: [],
+  pricing: [],
+  includes: null,
+  form_url: null,
+  stats: [],
+  attractions: [],
+  gallery: [],
+  is_active: true,
+  is_published: true,
+  created_at: '',
+  updated_at: '',
+}
+
+export const GRAVITYJAM_EVENT: Event = {
+  id: 'fallback-gravityjam',
+  slug: 'gravityjam',
+  title: 'Gravity Jam — święto kultury ulicznej',
+  meta_title: 'Gravity Jam — jam akrobatyczny i święto kultury ulicznej | Air Squad',
+  meta_description:
+    'Gravity Jam — warsztaty rolkowe, akrobatyczne, strefa longboardowa i gier drewnianych. Air Squad razem z MB Park i Street Life Rzeszów.',
+  event_type: 'gravityjam',
+  event_date: null,
+  event_time: null,
+  location: 'Rzeszów',
+  tagline: 'święto kultury ulicznej.',
+  image_url: null,
+  description:
+    '<p>Warsztaty rolkowe, akrobatyczne, strefa longboardowa i gier drewnianych. Gravity Jam to wspólna inicjatywa Air Squad, MB Park i Street Life Rzeszów.</p>',
+  program: [],
+  pricing: [],
+  includes: null,
+  form_url: null,
+  stats: [],
+  attractions: [],
+  gallery: [],
+  is_active: true,
+  is_published: true,
+  created_at: '',
+  updated_at: '',
+}
+
 export const FALLBACK_EVENTS: Record<string, Event> = {
   letni: LETNI_EVENT,
+  airmeeting: AIRMEETING_EVENT,
+  gravityjam: GRAVITYJAM_EVENT,
 }

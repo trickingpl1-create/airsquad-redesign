@@ -3,16 +3,31 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import { Menu, X, ShoppingBag, Moon, Sun } from 'lucide-react'
+import { Menu, X, ShoppingBag, Moon, Sun, ChevronDown } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
-const navLinks = [
-  { href: '/grafik', label: 'GRAFIK' },
+const eventLinks = [
+  { href: '/letni', label: 'Air Camp' },
+  { href: '/airmeeting', label: 'Air Meeting' },
+  { href: '/gravityjam', label: 'Gravity Jam' },
+]
+
+type NavLink =
+  | { href: string; label: string }
+  | { label: string; badge?: string; items: { href: string; label: string }[] }
+
+const navLinks: NavLink[] = [
+  { href: '/', label: 'STRONA GŁÓWNA' },
+  { href: '/aktualnosci', label: 'AKTUALNOŚCI' },
+  { label: 'OBOZY I WYDARZENIA', badge: 'LATO 2026', items: eventLinks },
   { href: '/lokalizacje', label: 'LOKALIZACJE' },
-  { href: '/dyscypliny', label: 'DYSCYPLINY' },
-  { href: '/trenerzy', label: 'TRENERZY' },
-  { href: '/obozy', label: 'OBOZY', badge: 'LATO 2026' },
   { href: '/sklep', label: 'SKLEP' },
   { href: '/kontakt', label: 'KONTAKT' },
 ]
@@ -113,20 +128,41 @@ export function Header() {
             className="hidden items-center gap-5 lg:flex"
             aria-label="Główna nawigacja"
           >
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="relative font-mono text-[10.5px] font-bold tracking-[0.16em] text-foreground/65 transition-colors hover:text-cyan focus-visible:text-cyan focus-visible:outline-none"
-              >
-                {link.label}
-                {'badge' in link && (
-                  <span className="absolute -right-2 -top-2 inline-flex h-5 items-center rounded-full bg-emerald px-2 py-0.5 text-[8px] font-black text-emerald-950">
-                    {link.badge}
-                  </span>
-                )}
-              </Link>
-            ))}
+            {navLinks.map((link) =>
+              'items' in link ? (
+                <DropdownMenu key={link.label}>
+                  <DropdownMenuTrigger className="flex items-center gap-1.5 font-mono text-[10.5px] font-bold tracking-[0.16em] text-foreground/65 outline-none transition-colors hover:text-cyan focus-visible:text-cyan">
+                    {link.label}
+                    {'badge' in link && (
+                      <span className="inline-flex h-5 items-center rounded-full bg-emerald px-2 py-0.5 text-[8px] font-black text-emerald-950">
+                        {link.badge}
+                      </span>
+                    )}
+                    <ChevronDown className="h-3 w-3" aria-hidden />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="min-w-[180px]">
+                    {link.items.map((item) => (
+                      <DropdownMenuItem key={item.href} asChild>
+                        <Link
+                          href={item.href}
+                          className="font-mono text-[11px] font-bold tracking-[0.1em]"
+                        >
+                          {item.label}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="relative font-mono text-[10.5px] font-bold tracking-[0.16em] text-foreground/65 transition-colors hover:text-cyan focus-visible:text-cyan focus-visible:outline-none"
+                >
+                  {link.label}
+                </Link>
+              ),
+            )}
           </nav>
 
           {/* Desktop right */}
@@ -184,21 +220,41 @@ export function Header() {
             className="container mx-auto flex flex-col px-4 py-4"
             aria-label="Mobilna nawigacja"
           >
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="relative border-b border-white/6 py-3.5 font-mono text-[10.5px] font-bold tracking-[0.16em] text-foreground/65 transition-colors hover:text-cyan"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-                {'badge' in link && (
-                  <span className="ml-2 inline-block rounded-full bg-emerald px-2 py-0.5 text-[8px] font-black text-emerald-950">
-                    {link.badge}
+            {navLinks.map((link) =>
+              'items' in link ? (
+                <div key={link.label} className="border-b border-white/6 py-3.5">
+                  <span className="font-mono text-[10.5px] font-bold tracking-[0.16em] text-foreground/65">
+                    {link.label}
+                    {'badge' in link && (
+                      <span className="ml-2 inline-block rounded-full bg-emerald px-2 py-0.5 text-[8px] font-black text-emerald-950">
+                        {link.badge}
+                      </span>
+                    )}
                   </span>
-                )}
-              </Link>
-            ))}
+                  <div className="mt-3 flex flex-col gap-3 pl-3">
+                    {link.items.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="font-mono text-[10px] font-bold tracking-[0.14em] text-foreground/55 transition-colors hover:text-cyan"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="relative border-b border-white/6 py-3.5 font-mono text-[10.5px] font-bold tracking-[0.16em] text-foreground/65 transition-colors hover:text-cyan"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ),
+            )}
             <Link
               href="/kontakt"
               onClick={() => setMobileMenuOpen(false)}

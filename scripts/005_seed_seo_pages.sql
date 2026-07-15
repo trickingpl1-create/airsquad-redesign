@@ -97,7 +97,7 @@ INSERT INTO disciplines (
   'akrobatyka',
   'Akrobatyka',
   'Akrobatyka dla dzieci i dorosłych — Rzeszów i Podkarpacie | Air Squad',
-  'Zajęcia akrobatyki od 4 lat w 7 miastach na Podkarpaciu. Małe grupy, dwóch trenerów, ścieżki AirTrack i bezpłatne zajęcia próbne. Zapisz się!',
+  'Zajęcia akrobatyki od 4 lat w 7 miastach na Podkarpaciu. Małe grupy, dwóch trenerów, ścieżki AirTrack. Pierwszy trening za 40 zł. Zapisz się!',
   'Akrobatyka',
   'od pierwszego przewrotu do salta.',
   '/images/akrobatyka/hero-salto.jpg',
@@ -136,7 +136,7 @@ INSERT INTO disciplines (
   '[
     {"question":"Od ilu lat dziecko może zacząć?","answer":"Od 4. roku życia w grupach AcroKids. Górnej granicy nie ma — mamy też grupy dla dorosłych."},
     {"question":"Czy akrobatyka jest bezpieczna?","answer":"Trenujemy na ścieżkach AirTrack i miękkich zeskokach, zawsze z dwoma trenerami i asekuracją. Nowe elementy wprowadzamy dopiero, gdy poprzednie są opanowane."},
-    {"question":"Czy pierwsze zajęcia są płatne?","answer":"Nie — pierwsze zajęcia próbne są bezpłatne. Przyjdź, zobacz salę i sprawdź, czy to coś dla Was."},
+    {"question":"Czy pierwsze zajęcia są płatne?","answer":"Pierwszy trening próbny kosztuje 40 zł. Przyjdź, zobacz salę i sprawdź, czy to coś dla Was."},
     {"question":"Moje dziecko już trenowało — do której grupy trafi?","answer":"Na zajęciach próbnych trener oceni poziom i dobierze grupę. Dzielimy wg umiejętności, nie tylko wieku."},
     {"question":"Co jeśli w mojej miejscowości grupa jest pełna?","answer":"Zapisz się na listę rezerwową w formularzu — otwieramy nowe grupy, gdy zbierze się komplet."}
   ]'::jsonb,

@@ -1,0 +1,24 @@
+{
+  "projectId": "07fa76fb-3f14-482b-8463-bfc9d016af6e",
+  "shape": "package",
+  "pkg": "airsquad-ui",
+  "globalName": "AirSquadUI",
+  "srcDir": "components/ui",
+  "tsconfig": "tsconfig.json",
+  "cssEntry": ".next/static/chunks/1mrr_byk2hc7b.css",
+  "extraFonts": [".next/static/chunks/0sbvh4r5yeyoa.css"],
+  "componentSrcMap": {
+    "Toaster": null
+  },
+  "overrides": {
+    "Dialog": { "cardMode": "single", "viewport": "480x360" },
+    "AlertDialog": { "cardMode": "single", "viewport": "480x320" },
+    "Sheet": { "cardMode": "single", "viewport": "420x520" },
+    "Popover": { "cardMode": "single", "viewport": "360x280" },
+    "Tooltip": { "cardMode": "single", "viewport": "320x180" },
+    "DropdownMenu": { "cardMode": "single", "viewport": "320x360" },
+    "Tabs": { "cardMode": "column" },
+    "Textarea": { "cardMode": "column" }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}

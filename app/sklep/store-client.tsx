@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/lib/hooks/use-cart'
-import type { Database } from '@/lib/types/database'
+import type { Product } from '@/lib/types/database'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -11,8 +11,6 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ShoppingCart, X, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
-
-type Product = Database['public']['Tables']['products']['Row']
 
 export function StoreClient() {
   const supabase = createClient()

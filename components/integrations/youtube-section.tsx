@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import type { Database } from '@/lib/types/database'
-
-type Camp = Database['public']['Tables']['camps']['Row']
+import type { Camp } from '@/lib/types/database'
 
 export function YouTubeSection() {
   return (

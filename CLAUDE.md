@@ -49,7 +49,7 @@ Część treści istnieje jako statyczne fallbacki w `lib/content/*.ts` (`cities
 
 ### Dwa klienty Supabase — nie mieszać
 - `lib/supabase/public.ts` (`getPublicSupabaseClient`) — bez cookies, do treści cache'owalnej/ISR (strony `[slug]`, strona główna). Użycie `cookies()` w komponencie renderowanym statycznie wymusza dynamic rendering i zabija ISR.
-- `lib/supabase/server.ts` / `lib/supabase/middleware.ts` — cookie-based, do `/admin` (auth przez hasło + middleware, nie Supabase Auth).
+- `lib/supabase/server.ts` / `lib/supabase/proxy.ts` — cookie-based, do `/admin` (auth przez hasło + proxy, nie Supabase Auth).
 
 ### SEO — nie ruszać istniejących URL-i bez analizy
 - `next.config.mjs`: `trailingSlash: true` — WordPress miał URL-e ze slashem; bez tego stare linki dostają 308 i tracą część SEO equity.
@@ -60,8 +60,11 @@ Część treści istnieje jako statyczne fallbacki w `lib/content/*.ts` (`cities
 ### Integracja AIPAX (zapisy/grafik/płatności — świadomie NIE budowane w tym repo)
 Zapisy, grafik zajęć, płatności za zajęcia, portal rodzica i frekwencja to domena zewnętrznego systemu AIPAX — embedowanego jako lazy iframe facade (wzorzec: `components/akrobatyka/city-enrolment.tsx`, `components/seo/city-aipax-calendar.tsx`: nic się nie montuje, dopóki użytkownik nie kliknie). Nie dodawać własnego systemu zapisów/kalendarza — to świadoma decyzja architektoniczna (`docs/04-architektura.md`).
 
+### Typografia display (konwencja — decyzja użytkownika 2026-07-11)
+Nagłówki ozdobne używają klasy `display-bold` (font odręczny „Covered By Your Grace"; klasa ustawia font-weight 800 = sztuczne pogrubienie jednowagowego fontu). Przy tworzeniu NOWYCH treści duże nagłówki (hero H1, tytuły sekcji) zawsze ściągaj do wagi **400**: `style={{ fontWeight: 400 }}` na elemencie albo `titleFontWeight={400}` + `gradientFontWeight={400}` na `SectionHeader`. Mniejsze tytuły kart bywają na 500 (wzorzec: `components/home/pricing-section.tsx`).
+
 ### Panel admina
-`/admin/*` — CRUD dla lokalizacji/trenerów/obozów/produktów/postów IG, chroniony hasłem przez `middleware.ts` (nie Supabase Auth — mały zespół, prosty model).
+`/admin/*` — CRUD dla lokalizacji/trenerów/obozów/produktów/postów IG, chroniony hasłem przez `proxy.ts` (konwencja proxy Next 16, dawne middleware; nie Supabase Auth — mały zespół, prosty model).
 
 ## Dokumentacja projektu
 

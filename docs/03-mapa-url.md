@@ -23,7 +23,7 @@ Cel: zachować obecne publiczne adresy, które mogą mieć widoczność w Google
 | `/obozy-sportowe/` | zachowany | hub obozów | Zachować i rozbudować jako hub. |
 | `/airmeeting/` | zachowany | wydarzenie | Zachować jako landing wydarzenia. |
 | `/gravityjam/` | zachowany | wydarzenie/archiwum | Zachować jako archiwum/landing wydarzenia. |
-| `/aktualnosci/` | zachowany | aktualności | Zachować jako lista komunikatów. |
+| `/aktualnosci/` | zachowany | aktualności | Zachować jako lista komunikatów. **Zbudowana 2026-07-14** (`app/aktualnosci/page.tsx`, treść ze zscrape'owanej tablicy ogłoszeń airsquad.pl), link w głównym menu. |
 
 ## Nowe strony zbiorcze
 
@@ -37,6 +37,8 @@ Te strony mogą istnieć, ale nie zastępują starych landing pages:
 | `/wydarzenia/` | Strona zbiorcza prowadząca do Air Meeting i Gravity Jam. |
 | `/trenerzy/` | Nowa strona zespołu. |
 | `/kontakt/` | Nowa strona kontaktowa. |
+
+**Restrukturyzacja menu głównego (2026-07-14):** główna nawigacja zawiera teraz 5 pozycji (AKTUALNOŚCI / OBOZY I WYDARZENIA / TRENINGI / SKLEP / KONTAKT — `components/layout/header.tsx`). „TRENINGI" to przemianowany link do `/lokalizacje/` (URL bez zmian). „OBOZY I WYDARZENIA" to rozwijane menu prowadzące bezpośrednio do `/letni/`, `/airmeeting/`, `/gravityjam/` — hub-y `/obozy/` i `/wydarzenia/` **wypadły z top-level menu** (nadal istnieją w kodzie, linkowane śródtekstowo/ze stopki). `/grafik/`, `/trenerzy/`, `/dyscypliny/` również wypadły z top-level menu z tego samego powodu — zostają dostępne, ale nie z głównej nawigacji. Wizualne ujednolicenie tych stron do nowego stylu i naprawa pobierania danych (Supabase) zaplanowane jako Faza B (patrz plan „Restrukturyzacja menu głównego" w historii sesji).
 
 ## Kandydaci do przekierowań, ale tylko po decyzji
 
@@ -59,7 +61,7 @@ Nie usunięto i nie przekierowano automatycznie:
 - `/spotkanie/`
 - `/airspace/`
 - `/portfolio/`
-- `/sklep/`
+- `/sklep/` — **decyzja użytkownika 2026-07-14**: mimo statusu „do analizy" zostaje na razie aktywnym linkiem w głównym menu (rozwój sklepu odłożony w czasie, nie usuwamy dostępu).
 
 Decyzja wymaga danych z Google Search Console: kliknięcia, wyświetlenia, linki zewnętrzne, stan indeksowania.
 

@@ -37,6 +37,8 @@ export function CitiesSection() {
           kickerColorClass="text-cyan"
           title="Trenuj w swoim"
           gradientPart="mieście."
+          titleFontWeight={400}
+          gradientFontWeight={400}
           meta={`[Sale] // ${TOTAL} miast na Podkarpaciu. Wybierz najbliższe.`}
           className="mb-10 md:mb-12"
         />

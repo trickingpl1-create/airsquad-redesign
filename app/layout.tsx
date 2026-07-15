@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Air Squad — Akrobatyka, Tricking, Longboard',
-    description: 'Dołącz do najlepszego klubu akrobatycznego w regionie. Pierwsze zajęcia gratis.',
+    description: 'Dołącz do najlepszego klubu akrobatycznego w regionie. Pierwszy trening za 40 zł.',
     url: SITE_URL,
     siteName: 'Air Squad',
     locale: 'pl_PL',
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Air Squad — Akrobatyka, Tricking, Longboard',
-    description: 'Dołącz do najlepszego klubu akrobatycznego w regionie. Pierwsze zajęcia gratis.',
+    description: 'Dołącz do najlepszego klubu akrobatycznego w regionie. Pierwszy trening za 40 zł.',
     images: ['/images/airsquad-logo.png'],
   },
 }

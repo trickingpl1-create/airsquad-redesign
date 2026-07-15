@@ -9,7 +9,7 @@ const steps = [
   {
     n: '2',
     title: 'Zajęcia próbne',
-    desc: 'Pierwsza wizyta jest bezpłatna. Wspólnie dobieramy grupę, w której dziecko poczuje się pewnie.',
+    desc: 'Pierwszy trening kosztuje 40 zł. Wspólnie dobieramy grupę, w której dziecko poczuje się pewnie.',
   },
   {
     n: '3',
@@ -20,8 +20,8 @@ const steps = [
 
 const audience = [
   {
-    title: 'Dzieci 4–10 lat',
-    num: '4–10',
+    title: 'Dzieci 7–10 lat',
+    num: '7–10',
     desc: 'Bezpieczne podstawy, miękkie maty, krótkie sesje. Pierwsza akrobatyka w życiu — bez stresu, w grupach do 12 osób.',
     accent: 'var(--primary)',
     photo: '/images/old-site/dzieci-airtrack.jpg',

@@ -73,11 +73,11 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
     slug: '',
     description: '',
     price: 0,
-    category: 'odziez' as const,
+    category: 'odziez' as Product['category'],
     sizes: [] as string[],
     colors: [] as string[],
     image_url: '',
-    stock_status: 'available' as const,
+    stock_status: 'available' as Product['stock_status'],
     display_order: 0,
     is_active: true,
   })

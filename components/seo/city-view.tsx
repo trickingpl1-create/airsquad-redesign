@@ -4,6 +4,7 @@ import { SITE_URL } from '@/lib/seo/site'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SectionHeader } from '@/components/home/section-header'
+import { PricingSection } from '@/components/home/pricing-section'
 import { CityAipaxCalendar } from '@/components/seo/city-aipax-calendar'
 import { CityVideo } from '@/components/seo/city-video'
 import { CLUB_CONTACT, PAYMENT_INFO } from '@/lib/content/cities'
@@ -149,7 +150,7 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
               <span className="rounded-full bg-primary px-4 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-primary-foreground">
                 {city.hall?.name ?? `Air Squad · ${cityName}`}
               </span>
-              <h1 className="display-bold mt-6 text-5xl text-white md:text-7xl">
+              <h1 className="display-bold mt-6 text-5xl text-white md:text-7xl" style={{ fontWeight: 400 }}>
                 {city.h1_title}
               </h1>
               {city.hero_content && (
@@ -224,6 +225,8 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
               kickerColorClass="text-cyan"
               title="Którą grupę"
               gradientPart="wybrać?"
+              titleFontWeight={400}
+              gradientFontWeight={400}
               meta={`[Grupy] // ${groups.length} ${groups.length === 1 ? 'grupa' : 'grup'}. Grafik może ulec zmianie — potwierdź w AIPAX.`}
               className="mb-8 md:mb-10"
             />
@@ -247,7 +250,9 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                       Kontynuacja
                     </span>
                   )}
-                  <p className="mt-4 text-xl font-semibold text-foreground">{group.name}</p>
+                  <p className="display-bold mt-4 text-xl text-foreground" style={{ fontWeight: 500 }}>
+                    {group.name}
+                  </p>
                   <p className="mt-1 font-mono text-xs text-muted-foreground">
                     {group.schedule ?? [group.days, group.hours].filter(Boolean).join(' — ')}
                   </p>
@@ -282,7 +287,9 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                   <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-amber">
                     Gdzie trenujemy
                   </p>
-                  <h2 className="mt-2 text-2xl font-semibold text-foreground">{city.hall.name}</h2>
+                  <h2 className="display-bold mt-2 text-2xl text-foreground" style={{ fontWeight: 500 }}>
+                    {city.hall.name}
+                  </h2>
                   <p className="mt-1 font-mono text-xs text-muted-foreground">
                     {city.hall.address}, {city.hall.city}
                   </p>
@@ -314,7 +321,9 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                   <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-pink">
                     Trenerzy sekcji
                   </p>
-                  <h2 className="mt-2 text-2xl font-semibold text-foreground">Kadra {cityName}</h2>
+                  <h2 className="display-bold mt-2 text-2xl text-foreground" style={{ fontWeight: 500 }}>
+                    Kadra {cityName}
+                  </h2>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {city.trainers.map((t) => t.name).join(' · ')}
                   </p>
@@ -418,6 +427,9 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
             </div>
           </section>
         )}
+
+        {/* Cennik */}
+        <PricingSection />
 
         {/* Zajawki + zapisy */}
         <section id="zapisy" className="container mx-auto grid gap-4 px-4 pt-12 md:grid-cols-2">

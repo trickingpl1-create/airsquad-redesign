@@ -10,7 +10,13 @@ import {
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Empty } from '@/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Search, Plus } from 'lucide-react'
 import { useState } from 'react'
@@ -101,12 +107,18 @@ export function DataTable<T extends { id: string }>({
       {/* Table */}
       {filteredData.length === 0 ? (
         <div className="rounded-lg border border-dashed p-8">
-          <Empty title={emptyTitle} description={emptyDescription}>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>{emptyTitle}</EmptyTitle>
+              <EmptyDescription>{emptyDescription}</EmptyDescription>
+            </EmptyHeader>
             {onAdd && (
-              <Button onClick={onAdd} className="mt-4">
-                <Plus className="mr-2 h-4 w-4" />
-                {addLabel}
-              </Button>
+              <EmptyContent>
+                <Button onClick={onAdd}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  {addLabel}
+                </Button>
+              </EmptyContent>
             )}
           </Empty>
         </div>

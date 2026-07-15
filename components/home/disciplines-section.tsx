@@ -87,7 +87,13 @@ export function DisciplinesSection() {
     >
       <div
         aria-hidden
-        className="halftone-overlay absolute inset-0 text-primary"
+        className="absolute -left-32 -top-32 h-[560px] w-[560px] rounded-full opacity-25"
+        style={{ background: 'radial-gradient(circle, var(--primary) 0%, transparent 65%)' }}
+      />
+      <div
+        aria-hidden
+        className="absolute -bottom-40 -right-32 h-[520px] w-[520px] rounded-full opacity-15"
+        style={{ background: 'radial-gradient(circle, var(--cyan) 0%, transparent 70%)' }}
       />
       <div className="relative mx-auto max-w-7xl">
         <SectionHeader
@@ -97,8 +103,6 @@ export function DisciplinesSection() {
           gradientPart="dyscypliny."
           titleFontWeight={400}
           gradientFontWeight={400}
-          customTitleStyle={{ fontWeight: 400 }}
-          customGradientStyle={{ fontWeight: 400 }}
         />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import type { Database } from '@/lib/types/database'
+import type { InstagramPost } from '@/lib/types/database'
 import { Card } from '@/components/ui/card'
-
-type InstagramPost = Database['public']['Tables']['instagram_posts']['Row']
 
 export function InstagramFeed({ limit = 6 }: { limit?: number }) {
   const supabase = createClient()

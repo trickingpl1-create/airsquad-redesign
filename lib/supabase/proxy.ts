@@ -11,7 +11,9 @@ export async function updateSession(request: NextRequest) {
 
   // If Supabase isn't configured yet, skip auth instead of crashing the app.
   // Admin routes will still be unreachable because no session exists.
-  if (!supabaseUrl || !supabaseAnonKey) {
+  // Placeholder URL (domyślny .env.local) = brak konfiguracji — bez tego guardu
+  // każdy request wisi na DNS martwego hosta placeholder.supabase.co.
+  if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder')) {
     if (
       request.nextUrl.pathname.startsWith('/admin') &&
       !request.nextUrl.pathname.startsWith('/admin/login')

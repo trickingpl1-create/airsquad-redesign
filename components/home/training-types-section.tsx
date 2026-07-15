@@ -48,6 +48,8 @@ export function TrainingTypesSection({ trainingTypes }: TrainingTypesSectionProp
           kickerColorClass="text-violet-soft"
           title="Co u nas"
           gradientPart="trenujesz."
+          titleFontWeight={400}
+          gradientFontWeight={400}
           meta={`${trainingTypes.length} aktywnych sekcji — każda dopasowana do wieku i poziomu.`}
         />
 

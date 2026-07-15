@@ -6,7 +6,7 @@ const promoCards = [
     title: 'Air Camp',
     desc: 'Longboardy, kajaki, SUP, paintball, akrobatyka, tricking, taniec, gry terenowe. Sprawdzeni instruktorzy i program pełen wyzwań. Tel: 728 559 101',
     cta: 'Zapisz dziecko',
-    href: '/obozy',
+    href: '/letni',
     accentColor: 'var(--primary)',
     gradientFrom: 'from-primary/15',
     gradientTo: 'to-violet-soft/10',
@@ -17,7 +17,7 @@ const promoCards = [
     title: 'Air Meeting 2026',
     desc: 'Spotkanie, zawody i wspólne emocje. Niezapomniane, przepełnione pozytywną energią wydarzenie dla członków klubu Air Squad.',
     cta: 'Więcej informacji',
-    href: '/wydarzenia',
+    href: '/airmeeting',
     accentColor: 'var(--cyan)',
     gradientFrom: 'from-cyan/15',
     gradientTo: 'to-accent/10',
@@ -97,7 +97,7 @@ export function PromoSection() {
             </div>
             
             <Link
-              href="/wydarzenia/gravity-jam"
+              href="/gravityjam"
               className="inline-flex flex-shrink-0 items-center gap-2 rounded-full px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-amber-foreground transition-transform hover:-translate-y-0.5"
               style={{
                 background: 'linear-gradient(135deg, var(--amber), oklch(0.72 0.15 55))',

@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import type { Database } from '@/lib/types/database'
+import type { InstagramPost } from '@/lib/types/database'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Trash2, Edit2, Plus } from 'lucide-react'
-
-type InstagramPost = Database['public']['Tables']['instagram_posts']['Row']
 
 export function InstagramClient() {
   const supabase = createClient()

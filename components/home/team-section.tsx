@@ -35,6 +35,8 @@ export function TeamSection({ trainers }: TeamSectionProps) {
           kickerColorClass="text-cyan"
           title="Zespół, któremu"
           gradientPart="ufają rodzice."
+          titleFontWeight={400}
+          gradientFontWeight={400}
         />
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">

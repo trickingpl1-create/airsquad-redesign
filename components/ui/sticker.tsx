@@ -2,9 +2,12 @@ import { cn } from '@/lib/utils'
 
 type StickerProps = {
   children: React.ReactNode
-  variant?: 'primary' | 'accent' | 'cyan' | 'dark'
+  variant?: 'primary' | 'accent' | 'cyan' | 'dark' | 'white'
   size?: 'sm' | 'md' | 'lg'
-  rotate?: number
+  // Stare podstrony przekazują rotate="left"/"right" — nieprawidłowy kąt CSS,
+  // przeglądarka go ignoruje (brak rotacji). Typ dopuszcza te wartości dla
+  // parytetu z dotychczasowym renderem; nie mapować ich na realne kąty.
+  rotate?: number | 'left' | 'right'
   className?: string
 }
 
@@ -13,6 +16,9 @@ const variantClasses = {
   accent: 'bg-accent text-accent-foreground',
   cyan: 'bg-cyan text-cyan-foreground',
   dark: 'bg-foreground text-background',
+  // 'white' historycznie nie miał klas (undefined lookup) — pusty string
+  // zachowuje identyczny wygląd (cn() go odrzuca).
+  white: '',
 }
 
 const sizeClasses = {

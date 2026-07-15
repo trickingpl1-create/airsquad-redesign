@@ -5,44 +5,36 @@ import { SectionHeader } from './section-header'
 const plans = [
   {
     name: 'Basic',
-    price: '149',
+    price: '150',
     period: '/mies.',
     desc: 'Idealny start — jedna grupa w tygodniu',
     features: [
       '1 trening / tydzień',
-      'Jedna dyscyplina',
-      'Zniżka 10% na obozy',
-      'Materiały online',
+      'Zniżka 5% na obozy',
     ],
     accent: 'var(--border)',
     popular: false,
   },
   {
     name: 'Standard',
-    price: '239',
+    price: '240',
     period: '/mies.',
     desc: 'Najczęściej wybierany — pełen rozwój',
     features: [
       '2 treningi / tydzień',
-      'Wszystkie dyscypliny',
-      'Open trainings w weekendy',
-      'Zniżka 15% na obozy',
-      'Priorytet zapisów',
+      'Zniżka 5% na obozy',
     ],
     accent: 'var(--primary)',
     popular: true,
   },
   {
     name: 'Premium',
-    price: '319',
+    price: '290',
     period: '/mies.',
-    desc: 'Dla pełnego zaangażowania — bez limitu',
+    desc: 'Dla pełnego zaangażowania',
     features: [
-      'Bez limitu treningów',
-      'Trening personalny 1× / mies.',
-      'Strefa Tricking otwarta',
-      'Zniżka 25% na obozy',
-      'Sprzęt klubowy w cenie',
+      '3 treningi / tydzień',
+      'Zniżka 10% na obozy',
     ],
     accent: 'var(--cyan)',
     popular: false,
@@ -50,11 +42,10 @@ const plans = [
 ] as const
 
 const dropIn: ReadonlyArray<readonly [string, string, string]> = [
-  ['Pojedynczy trening', '60 zł', '1.5h zajęć'],
-  ['Open Training', '45 zł', '2h sesja'],
-  ['Trening indywidualny', '180 zł', '60 min 1-on-1'],
-  ['Wynajem AirTrack', '240zł', '/godz.'],
-  ['Pakiet 4 treningi', '220 zł', 'do wykorzystania'],
+  ['Pojedynczy trening', '40 zł', '60 min zajęć'],
+  ['Open Training', '40 zł', '90 min sesja'],
+  ['Trening w małej grupie', '300 zł', '60 min · 2–3 osoby'],
+  ['Pakiet 4 treningi', '270 zł', 'bez umowy'],
   ['Trial — pierwsze zajęcia', '40 zł', 'jednorazowo'],
 ]
 
@@ -66,14 +57,13 @@ export function PricingSection() {
     >
       <div
         aria-hidden
-        className="halftone-overlay absolute inset-0 text-primary"
+        className="absolute -left-32 -top-32 h-[560px] w-[560px] rounded-full opacity-25"
+        style={{ background: 'radial-gradient(circle, var(--primary) 0%, transparent 65%)' }}
       />
       <div
         aria-hidden
-        className="absolute -right-32 top-20 h-[420px] w-[420px] rounded-full opacity-[0.08]"
-        style={{
-          background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)',
-        }}
+        className="absolute -bottom-40 -right-32 h-[520px] w-[520px] rounded-full opacity-15"
+        style={{ background: 'radial-gradient(circle, var(--cyan) 0%, transparent 70%)' }}
       />
 
       <div className="relative mx-auto max-w-7xl">

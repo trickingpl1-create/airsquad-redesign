@@ -119,7 +119,7 @@ export default async function DisciplinesPage() {
           {/* CTA band */}
           <div className="mt-20 border-2 border-foreground bg-foreground p-12 text-center text-background shadow-sticker-xl md:p-16">
             <p className="text-xs font-black uppercase tracking-widest text-cyan">
-              Pierwsze zajęcia gratis
+              Pierwszy trening za 40 zł
             </p>
             <h2 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-black uppercase leading-none tracking-tighter md:text-6xl">
               Sprawdź na sobie

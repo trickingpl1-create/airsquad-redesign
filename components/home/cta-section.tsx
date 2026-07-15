@@ -57,7 +57,7 @@ export function CTASection() {
             <span className="gradient-text">pierwszy trening</span>.
           </h2>
           <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
-            Pierwsze zajęcia są bezpłatne. Odzywamy się w ciągu 24 godzin,
+            Pierwszy trening kosztuje 40 zł. Odzywamy się w ciągu 24 godzin,
             żeby dobrać grupę do poziomu dziecka i dogodne dni treningu.
           </p>
 

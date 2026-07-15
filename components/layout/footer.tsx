@@ -5,20 +5,16 @@ const linkGroups = [
   {
     label: '/treningi',
     links: [
-      { href: '/dyscypliny/akrobatyka', label: 'akrobatyka' },
-      { href: '/dyscypliny/tricking', label: 'tricking' },
-      { href: '/dyscypliny/tumbling', label: 'tumbling' },
-      { href: '/dyscypliny/longboardy', label: 'longboard' },
-      { href: '/dyscypliny/showdance', label: 'showdance' },
+      { href: '/akrobatyka', label: 'akrobatyka' },
+      { href: '/dyscypliny', label: 'wszystkie dyscypliny' },
     ],
   },
   {
     label: '/obozy',
     links: [
-      { href: '/obozy', label: 'aircamp' },
-      { href: '/obozy', label: 'diamond camp' },
-      { href: '/wydarzenia', label: 'airmeeting' },
-      { href: '/wydarzenia', label: 'gravity jam' },
+      { href: '/letni', label: 'obozy' },
+      { href: '/airmeeting', label: 'airmeeting' },
+      { href: '/gravityjam', label: 'gravity jam' },
     ],
   },
   {

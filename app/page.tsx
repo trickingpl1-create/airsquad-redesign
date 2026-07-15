@@ -8,7 +8,6 @@ import { TrainingTypesSection } from '@/components/home/training-types-section'
 import { DisciplinesSection } from '@/components/home/disciplines-section'
 import { HowAudienceSection } from '@/components/home/how-audience-section'
 import { CampsSection } from '@/components/home/camps-section'
-import { PricingSection } from '@/components/home/pricing-section'
 import { TeamSection } from '@/components/home/team-section'
 import { CTASection } from '@/components/home/cta-section'
 import { PromoSection } from '@/components/home/promo-section'
@@ -57,7 +56,6 @@ export default async function HomePage() {
         <DisciplinesSection />
         <HowAudienceSection />
         <CampsSection camps={camps} />
-        <PricingSection />
         <TeamSection trainers={trainers} />
         <CTASection />
       </main>

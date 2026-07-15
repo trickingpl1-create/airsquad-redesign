@@ -18,7 +18,7 @@ export function HeroSection() {
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&mute=1&loop=1&playlist=${YOUTUBE_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1&start=9&end=25`}
             allow="autoplay; encrypted-media"
-            className="absolute inset-0 h-full w-full border-0 opacity-55"
+            className="absolute inset-0 h-full w-full border-0 opacity-80"
             title="Air Squad background video"
           />
         </div>
@@ -28,7 +28,7 @@ export function HeroSection() {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(90deg, var(--background) 0%, color-mix(in oklch, var(--background) 88%, transparent) 40%, color-mix(in oklch, var(--background) 35%, transparent) 100%), linear-gradient(180deg, transparent 0%, color-mix(in oklch, var(--background) 55%, transparent) 70%, var(--background) 100%)',
+              'linear-gradient(90deg, var(--background) 0%, color-mix(in oklch, var(--background) 78%, transparent) 40%, color-mix(in oklch, var(--background) 12%, transparent) 100%), linear-gradient(180deg, transparent 0%, color-mix(in oklch, var(--background) 40%, transparent) 70%, var(--background) 100%)',
           }}
         />
 
@@ -89,10 +89,7 @@ export function HeroSection() {
                 className="display-italic block text-[3.5rem] leading-[0.95] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem]"
                 style={{
                   fontWeight: 400,
-                  background: 'linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
+                  color: '#fff',
                 }}
               >
                 Akrobatyka.
@@ -120,7 +117,7 @@ export function HeroSection() {
 
             {/* Description */}
             <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground md:text-lg">
-              Akrobatyka, tricking, longboard i tumbling — dla dzieci od 4 lat,
+              Akrobatyka, tricking, longboard i tumbling — dla dzieci od 7 lat,
               młodzieży i dorosłych. Małe grupy, dwóch trenerów, profesjonalne
               maty AirTrack. Siedem miast na Podkarpaciu.
             </p>

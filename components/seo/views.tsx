@@ -396,7 +396,7 @@ export function DisciplineView({
               Chcesz spróbować {discipline.name}?
             </h2>
             <p className="mt-2 text-muted-foreground">
-              Bezpłatne zajęcia próbne czekają na Ciebie. Zapisz się teraz!
+              Pierwszy trening kosztuje 40 zł. Zapisz się teraz!
             </p>
             <div className="mt-6 flex justify-center gap-4">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -777,7 +777,7 @@ export function StaticPageView({
                   Chcesz wiedzieć więcej?
                 </h2>
                 <p className="mt-2 text-muted-foreground">
-                  Skontaktuj się z nami lub zarezerwuj bezpłatną lekcję próbną.
+                  Skontaktuj się z nami lub zarezerwuj pierwszy trening za 40 zł.
                 </p>
                 <div className="mt-6 flex justify-center gap-4">
                   <Button size="lg" className="bg-primary hover:bg-primary/90">
