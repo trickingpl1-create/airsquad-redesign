@@ -15,6 +15,7 @@ import {
   StaticPageView,
 } from '@/components/seo/views'
 import { CityPageView } from '@/components/seo/city-view'
+import { CampView } from '@/components/seo/camp-view'
 
 // Historyczne URL-e WordPressa są root-level (/rzeszow/, /akrobatyka/, /airmeeting/)
 // i wg planu SEO (docs/03-mapa-url.md) NIE mogą zmienić ścieżki. Ten catch-all
@@ -116,6 +117,11 @@ export default async function RootSlugPage({ params }: RootSlugPageProps) {
       )
     }
     case 'event':
+      // /letni/ (Air Camp) ma bogaty dedykowany widok — reszta wydarzeń
+      // (airmeeting, gravityjam) używa generycznego EventView.
+      if (resolved.data.slug === 'letni') {
+        return <CampView data={resolved.data} currentPath={currentPath} />
+      }
       return <EventView data={resolved.data} currentPath={currentPath} />
     case 'static':
       return <StaticPageView data={resolved.data} currentPath={currentPath} />

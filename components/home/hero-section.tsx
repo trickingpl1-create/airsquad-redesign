@@ -86,10 +86,9 @@ export function HeroSection() {
             {/* Main heading — italic gradient like v16 */}
             <h1 className="m-0">
               <span
-                className="display-italic block text-[3.5rem] leading-[0.95] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem]"
+                className="display-italic block text-[3.5rem] leading-[0.95] text-foreground sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem]"
                 style={{
                   fontWeight: 400,
-                  color: '#fff',
                 }}
               >
                 Akrobatyka.

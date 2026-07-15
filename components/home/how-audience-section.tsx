@@ -66,7 +66,7 @@ export function HowAudienceSection() {
             >
               <span
                 aria-hidden
-                className="stat-number absolute -left-1 -top-2 text-[140px] leading-none text-foreground/[0.04]"
+                className="stat-number absolute -left-1 -top-2 text-[140px] leading-none text-gray-200 dark:text-gray-700"
               >
                 {s.n}
               </span>

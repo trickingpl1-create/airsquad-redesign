@@ -233,6 +233,16 @@ export interface Event {
   stats?: { value: string; label: string }[]
   attractions?: { icon?: string; title: string; desc: string }[]
   gallery?: { url: string; caption?: string }[]
+  // Bogaty landing /letni/ (Air Camp) — renderowany przez CampView, nie EventView
+  heroLine1?: string
+  heroLine2?: string
+  heroSubtitle?: string
+  editionBadge?: string
+  activityCards?: { label: string; desc: string; accent: string; img: string }[]
+  videos?: { url: string; poster?: string; label?: string }[]
+  youtubeId?: string
+  faq?: { question: string; answer: string }[]
+  aipaxFormId?: string
   is_active: boolean
   is_published: boolean
   created_at: string
