@@ -60,6 +60,9 @@
   --sidebar-accent-foreground: oklch(0.98 0 0);
   --sidebar-border: oklch(0.25 0.02 275);
   --sidebar-ring: var(--primary);
+
+  /* Scrim behind hero banner photo/video (podstrony miast) — dark navy on dark theme */
+  --hero-scrim: oklch(0.13 0.01 280);
 }
 
 /* ========== Light mode — refined premium aesthetic ========== */
@@ -125,6 +128,9 @@
   --sidebar-accent-foreground: oklch(0.22 0.03 285);
   --sidebar-border: oklch(0.92 0.01 280);
   --sidebar-ring: var(--primary);
+
+  /* Scrim behind hero banner photo/video (podstrony miast) — biały na jasnym motywie */
+  --hero-scrim: oklch(0.995 0.002 280);
 }
 
 /* Light mode specific overrides for components that need adaptation */

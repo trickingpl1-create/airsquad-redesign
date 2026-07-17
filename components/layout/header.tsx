@@ -19,6 +19,16 @@ const eventLinks = [
   { href: '/gravityjam', label: 'Gravity Jam' },
 ]
 
+const cityLinks = [
+  { href: '/rzeszow', label: 'Rzeszów' },
+  { href: '/debica', label: 'Dębica' },
+  { href: '/jaslo', label: 'Jasło' },
+  { href: '/biecz', label: 'Biecz' },
+  { href: '/brzostek', label: 'Brzostek' },
+  { href: '/pilzno', label: 'Pilzno' },
+  { href: '/tyczyn', label: 'Tyczyn' },
+]
+
 type NavLink =
   | { href: string; label: string }
   | { label: string; badge?: string; items: { href: string; label: string }[] }
@@ -27,7 +37,7 @@ const navLinks: NavLink[] = [
   { href: '/', label: 'STRONA GŁÓWNA' },
   { href: '/aktualnosci', label: 'AKTUALNOŚCI' },
   { label: 'OBOZY I WYDARZENIA', badge: 'LATO 2026', items: eventLinks },
-  { href: '/lokalizacje', label: 'LOKALIZACJE' },
+  { label: 'LOKALIZACJE', items: cityLinks },
   { href: '/sklep', label: 'SKLEP' },
   { href: '/kontakt', label: 'KONTAKT' },
 ]

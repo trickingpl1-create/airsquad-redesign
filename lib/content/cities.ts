@@ -83,19 +83,23 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
           'Wystarczy wygodny strój sportowy i woda. Ćwiczymy boso lub w skarpetkach — na super-miękkich matach AirTrack.',
       },
     ],
-    aipax_form_id: AIPAX_FORM_ID,
+    aipax_form_id: '860001af-05fb-440b-a699-404b78200c86',
     is_published: true,
     created_at: '',
     updated_at: '',
     city_name: 'Rzeszów',
     city_locative: 'w Rzeszowie',
     hero_image_url: '/images/miasta/rzeszow-hero.jpg',
+    hero_image_position: 'right 78%',
+    hero_image_size: '62%',
+    training_days_label: 'od poniedziałku do piątku',
     hall: {
       name: 'Sala AIR SPACE Rzeszów',
       address: 'ul. Boya-Żeleńskiego 15',
       city: 'Rzeszów',
       mapQuery: 'Air Space, Boya-Żeleńskiego 15, Rzeszów',
       image_url: '/images/miasta/rzeszow-sala.jpg',
+      hideMap: true,
     },
     trainers: [
       { name: 'Gabriel Myśliwiec', role: 'instruktor akrobatyki, trener trickingu' },
@@ -174,12 +178,20 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     city_name: 'Dębica',
     city_locative: 'w Dębicy',
     hero_image_url: '/images/miasta/debica-hero.jpg',
+    hero_image_position: 'right 46%',
+    hero_image_size: '62%',
     hall: {
       name: 'AIR SPACE Dębica',
       address: 'SP nr 4 i SP nr 10',
       city: 'Dębica',
       mapQuery: 'Szkoła Podstawowa nr 4, Dębica',
       note: 'Zajęcia odbywają się w salach Szkoły Podstawowej nr 4 i nr 10 w Dębicy.',
+      routes: [
+        { label: 'SP nr 4', mapQuery: 'Szkoła Podstawowa nr 4, Dębica' },
+        { label: 'SP nr 10', mapQuery: 'Szkoła Podstawowa nr 10, Dębica' },
+        { label: 'AirSpace Dębica', mapQuery: 'AirSpace Dębica, Lwowska 51, Dębica', color: 'primary' },
+      ],
+      hideMap: true,
     },
     trainers: [
       { name: 'Patryk Dębski', role: 'licencjat fizjoterapii' },
@@ -196,7 +208,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     benefits: ['prawidłowa postawa', 'koordynacja', 'siła i gibkość', 'praca w grupie', 'dyscyplina'],
     videos: [
       {
-        url: `${WP_UPLOADS}/2025/07/VID_20250724_110442_323.mp4`,
+        url: 'https://www.youtube.com/embed/w4_uA0wOyak',
         poster: '/images/miasta/debica-zajawka.jpg',
         label: 'Trening w AIR SPACE Dębica',
       },
@@ -289,14 +301,15 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     hero_content:
       '<p>Akrobatyka w Bieczu dla dzieci i młodzieży — od grup początkujących po zawodniczą. Małe grupy, dwóch trenerów i maty <strong>AirTrack</strong> na każdych zajęciach.</p>',
     main_content:
-      '<p>Sekcja w Bieczu prowadzi pełną ścieżkę rozwoju: od pierwszych przewrotów w grupach naborowych, przez grupę podstawową i średniozaawansowaną, aż po treningi zawodnicze trzy razy w tygodniu.</p>',
+      '<p>Sekcja w Bieczu prowadzi pełną ścieżkę rozwoju: od pierwszych przewrotów w grupach naborowych, przez grupę podstawową i średniozaawansowaną, aż po treningi zawodnicze w poniedziałki i środy.</p>',
     schedule_content: null,
     groups_info: [
-      { name: 'Acro Biecz NABÓR', days: 'pn', hours: '17:20–18:20', age: 'od 6 lat', level: 'grupa początkująca', enrolling: true },
-      { name: 'Acro Biecz NABÓR 2', days: 'śr', hours: '17:20–18:20', age: 'od 6 lat', level: 'grupa początkująca', enrolling: true },
-      { name: 'Acro Biecz 1', days: 'pn', hours: '18:20–19:20', age: 'od 7 lat', level: 'grupa podstawowa' },
-      { name: 'Acro Biecz 2', days: 'śr', hours: '18:20–19:20', level: 'średniozaawansowana' },
-      { name: 'Acro Biecz 3', days: 'pn · śr (+ pt zawodnicy)', hours: '19:20–20:30', level: 'grupa zaawansowana' },
+      { name: 'Acro Biecz NABÓR (nowe dzieci)', days: 'pn', hours: '17:20–18:20', age: 'od 6 lat', level: 'grupa początkująca', enrolling: true },
+      { name: 'Acro Biecz NABÓR 2 (nowe dzieci)', days: 'śr', hours: '17:20–18:20', age: 'od 6 lat', level: 'grupa początkująca', enrolling: true },
+      { name: 'Acro Biecz 1', days: 'pn', hours: '18:20–19:20', age: 'od 7 lat', level: 'grupa podstawowa (kontynuacja)' },
+      { name: 'Acro Biecz 1.1', days: 'śr', hours: '18:20–19:20', age: 'od 7 lat', level: 'grupa podstawowa (kontynuacja)' },
+      { name: 'Acro Biecz 2', days: 'pn · śr', hours: '18:20–19:20', level: 'średniozaawansowana (kontynuacja)' },
+      { name: 'Acro Biecz 3', days: 'pn · śr', hours: '19:20–20:20', level: 'grupa zaawansowana (kontynuacja)' },
     ],
     faq: [
       {
@@ -305,7 +318,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       },
       {
         question: 'Gdzie dokładnie odbywają się treningi?',
-        answer: 'Adres sali w Bieczu potwierdzisz przy zapisie — zadzwoń do trenera Gabriela: 722 248 546.',
+        answer: 'Na Hali Sportowej przy Zespole Szkół Zawodowych im. Świętej Jadwigi Królowej, ul. Tysiąclecia w Bieczu.',
       },
       {
         question: 'Jak wygląda zapis?',
@@ -316,19 +329,21 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
         answer: 'Do 10. dnia miesiąca przelewem na konto Stowarzyszenia Air Squad; po terminie doliczane jest 30 zł.',
       },
     ],
-    aipax_form_id: AIPAX_FORM_ID,
+    aipax_form_id: '452fa7be-ee8c-4573-8849-7051c37607ab',
     is_published: true,
     created_at: '',
     updated_at: '',
     city_name: 'Biecz',
     city_locative: 'w Bieczu',
+    training_days_label: 'poniedziałki i środy',
+    group_ratio_label: '12 uczestników na trenera',
     hero_image_url: '/images/miasta/biecz-hero.jpg',
+    hero_video_url: `${WP_UPLOADS}/2025/07/akro-biecz.mp4`,
     hall: {
-      name: 'Sala treningowa Biecz',
-      address: 'Biecz',
+      name: 'Hala Sportowa (ZSZ im. Św. Jadwigi Królowej)',
+      address: 'ul. Tysiąclecia',
       city: 'Biecz',
-      mapQuery: 'Biecz',
-      note: 'Dokładny adres sali potwierdzisz przy zapisie — tel. 722 248 546.',
+      mapQuery: 'Hala Sportowa, Zespół Szkół Zawodowych im. Świętej Jadwigi Królowej, Tysiąclecia, Biecz',
     },
     trainers: [
       { name: 'Gabriel Myśliwiec', role: 'akrobatyka, tricking' },

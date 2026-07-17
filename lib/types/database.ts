@@ -188,6 +188,15 @@ export interface CityPage {
   // (wzorzec jak Discipline; wiersze z DB bez tych pól renderują wersję bazową)
   hero_tagline?: string | null
   hero_image_url?: string | null
+  /** Opcjonalny kadr/zoom zdjęcia hero (np. gdy domyślny bg-cover ucina istotny fragment) */
+  hero_image_position?: string
+  hero_image_size?: string
+  /** Wideo w tle baneru hero zamiast zdjęcia (autoplay, muted, loop) — hero_image_url służy jako poster */
+  hero_video_url?: string
+  /** Nadpisuje wyliczane z groups_info podsumowanie dni treningów (pasek info) */
+  training_days_label?: string
+  /** Nadpisuje domyślny opis "dzieci · młodzież · dorośli" w karcie "Małe grupy" (pasek info) */
+  group_ratio_label?: string
   /** Nazwa miasta w mianowniku, np. "Rzeszów" (badge, breadcrumb) */
   city_name?: string
   /** Miejscownik do CTA, np. "w Rzeszowie" — "Zapisz dziecko w Rzeszowie" */
@@ -201,6 +210,10 @@ export interface CityPage {
     /** np. "zajęcia w SP nr 4 i SP nr 10" */
     note?: string
     image_url?: string
+    /** Osobne przyciski „Wyznacz trasę" gdy zajęcia odbywają się w kilku miejscach */
+    routes?: { label: string; mapQuery: string; color?: 'amber' | 'primary' }[]
+    /** Ukrywa osadzoną mini-mapkę Google Maps w karcie „Gdzie trenujemy" */
+    hideMap?: boolean
   }
   trainers?: { name: string; role?: string }[]
   /** Wspólne zdjęcie kadry sekcji (oryginał ze starej strony) */

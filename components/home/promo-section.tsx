@@ -8,20 +8,44 @@ const promoCards = [
     cta: 'Zapisz dziecko',
     href: '/letni',
     accentColor: 'var(--primary)',
-    gradientFrom: 'from-primary/15',
-    gradientTo: 'to-violet-soft/10',
+    gradientFrom: 'from-primary/42',
+    gradientTo: 'to-violet-soft/22',
     kickerColor: 'text-violet-soft',
   },
   {
     kicker: 'WYDARZENIE',
-    title: 'Air Meeting 2026',
+    title: 'Air Meeting',
     desc: 'Spotkanie, zawody i wspólne emocje. Niezapomniane, przepełnione pozytywną energią wydarzenie dla członków klubu Air Squad.',
     cta: 'Więcej informacji',
     href: '/airmeeting',
     accentColor: 'var(--cyan)',
-    gradientFrom: 'from-cyan/15',
-    gradientTo: 'to-accent/10',
+    gradientFrom: 'from-cyan/42',
+    gradientTo: 'to-accent/22',
     kickerColor: 'text-cyan',
+  },
+  {
+    kicker: 'WYDARZENIE KLUBOWE',
+    title: 'AkroNocki',
+    desc: 'Nocowanie na sali razem z treningiem wieczorem i rano, integracja, dyskoteka, karaoke i film. Niezapomniana noc dla członków klubu.',
+    cta: 'Zobacz szczegóły',
+    href: '/aktualnosci',
+    accentColor: 'var(--pink)',
+    gradientFrom: 'from-pink/42',
+    gradientTo: 'to-pink/22',
+    kickerColor: 'text-pink',
+  },
+  {
+    kicker: 'NOWE WYDARZENIE',
+    title: 'Gravity Jam — święto kultury ulicznej',
+    desc: 'Warsztaty rolkowe, akrobatyczne, strefa longboardowa i gier drewnianych. Razem z MB Park i Street Life Rzeszów.',
+    cta: 'Sprawdź',
+    href: '/gravityjam',
+    accentColor: 'var(--amber)',
+    gradientFrom: 'from-amber/42',
+    gradientTo: 'to-amber/22',
+    kickerColor: 'text-amber',
+    ctaTo: 'oklch(0.72 0.15 55)',
+    ctaTextColor: 'oklch(0.25 0.03 75)',
   },
 ] as const
 
@@ -29,8 +53,8 @@ export function PromoSection() {
   return (
     <section className="relative overflow-hidden bg-background px-6 py-16 md:px-10 md:py-20">
       <div className="relative mx-auto max-w-7xl">
-        {/* Two promo cards */}
-        <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* Promo cards — Air Camp / Air Meeting w pierwszym rzędzie, Akronocki / Gravity Jam w drugim */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {promoCards.map((card) => (
             <div
               key={card.title}
@@ -61,8 +85,9 @@ export function PromoSection() {
                 href={card.href}
                 className="mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-primary-foreground transition-transform hover:-translate-y-0.5"
                 style={{
-                  background: `linear-gradient(135deg, ${card.accentColor}, var(--accent))`,
+                  background: `linear-gradient(135deg, ${card.accentColor}, ${'ctaTo' in card ? card.ctaTo : 'var(--accent)'})`,
                   boxShadow: `0 8px 24px color-mix(in oklch, ${card.accentColor} 30%, transparent)`,
+                  ...('ctaTextColor' in card ? { color: card.ctaTextColor } : {}),
                 }}
               >
                 {card.cta}
@@ -70,45 +95,6 @@ export function PromoSection() {
               </Link>
             </div>
           ))}
-        </div>
-
-        {/* Full-width event banner */}
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-r from-amber/15 to-amber/5 px-8 py-8 md:px-10">
-          {/* Decorative element */}
-          <div
-            aria-hidden
-            className="absolute right-8 top-1/2 hidden h-32 w-32 -translate-y-1/2 rounded-full opacity-20 md:block"
-            style={{
-              background: 'radial-gradient(circle, var(--amber) 0%, transparent 70%)',
-            }}
-          />
-
-          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-            <div>
-              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-amber md:text-xs">
-                Nowe wydarzenie
-              </p>
-              <h3 className="display-bold mt-2 text-2xl text-foreground md:text-3xl" style={{ fontWeight: 500 }}>
-                Gravity Jam — święto kultury ulicznej
-              </h3>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Warsztaty rolkowe, akrobatyczne, strefa longboardowa i gier drewnianych. Razem z MB Park i Street Life Rzeszów.
-              </p>
-            </div>
-            
-            <Link
-              href="/gravityjam"
-              className="inline-flex flex-shrink-0 items-center gap-2 rounded-full px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-amber-foreground transition-transform hover:-translate-y-0.5"
-              style={{
-                background: 'linear-gradient(135deg, var(--amber), oklch(0.72 0.15 55))',
-                boxShadow: '0 8px 24px color-mix(in oklch, var(--amber) 30%, transparent)',
-                color: 'oklch(0.25 0.03 75)',
-              }}
-            >
-              Sprawdź
-              <span aria-hidden>→</span>
-            </Link>
-          </div>
         </div>
       </div>
     </section>

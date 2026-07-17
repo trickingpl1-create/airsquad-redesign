@@ -22,7 +22,7 @@ const audience = [
   {
     title: 'Dzieci 7–10 lat',
     num: '7–10',
-    desc: 'Bezpieczne podstawy, miękkie maty, krótkie sesje. Pierwsza akrobatyka w życiu — bez stresu, w grupach do 12 osób.',
+    desc: 'Bezpieczne podstawy, miękkie maty, krótkie sesje. Pierwsza akrobatyka w życiu — bez stresu.',
     accent: 'var(--primary)',
     photo: '/images/old-site/dzieci-airtrack.jpg',
   },
@@ -36,7 +36,7 @@ const audience = [
   {
     title: 'Dorośli i rodziny',
     num: '18+',
-    desc: 'Wieczorne grupy dla dorosłych, sesje rodzinne w weekendy. Akrobatyka w każdym wieku — w komfortowym tempie.',
+    desc: 'Wieczorne grupy dla dorosłych. Akrobatyka w każdym wieku — w komfortowym tempie.',
     accent: 'var(--pink)',
     photo: '/images/old-site/dorosli-ekipa.jpg',
   },
@@ -66,7 +66,8 @@ export function HowAudienceSection() {
             >
               <span
                 aria-hidden
-                className="stat-number absolute -left-1 -top-2 text-[140px] leading-none text-gray-200 dark:text-gray-700"
+                className="stat-number absolute -top-2 text-[140px] leading-none text-gray-200 dark:text-gray-700"
+                style={{ left: s.n === '1' ? '18px' : '-4px' }}
               >
                 {s.n}
               </span>
@@ -111,7 +112,7 @@ export function HowAudienceSection() {
               {/* Semitransparent photo */}
               <div
                 aria-hidden
-                className="absolute inset-0 bg-cover bg-center opacity-[0.32] transition-opacity duration-500 group-hover:opacity-[0.45]"
+                className="absolute inset-0 bg-cover bg-center opacity-[0.20] transition-opacity duration-500 group-hover:opacity-[0.32]"
                 style={{ backgroundImage: `url('${a.photo}')` }}
               />
               <div
@@ -148,9 +149,11 @@ export function HowAudienceSection() {
                 <h3 className="display-bold m-0 text-2xl text-foreground md:text-[1.75rem]">
                   {a.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  {a.desc}
-                </p>
+                {a.desc && (
+                  <p className="mt-3 text-sm font-medium leading-relaxed text-muted-foreground">
+                    {a.desc}
+                  </p>
+                )}
               </div>
             </div>
           ))}

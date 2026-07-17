@@ -2,9 +2,17 @@
 
 import { useState } from 'react'
 
+// Wyciąga ID filmu z linku YouTube (youtube.com/watch?v=, youtu.be/, youtube.com/embed/).
+function getYouTubeId(url: string): string | null {
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/,
+  )
+  return match ? match[1] : null
+}
+
 // Fasada „Naszych Zajawek" — oryginalne klubowe MP4 (hostowane na starym
-// WordPressie, linkowane bezpośrednio) montują się dopiero po kliknięciu,
-// żeby 12–63 MB wideo nie dotykało ładowania strony.
+// WordPressie, linkowane bezpośrednio) LUB film z YouTube — montują się
+// dopiero po kliknięciu, żeby ciężkie wideo nie dotykało ładowania strony.
 export function CityVideo({
   url,
   poster,
@@ -15,6 +23,20 @@ export function CityVideo({
   label?: string
 }) {
   const [playing, setPlaying] = useState(false)
+  const youtubeId = getYouTubeId(url)
+
+  if (playing && youtubeId) {
+    return (
+      <iframe
+        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1`}
+        title={label ?? 'Film'}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+        className="block h-full min-h-72 w-full rounded-3xl border-0"
+      />
+    )
+  }
 
   if (playing) {
     return (

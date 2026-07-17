@@ -29,7 +29,7 @@ const linkGroups = [
 ] as const
 
 const socials = [
-  { label: 'IG', href: 'https://instagram.com/airsquad' },
+  { label: 'IG', href: 'https://instagram.com/airsquad_akrobatyka' },
   { label: 'TT', href: 'https://tiktok.com/@airsquad' },
   { label: 'YT', href: 'https://youtube.com/@airsquad' },
   { label: 'FB', href: 'https://facebook.com/airsquad' },

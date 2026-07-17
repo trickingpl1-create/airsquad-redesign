@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { Instagram } from 'lucide-react'
 
 const YOUTUBE_ID = 'uFobcH0aQ7g'
 
@@ -231,13 +232,23 @@ export function HeroSection() {
                 </div>
               </div>
 
-              {/* Purple/violet stat — WIEK */}
-              <div
-                className="relative min-h-40 overflow-hidden rounded-3xl p-6 text-foreground"
+              {/* Purple/violet stat — Instagram */}
+              <a
+                href="https://instagram.com/airsquad_akrobatyka"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative min-h-40 overflow-hidden rounded-3xl p-6 text-foreground transition-transform hover:-translate-y-0.5"
                 style={{
                   background: 'linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%)',
                 }}
               >
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-cover bg-center opacity-30"
+                  style={{
+                    backgroundImage: "url('/images/hero/instagram.jpg')",
+                  }}
+                />
                 <div
                   aria-hidden
                   className="absolute inset-0"
@@ -246,23 +257,26 @@ export function HeroSection() {
                       'radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1), transparent 60%)',
                   }}
                 />
-                <div className="relative">
-                  <div
-                    style={{ fontFamily: 'var(--font-covered-by-your-grace)', letterSpacing: '0.025em' }}
-                    className="text-[16px] font-bold uppercase text-white/75"
-                  >
-                    WIEK
+                <div className="relative flex h-full flex-col justify-between">
+                  <div className="flex items-center justify-between">
+                    <div
+                      style={{ fontFamily: 'var(--font-covered-by-your-grace)', letterSpacing: '0.025em' }}
+                      className="text-[16px] font-bold uppercase text-white/75"
+                    >
+                      Instagram
+                    </div>
+                    <Instagram aria-hidden className="h-5 w-5 text-white/60 transition-colors group-hover:text-white" />
                   </div>
-                  <div className="mt-2 flex items-baseline gap-0">
-                    <span className="font-[family-name:var(--font-display)] text-5xl font-black text-white" style={{ fontWeight: 400 }}>
-                      6—99
-                    </span>
-                  </div>
-                  <div className="mt-1 text-xs text-white/75">
-                    od dzieci po dorosłych
+                  <div>
+                    <div className="font-[family-name:var(--font-display)] text-3xl font-black text-white" style={{ fontWeight: 400 }}>
+                      @airsquad
+                    </div>
+                    <div className="mt-1 text-xs text-white/75">
+                      Zobacz nasz profil →
+                    </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </div>

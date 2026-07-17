@@ -9,6 +9,9 @@ type Discipline = {
   desc: string
   gradient: string
   photo: string
+  /** Opcjonalny zoom/kadr zdjęcia w tle (np. gdy domyślny bg-cover ucina istotny fragment) */
+  photoPosition?: string
+  photoSize?: string
 }
 
 /**
@@ -27,19 +30,19 @@ const DISCIPLINES: Discipline[] = [
     num: '01',
     slug: 'akrobatyka',
     name: 'Akrobatyka',
-    age: 'OD 4 LAT',
+    age: 'OD 7 LAT',
     desc: 'Salta z miejsca, rondaty, flik-flaki. Ścieżka rozwoju od podstaw.',
     gradient: 'linear-gradient(135deg, var(--primary), var(--blue-deep))',
-    photo: '/images/old-site/akrobatyka.jpg', // Edytuj tutaj
+    photo: '/images/dyscypliny/akrobatyka.jpg', // Edytuj tutaj
   },
   {
     num: '02',
     slug: 'tricking',
     name: 'Tricking',
-    age: 'OD 8 LAT',
+    age: 'OD 7 LAT',
     desc: 'Salta, kicki, twisty — ekspresja i estetyka. Najszybciej rosnąca strefa.',
     gradient: 'linear-gradient(135deg, var(--pink), var(--primary))',
-    photo: '/images/old-site/tricking.jpg', // Edytuj tutaj
+    photo: '/images/dyscypliny/tricking.jpg', // Edytuj tutaj
   },
   {
     num: '03',
@@ -49,12 +52,14 @@ const DISCIPLINES: Discipline[] = [
     desc: 'Carving, slidy, dancing. Sprzęt wypożyczamy — przyjdź bez deski.',
     gradient: 'linear-gradient(135deg, var(--accent), var(--cyan))',
     photo: '/images/old-site/longboard.jpg', // Edytuj tutaj
+    photoPosition: 'center 70%',
+    photoSize: '145%',
   },
   {
     num: '04',
     slug: 'tumbling',
     name: 'Tumbling',
-    age: 'OD 6 LAT',
+    age: 'OD 7 LAT',
     desc: 'Ścieżka akrobatyczna, AirTrack — do śrub i łączeń.',
     gradient: 'linear-gradient(135deg, var(--violet-soft), var(--accent))',
     photo: '/images/old-site/tumbling.jpg', // Edytuj tutaj
@@ -63,16 +68,16 @@ const DISCIPLINES: Discipline[] = [
     num: '05',
     slug: 'showdance',
     name: 'Showdance',
-    age: 'OD 6 LAT',
-    desc: 'Choreografie, ekspresja, występy sceniczne.',
+    age: 'OD 7 LAT',
+    desc: 'Choreografie, technika, lekcje indywidualne.',
     gradient: 'linear-gradient(135deg, var(--amber), var(--pink))',
-    photo: '/images/old-site/showdance.jpg', // Edytuj tutaj
+    photo: '/images/dyscypliny/showdance.jpg', // Edytuj tutaj
   },
   {
     num: '06',
     slug: 'snowboard',
     name: 'Snowboard',
-    age: 'OD 8 LAT',
+    age: 'OD 7 LAT',
     desc: 'Wyjazdy zimowe, technika, pierwsze tricki w snowparku.',
     gradient: 'linear-gradient(135deg, var(--cyan), var(--primary))',
     photo: '/images/old-site/snowboard.jpg', // Edytuj tutaj
@@ -116,8 +121,12 @@ export function DisciplinesSection() {
               {/* Semitransparent photo behind gradient */}
               <div
                 aria-hidden
-                className="absolute inset-0 bg-cover bg-center opacity-50 transition-opacity duration-500 group-hover:opacity-65"
-                style={{ backgroundImage: `url('${d.photo}')` }}
+                className="absolute inset-0 bg-cover opacity-50 transition-opacity duration-500 group-hover:opacity-65"
+                style={{
+                  backgroundImage: `url('${d.photo}')`,
+                  backgroundPosition: d.photoPosition ?? 'center',
+                  backgroundSize: d.photoSize ?? 'cover',
+                }}
               />
               <div
                 aria-hidden

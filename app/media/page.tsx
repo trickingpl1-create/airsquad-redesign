@@ -28,8 +28,8 @@ export default function MediaPage() {
           <div>
             <h2 className="text-3xl font-bold font-display mb-6">Instagram</h2>
             <p className="text-muted-foreground mb-6">
-              Śledź nas na <a href="https://instagram.com/airsquad" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                @airsquad
+              Śledź nas na <a href="https://instagram.com/airsquad_akrobatyka" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                @airsquad_akrobatyka
               </a>
             </p>
             <InstagramFeed limit={12} />

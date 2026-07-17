@@ -22,10 +22,11 @@ const CITIES = [
   { city: 'Biecz', slug: '/biecz/' },
   { city: 'Brzostek', slug: '/brzostek/' },
   { city: 'Pilzno', slug: '/pilzno/' },
-  { city: 'Tyczyn', slug: '/tyczyn/' },
 ] as const
 
-const TOTAL = AIR_SPACE_HALLS.length + CITIES.length
+// Tyczyn (7. lokalizacja, strona /tyczyn/ dalej istnieje i działa) nie ma
+// tu własnego kafelka — jego miejsce w gridzie zajmuje CTA franczyzy.
+const TOTAL = AIR_SPACE_HALLS.length + CITIES.length + 1
 const TOTAL_LABEL = String(TOTAL).padStart(2, '0')
 
 export function CitiesSection() {
@@ -105,36 +106,32 @@ export function CitiesSection() {
               </Link>
             )
           })}
-        </div>
 
-        {/* Franczyza — inna intencja niż zapis dziecka, stąd osobna karta */}
-        <Link
-          href="/franczyza/"
-          className="group mt-4 flex flex-col items-start justify-between gap-6 rounded-3xl border border-dashed border-emerald/50 bg-emerald/5 p-7 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald md:flex-row md:items-center"
-        >
-          <div>
-            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-emerald">
-              Twoje miasto?
-            </p>
-            <h3
-              className="display-bold mt-2 text-2xl text-foreground"
+          {/* Franczyza — inna intencja niż zapis dziecka, stąd odrębny styl; zajmuje miejsce Tyczynia w gridzie */}
+          <Link
+            href="/franczyza/"
+            className="group relative min-h-32 rounded-3xl border border-dashed border-emerald/50 bg-emerald/5 p-5 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald"
+          >
+            <div className="flex items-center justify-between font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-emerald">
+              <span>Twoje miasto?</span>
+              <span
+                aria-hidden
+                className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              >
+                →
+              </span>
+            </div>
+            <div
+              className="display-bold mt-3 text-xl text-foreground md:text-2xl"
               style={{ fontWeight: 500 }}
             >
               Otwórz salę Air Squad
-            </h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Franczyza — pomożemy wystartować w Twoim mieście.
-            </p>
-          </div>
-          <div className="flex flex-col items-start gap-2 md:items-end">
-            <span className="inline-flex items-center gap-2 rounded-full bg-emerald px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-emerald-950 transition-transform group-hover:-translate-y-0.5">
-              Porozmawiajmy <span aria-hidden>→</span>
-            </span>
-            <span className="font-mono text-[11px] text-emerald/85">
+            </div>
+            <div className="mt-1 font-mono text-[11px] text-emerald/80">
               /franczyza/
-            </span>
-          </div>
-        </Link>
+            </div>
+          </Link>
+        </div>
       </div>
     </section>
   )
