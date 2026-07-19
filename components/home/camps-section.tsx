@@ -6,6 +6,9 @@ interface CampsSectionProps {
   camps: Camp[]
 }
 
+// Ta sama zajawka co na /letni/ (lib/content/letni.ts → LETNI_EVENT.youtubeId)
+const AIRCAMP_YOUTUBE_ID = '-P1J3YntBpY'
+
 const attractions = [
   { label: 'Longboardy', accent: 'var(--cyan)' },
   { label: 'Kajaki · SUP', accent: 'var(--violet-soft)' },
@@ -47,12 +50,18 @@ export function CampsSection({ camps }: CampsSectionProps) {
           'radial-gradient(ellipse at 25% 30%, color-mix(in oklch, var(--primary) 32%, transparent), transparent 50%), radial-gradient(ellipse at 75% 70%, color-mix(in oklch, var(--accent) 28%, transparent), transparent 50%), oklch(0.1 0.02 280)',
       }}
     >
-      {/* Semitransparent background photo */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-cover bg-center opacity-40"
-        style={{ backgroundImage: "url('/images/old-site/aircamp-wodny.jpg')" }}
-      />
+      {/* Wideo w tle (zamiast statycznego zdjęcia) — ta sama zajawka co na /letni/,
+          zapętlone i wyciszone; object-fit: cover kadruje iframe pod wysokość sekcji
+          (nie viewportu), więc działa niezależnie od tego, ile treści jest poniżej. */}
+      <div aria-hidden className="absolute inset-0 overflow-hidden">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${AIRCAMP_YOUTUBE_ID}?autoplay=1&mute=1&loop=1&playlist=${AIRCAMP_YOUTUBE_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1`}
+          allow="autoplay; encrypted-media"
+          className="pointer-events-none absolute inset-0 h-full w-full border-0 opacity-40"
+          style={{ objectFit: 'cover' }}
+          title="Air Camp 2026 — wideo w tle"
+        />
+      </div>
       <div
         aria-hidden
         className="halftone-overlay absolute inset-0 text-cyan opacity-[0.06]"

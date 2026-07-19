@@ -18,7 +18,7 @@ const colorRotation = ['text-cyan', 'text-violet-soft', 'text-foreground']
 export function MarqueeSection() {
   return (
     <div
-      className="relative overflow-hidden whitespace-nowrap border-y border-border bg-muted py-5"
+      className="relative overflow-hidden whitespace-nowrap border-y border-border py-5"
       aria-label="Lista dyscyplin i wydarzeń"
     >
       <div

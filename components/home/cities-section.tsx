@@ -31,7 +31,7 @@ const TOTAL_LABEL = String(TOTAL).padStart(2, '0')
 
 export function CitiesSection() {
   return (
-    <section className="relative overflow-hidden bg-background px-6 py-16 md:px-10 md:py-20">
+    <section className="relative overflow-hidden px-6 py-16 md:px-10 md:py-20">
       <div className="relative mx-auto max-w-7xl">
         <SectionHeader
           kicker="Lokalizacje"

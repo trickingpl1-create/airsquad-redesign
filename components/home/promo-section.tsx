@@ -51,7 +51,7 @@ const promoCards = [
 
 export function PromoSection() {
   return (
-    <section className="relative overflow-hidden bg-background px-6 py-16 md:px-10 md:py-20">
+    <section className="relative overflow-hidden px-6 py-16 md:px-10 md:py-20">
       <div className="relative mx-auto max-w-7xl">
         {/* Promo cards — Air Camp / Air Meeting w pierwszym rzędzie, Akronocki / Gravity Jam w drugim */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

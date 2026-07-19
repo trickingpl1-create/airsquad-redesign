@@ -32,7 +32,7 @@ export function TrainingTypesSection({ trainingTypes }: TrainingTypesSectionProp
   if (trainingTypes.length === 0) return null
 
   return (
-    <section className="relative overflow-hidden bg-background px-6 py-24 md:px-10 md:py-32">
+    <section className="relative overflow-hidden px-6 py-24 md:px-10 md:py-32">
       {/* Soft brand glow */}
       <div
         aria-hidden

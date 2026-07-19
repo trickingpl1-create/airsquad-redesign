@@ -7,8 +7,10 @@ const YOUTUBE_ID = 'uFobcH0aQ7g'
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-background">
-      {/* Background video */}
-      <div className="absolute inset-0 z-0" aria-hidden="true">
+      {/* Background video — fixed do viewportu: podczas przewijania hero video zostaje
+          "przyklejone" w miejscu (paralaksa), zapętlone i odtwarzane bez przerwy; kolejne,
+          nieprzezroczyste sekcje strony naturalnie zasłaniają je, gdy scrollujesz dalej. */}
+      <div className="fixed inset-0 z-0" aria-hidden="true">
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-[1.4]"
           style={{
@@ -32,14 +34,14 @@ export function HeroSection() {
               'linear-gradient(90deg, var(--background) 0%, color-mix(in oklch, var(--background) 78%, transparent) 40%, color-mix(in oklch, var(--background) 12%, transparent) 100%), linear-gradient(180deg, transparent 0%, color-mix(in oklch, var(--background) 40%, transparent) 70%, var(--background) 100%)',
           }}
         />
+      </div>
 
-        {/* Halftone texture */}
+      {/* Halftone texture + brand blobs — zostają przypisane do samej sekcji hero (przewijają się razem z nią) */}
+      <div className="absolute inset-0 z-0" aria-hidden="true">
         <div
           aria-hidden
           className="halftone-overlay absolute inset-0 text-primary opacity-[0.04]"
         />
-
-        {/* Soft brand blobs */}
         <div
           aria-hidden
           className="absolute -right-32 -top-32 h-[720px] w-[720px] rounded-full opacity-25"
