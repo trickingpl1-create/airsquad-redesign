@@ -201,6 +201,13 @@ export interface CityPage {
   city_name?: string
   /** Miejscownik do CTA, np. "w Rzeszowie" — "Zapisz dziecko w Rzeszowie" */
   city_locative?: string
+  /** Ukrywa wskazane plany w sekcji #cennik dla tego miasta (dopasowanie po nazwie, np. ['Premium']) */
+  pricing_hide_plans?: string[]
+  /** Ukrywa wskazane wejścia jednorazowe w sekcji #cennik dla tego miasta */
+  pricing_hide_drop_ins?: string[]
+  /** Gdy true, przyciski planów w #cennik prowadzą do formularza AIPAX tego miasta (aipax_form_id)
+   *  zamiast /kontakt, a etykieta traci nazwę planu */
+  pricing_enrol_via_aipax?: boolean
   hall?: {
     name: string
     address: string

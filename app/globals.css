@@ -133,6 +133,22 @@
   --hero-scrim: oklch(0.995 0.002 280);
 }
 
+/* Fade lewej krawędzi zdjęcia/wideo w hero podstron miast (/rzeszow/, /biecz/, ...).
+   Media zajmuje 3/4 szerokości hero na desktopie i pełną szerokość na mobile
+   (patrz klasy w components/seo/city-view.tsx); ta maska odsłania jednolity
+   scrim (--hero-scrim, biały w light / granatowy w dark) po lewej stronie,
+   samodzielnie na każdym breakpoincie — bez osobnej nakładki-gradientu. */
+.hero-media-fade {
+  mask-image: linear-gradient(to right, transparent 0%, black 78%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 78%);
+}
+@media (min-width: 768px) {
+  .hero-media-fade {
+    mask-image: linear-gradient(to right, transparent 0%, black 58%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 58%);
+  }
+}
+
 /* Light mode specific overrides for components that need adaptation */
 .light .gradient-text {
   /* Boost saturation for light bg visibility */

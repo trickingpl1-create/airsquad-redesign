@@ -91,7 +91,6 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     city_locative: 'w Rzeszowie',
     hero_image_url: '/images/miasta/rzeszow-hero.jpg',
     hero_image_position: 'right 78%',
-    hero_image_size: '62%',
     training_days_label: 'od poniedziałku do piątku',
     hall: {
       name: 'Sala AIR SPACE Rzeszów',
@@ -179,7 +178,6 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     city_locative: 'w Dębicy',
     hero_image_url: '/images/miasta/debica-hero.jpg',
     hero_image_position: 'right 46%',
-    hero_image_size: '62%',
     hall: {
       name: 'AIR SPACE Dębica',
       address: 'SP nr 4 i SP nr 10',
@@ -337,6 +335,9 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     city_locative: 'w Bieczu',
     training_days_label: 'poniedziałki i środy',
     group_ratio_label: '12 uczestników na trenera',
+    pricing_hide_plans: ['Premium'],
+    pricing_hide_drop_ins: ['Open Training', 'Pakiet 4 treningi'],
+    pricing_enrol_via_aipax: true,
     hero_image_url: '/images/miasta/biecz-hero.jpg',
     hero_video_url: `${WP_UPLOADS}/2025/07/akro-biecz.mp4`,
     hall: {

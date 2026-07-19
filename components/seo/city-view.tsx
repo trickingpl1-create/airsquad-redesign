@@ -145,48 +145,24 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                   playsInline
                   poster={city.hero_image_url ?? undefined}
                   src={city.hero_video_url}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-0 md:hidden"
-                  style={{
-                    background:
-                      'linear-gradient(100deg, var(--hero-scrim) 0%, color-mix(in oklch, var(--hero-scrim) 95%, transparent) 45%, color-mix(in oklch, var(--hero-scrim) 70%, transparent) 65%, color-mix(in oklch, var(--hero-scrim) 25%, transparent) 82%, transparent 100%)',
-                  }}
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-0 hidden md:block"
-                  style={{
-                    background:
-                      'linear-gradient(100deg, var(--hero-scrim) 0%, color-mix(in oklch, var(--hero-scrim) 92%, transparent) 28%, color-mix(in oklch, var(--hero-scrim) 55%, transparent) 46%, color-mix(in oklch, var(--hero-scrim) 15%, transparent) 62%, transparent 78%)',
-                  }}
+                  className="hero-media-fade absolute inset-y-0 right-0 h-full w-full object-cover md:w-3/4"
                 />
               </>
             ) : (
-              <>
-                {city.hero_image_url && (
+              city.hero_image_url && (
+                <>
+                  <div aria-hidden className="absolute inset-0" style={{ backgroundColor: 'var(--hero-scrim)' }} />
                   <div
                     aria-hidden
-                    className="absolute inset-0 bg-cover bg-no-repeat"
+                    className="hero-media-fade absolute inset-y-0 right-0 h-full w-full bg-cover bg-no-repeat md:w-3/4"
                     style={{
                       backgroundImage: `url(${city.hero_image_url})`,
                       backgroundPosition: city.hero_image_position ?? 'center',
                       backgroundSize: city.hero_image_size ?? 'cover',
-                      backgroundColor: 'var(--hero-scrim)',
                     }}
                   />
-                )}
-                <div
-                  aria-hidden
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      'linear-gradient(100deg, color-mix(in oklch, var(--hero-scrim) 94%, transparent) 30%, color-mix(in oklch, var(--hero-scrim) 55%, transparent) 60%, color-mix(in oklch, var(--primary) 25%, transparent))',
-                  }}
-                />
-              </>
+                </>
+              )
             )}
             <div className="relative max-w-2xl px-8 py-14 md:px-14 md:py-16">
               <span className="rounded-full bg-primary px-4 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-primary-foreground">
@@ -426,8 +402,18 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           </section>
         )}
 
+        {/* Opis dyscyplin (oryginalna treść) */}
+        {city.main_content && (
+          <section className="container mx-auto px-4 pt-10">
+            <div
+              className="prose prose-invert max-w-3xl text-foreground/80 [&_strong]:text-foreground"
+              dangerouslySetInnerHTML={{ __html: city.main_content }}
+            />
+          </section>
+        )}
+
         {/* Pierwszy trening + FAQ */}
-        <section className="container mx-auto grid gap-4 px-4 pt-4 md:grid-cols-2">
+        <section className="container mx-auto grid gap-4 px-4 pt-10 md:grid-cols-2">
           {city.first_training && city.first_training.length > 0 && (
             <div className="rounded-3xl border border-border bg-card p-6">
               <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-emerald">
@@ -484,16 +470,6 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           )}
         </section>
 
-        {/* Opis dyscyplin (oryginalna treść) */}
-        {city.main_content && (
-          <section className="container mx-auto px-4 pt-10">
-            <div
-              className="prose prose-invert max-w-3xl text-foreground/80 [&_strong]:text-foreground"
-              dangerouslySetInnerHTML={{ __html: city.main_content }}
-            />
-          </section>
-        )}
-
         {/* Galeria */}
         {city.gallery && city.gallery.length > 0 && (
           <section className="container mx-auto px-4 pt-12">
@@ -516,7 +492,15 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
         )}
 
         {/* Cennik */}
-        <PricingSection />
+        <PricingSection
+          hidePlans={city.pricing_hide_plans}
+          hideDropIns={city.pricing_hide_drop_ins}
+          enrolHref={
+            city.pricing_enrol_via_aipax && city.aipax_form_id
+              ? `${AIPAX_ENROLMENT_BASE}/${city.aipax_form_id}`
+              : undefined
+          }
+        />
 
         {/* Zajawki + zapisy */}
         <section id="zapisy" className="container mx-auto grid gap-4 px-4 pt-12 md:grid-cols-2">

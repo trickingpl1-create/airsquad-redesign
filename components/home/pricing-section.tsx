@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { SectionHeader } from './section-header'
+import { cn } from '@/lib/utils'
 
 const plans = [
   {
@@ -49,7 +50,19 @@ const dropIn: ReadonlyArray<readonly [string, string, string]> = [
   ['Trial — pierwsze zajęcia', '40 zł', 'jednorazowo'],
 ]
 
-export function PricingSection() {
+interface PricingSectionProps {
+  /** Ukrywa wskazane plany (dopasowanie po `name`, np. ['Premium']) — domyślnie widoczne wszystkie */
+  hidePlans?: string[]
+  /** Ukrywa wskazane wejścia jednorazowe (dopasowanie po nazwie, np. ['Open Training']) */
+  hideDropIns?: string[]
+  /** Gdy podany, przyciski planów prowadzą tu (np. formularz AIPAX danego miasta) zamiast /kontakt,
+   *  a etykieta traci nazwę planu ("Wybierz" zamiast "Wybierz Standard") */
+  enrolHref?: string
+}
+
+export function PricingSection({ hidePlans = [], hideDropIns = [], enrolHref }: PricingSectionProps = {}) {
+  const visiblePlans = plans.filter((p) => !hidePlans.includes(p.name))
+  const visibleDropIns = dropIn.filter(([name]) => !hideDropIns.includes(name))
   return (
     <section
       id="cennik"
@@ -76,8 +89,13 @@ export function PricingSection() {
           gradientFontWeight={500}
         />
 
-        <div className="mb-20 grid grid-cols-1 gap-4 lg:grid-cols-3">
-          {plans.map((p) => (
+        <div
+          className={cn(
+            'mb-20 grid grid-cols-1 gap-4',
+            visiblePlans.length >= 3 ? 'lg:grid-cols-3' : 'lg:mx-auto lg:max-w-3xl lg:grid-cols-2',
+          )}
+        >
+          {visiblePlans.map((p) => (
             <div
               key={p.name}
               className="relative flex flex-col overflow-hidden rounded-3xl border-2 bg-card p-9"
@@ -137,7 +155,8 @@ export function PricingSection() {
               </ul>
 
               <Link
-                href="/kontakt"
+                href={enrolHref ?? '/kontakt'}
+                {...(enrolHref ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="block rounded-2xl px-6 py-4 text-center text-sm font-bold tracking-tight text-foreground transition-transform hover:-translate-y-0.5"
                 style={
                   p.popular
@@ -152,7 +171,7 @@ export function PricingSection() {
                       }
                 }
               >
-                Wybierz {p.name}
+                {enrolHref ? 'Wybierz' : `Wybierz ${p.name}`}
               </Link>
             </div>
           ))}
@@ -168,7 +187,7 @@ export function PricingSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
-          {dropIn.map(([name, price, note]) => (
+          {visibleDropIns.map(([name, price, note]) => (
             <div
               key={name}
               className="flex items-center justify-between rounded-2xl border border-border bg-card px-6 py-5"
