@@ -47,7 +47,7 @@ export function CampsSection({ camps }: CampsSectionProps) {
       className="relative overflow-hidden px-6 py-24 md:px-10 md:py-32"
       style={{
         background:
-          'radial-gradient(ellipse at 25% 30%, color-mix(in oklch, var(--primary) 32%, transparent), transparent 50%), radial-gradient(ellipse at 75% 70%, color-mix(in oklch, var(--accent) 28%, transparent), transparent 50%), oklch(0.1 0.02 280)',
+          'radial-gradient(ellipse at 25% 30%, color-mix(in oklch, var(--primary) 32%, transparent), transparent 50%), radial-gradient(ellipse at 75% 70%, color-mix(in oklch, var(--accent) 28%, transparent), transparent 50%), var(--background)',
       }}
     >
       {/* Wideo w tle (zamiast statycznego zdjęcia) — ta sama zajawka co na /letni/,
@@ -57,7 +57,7 @@ export function CampsSection({ camps }: CampsSectionProps) {
         <iframe
           src={`https://www.youtube-nocookie.com/embed/${AIRCAMP_YOUTUBE_ID}?autoplay=1&mute=1&loop=1&playlist=${AIRCAMP_YOUTUBE_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1`}
           allow="autoplay; encrypted-media"
-          className="pointer-events-none absolute inset-0 h-full w-full border-0 opacity-70"
+          className="pointer-events-none absolute inset-0 h-full w-full scale-150 border-0 opacity-70 md:scale-100"
           style={{ objectFit: 'cover' }}
           title="Air Camp 2026 — wideo w tle"
         />

@@ -46,17 +46,6 @@ const DISCIPLINES: Discipline[] = [
   },
   {
     num: '03',
-    slug: 'longboard',
-    name: 'Longboard',
-    age: 'OD 7 LAT',
-    desc: 'Carving, slidy, dancing. Sprzęt wypożyczamy — przyjdź bez deski.',
-    gradient: 'linear-gradient(135deg, var(--accent), var(--cyan))',
-    photo: '/images/old-site/longboard.jpg', // Edytuj tutaj
-    photoPosition: 'center 70%',
-    photoSize: '145%',
-  },
-  {
-    num: '04',
     slug: 'tumbling',
     name: 'Tumbling',
     age: 'OD 7 LAT',
@@ -65,13 +54,24 @@ const DISCIPLINES: Discipline[] = [
     photo: '/images/old-site/tumbling.jpg', // Edytuj tutaj
   },
   {
-    num: '05',
+    num: '04',
     slug: 'showdance',
     name: 'Showdance',
     age: 'OD 7 LAT',
     desc: 'Choreografie, technika, lekcje indywidualne.',
     gradient: 'linear-gradient(135deg, var(--amber), var(--pink))',
     photo: '/images/dyscypliny/showdance.jpg', // Edytuj tutaj
+  },
+  {
+    num: '05',
+    slug: 'longboard',
+    name: 'Longboard',
+    age: 'OD 7 LAT',
+    desc: 'Carving, slidy, dancing. Sprzęt wypożyczamy — przyjdź bez deski.',
+    gradient: 'linear-gradient(135deg, var(--accent), var(--cyan))',
+    photo: '/images/old-site/longboard.jpg', // Edytuj tutaj
+    photoPosition: 'center 70%',
+    photoSize: '145%',
   },
   {
     num: '06',
