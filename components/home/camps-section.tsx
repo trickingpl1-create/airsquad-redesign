@@ -57,7 +57,7 @@ export function CampsSection({ camps }: CampsSectionProps) {
         <iframe
           src={`https://www.youtube-nocookie.com/embed/${AIRCAMP_YOUTUBE_ID}?autoplay=1&mute=1&loop=1&playlist=${AIRCAMP_YOUTUBE_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1`}
           allow="autoplay; encrypted-media"
-          className="pointer-events-none absolute inset-0 h-full w-full border-0 opacity-40"
+          className="pointer-events-none absolute inset-0 h-full w-full border-0 opacity-70"
           style={{ objectFit: 'cover' }}
           title="Air Camp 2026 — wideo w tle"
         />
@@ -89,7 +89,7 @@ export function CampsSection({ camps }: CampsSectionProps) {
           {attractions.map((a, i) => (
             <div
               key={a.label}
-              className="relative overflow-hidden rounded-2xl border bg-white/5 p-6"
+              className="relative overflow-hidden rounded-2xl border bg-transparent p-6 backdrop-blur-sm"
               style={{ borderColor: `color-mix(in oklch, ${a.accent} 50%, transparent)` }}
             >
               <div
