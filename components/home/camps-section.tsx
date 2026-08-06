@@ -84,13 +84,18 @@ export function CampsSection({ camps }: CampsSectionProps) {
           Obóz letni · zapisy otwarte
         </p>
 
-        {/* Attractions grid */}
-        <div className="mt-16 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {/* Attractions grid — ciemny tint pod blur-em (stały kontrast niezależnie od
+            kadru wideo, stąd sztywna biel tekstu zamiast text-foreground); na mobile
+            kompaktowe chipy w jednej linii, bez słowa „Atrakcja". */}
+        <div className="mt-16 grid grid-cols-2 gap-2.5 md:gap-4 lg:grid-cols-4">
           {attractions.map((a, i) => (
             <div
               key={a.label}
-              className="relative overflow-hidden rounded-2xl border bg-transparent p-6 backdrop-blur-sm"
-              style={{ borderColor: `color-mix(in oklch, ${a.accent} 50%, transparent)` }}
+              className="relative flex items-center gap-2.5 overflow-hidden rounded-xl border px-3.5 py-2.5 backdrop-blur-sm md:block md:rounded-2xl md:p-4"
+              style={{
+                borderColor: `color-mix(in oklch, ${a.accent} 50%, transparent)`,
+                backgroundColor: 'oklch(0.13 0.02 280 / 0.65)',
+              }}
             >
               <div
                 aria-hidden
@@ -101,9 +106,13 @@ export function CampsSection({ camps }: CampsSectionProps) {
                 className="relative font-mono text-[11px] font-bold uppercase tracking-[0.14em]"
                 style={{ color: a.accent }}
               >
-                ◆ 0{i + 1} · Atrakcja
+                <span className="hidden md:inline">◆ </span>0{i + 1}
+                <span className="hidden md:inline"> · Atrakcja</span>
               </div>
-              <div className="display-bold relative mt-3 text-2xl text-foreground" style={{ fontWeight: 500 }}>
+              <div
+                className="display-bold relative text-base text-white md:mt-2 md:text-xl"
+                style={{ fontWeight: 500 }}
+              >
                 {a.label}
               </div>
             </div>
