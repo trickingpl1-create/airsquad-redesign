@@ -29,7 +29,6 @@ export const PAYMENT_INFO = {
     'Przelew na konto Stowarzyszenia Air Squad — dane w potwierdzeniu zapisu AIPAX.',
 } as const
 
-const AIPAX_FORM_ID = '5f7b99af-6154-4e74-92f7-2be9066a38f6'
 const WP_UPLOADS = 'https://airsquad.pl/wp-content/uploads'
 
 export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
@@ -152,12 +151,17 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     main_content:
       '<p>Treningi akrobatyki dla dzieci od 7. roku życia prowadzimy w salach Szkoły Podstawowej nr 4 i nr 10 w Dębicy. Zajęcia rozwijają koordynację, siłę i pewność ruchu — od pierwszych przewrotów po salta na matach AirTrack.</p>',
     schedule_content: null,
+    // Grafik 1:1 z kalendarzy AIPAX Dębica (sezon 2026/27): nabór + kontynuacja.
     groups_info: [
-      { name: 'Acro Dębica NABÓR (SP nr 4)', days: 'pn', hours: '16:30–17:30', age: 'od 7 lat', enrolling: true },
-      { name: 'Acro Dębica NABÓR (SP nr 10)', days: 'pt', hours: '16:30–17:30', age: 'od 7 lat', enrolling: true },
-      { name: 'Acro Dębica 1', days: 'śr', hours: '16:30–17:30', level: 'grupa podstawowa' },
-      { name: 'Acro Dębica 2', days: 'pn (SP4) · pt (SP10)', hours: '17:30–18:30', level: 'kontynuacja' },
-      { name: 'Acro Dębica 3', days: 'śr (SP4) · pt (SP10)', hours: '17:30–19:30', level: 'grupa zaawansowana' },
+      { name: 'AcroDębica NABÓR (Air Space)', days: 'wt · czw', hours: '16:00–17:00', level: 'nowe dzieci', enrolling: true },
+      { name: 'AcroDębica NABÓR (SP4)', days: 'pn / śr', hours: '16:00–17:00', level: 'nowe dzieci · 1x w tyg. do wyboru', enrolling: true },
+      { name: 'AcroDębica NABÓR 2 (SP10)', days: 'pt', hours: '16:00–17:00', level: 'nowe dzieci', enrolling: true },
+      { name: 'AcroDębica 1', days: 'wt · czw', hours: '17:00–18:00', level: 'kontynuacja · podstawa' },
+      { name: 'AcroDębica 1.1 (SP10)', days: 'pt', hours: '17:00–18:00', level: 'kontynuacja · podstawa 1x w tyg.' },
+      { name: 'AcroDębica 1.2', days: 'wt · czw', hours: '18:00–19:00', level: 'kontynuacja · średniozaawansowana' },
+      { name: 'AcroDębica 2', days: 'pn · śr · pt', hours: '17:00–18:00', level: 'kontynuacja · 2 lub 3 treningi w tyg.' },
+      { name: 'AcroDębica 3', days: 'pn · śr · pt', hours: '18:00–19:00', level: 'kontynuacja · zaawansowani' },
+      { name: 'Szarfy / Dorośli', days: 'śr · pt', hours: '19:00–20:00', age: 'dorośli', level: 'karnet miesięczny' },
     ],
     faq: [
       {
@@ -166,7 +170,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       },
       {
         question: 'Gdzie odbywają się treningi w Dębicy?',
-        answer: 'W salach Szkoły Podstawowej nr 4 i Szkoły Podstawowej nr 10 w Dębicy (AIR SPACE Dębica) — na profesjonalnym sprzęcie AirTrack.',
+        answer: 'Na sali AIR SPACE Dębica przy ul. Lwowskiej 51 oraz w salach Szkoły Podstawowej nr 4 i nr 10 w Dębicy — na profesjonalnym sprzęcie AirTrack.',
       },
       {
         question: 'Jak zapisać dziecko na zajęcia w Dębicy?',
@@ -177,7 +181,8 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
         answer: 'Płatność do 10. dnia miesiąca z góry (po terminie doliczane jest 30 zł), przelewem na konto Stowarzyszenia Air Squad.',
       },
     ],
-    aipax_form_id: AIPAX_FORM_ID,
+    aipax_form_id: 'b5fed283-fe1d-422f-b9aa-ab5a02c89176',
+    aipax_form_id_continuation: '0d83a047-6a6c-4114-b825-8d3da95a2ffc',
     is_published: true,
     created_at: '',
     updated_at: '',
@@ -234,12 +239,13 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     main_content:
       '<p>Regularne treningi akrobatyki poprawiają sylwetkę i pomagają eliminować wady postawy. Dzieci rozwijają zdolności motoryczne, równowagę i orientację w przestrzeni, a praca w grupie uczy koncentracji, zaangażowania i dyscypliny.</p>',
     schedule_content: null,
+    // Grafik 1:1 z kalendarzy AIPAX Jasło (sezon 2026/27): nabór + kontynuacja.
     groups_info: [
-      { name: 'Acro Jasło NABÓR', days: 'pn', hours: '15:45–16:45', age: 'od 6 lat', level: 'grupa początkująca', enrolling: true },
-      { name: 'Acro Jasło NABÓR 2', days: 'pt', hours: '16:45–17:45', age: 'od 6 lat', level: 'grupa początkująca', enrolling: true },
-      { name: 'Acro Jasło 1', days: 'śr', hours: '16:45–17:45', level: 'grupa podstawowa' },
-      { name: 'Acro Jasło 2', days: 'śr · pt', hours: '15:45–17:00', level: 'średnio-zaawansowana' },
-      { name: 'Acro Jasło 3', days: 'pn · śr · pt', hours: '16:00–17:00', level: 'grupa zaawansowana' },
+      { name: 'AcroJasło NABÓR (nowe dzieci)', days: 'śr', hours: '16:45–17:45', level: 'nowe dzieci', enrolling: true },
+      { name: 'AcroJasło NABÓR 2', days: 'pt', hours: '16:45–17:45', level: 'nowe dzieci', enrolling: true },
+      { name: 'AcroJasło 1', days: 'pn', hours: '16:00–17:00', level: 'kontynuacja · podstawa' },
+      { name: 'AcroJasło 2', days: 'śr · pt', hours: '15:45–16:45', level: 'kontynuacja' },
+      { name: 'AcroJasło 3', days: 'pn · śr · pt', hours: '16:00–17:15', level: 'kontynuacja · zaawansowani (pn do 17:00)' },
     ],
     faq: [
       {
@@ -259,11 +265,13 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
         answer: 'Płatność do 10. dnia każdego miesiąca (po terminie +30 zł), przelewem na konto Stowarzyszenia Air Squad.',
       },
     ],
-    aipax_form_id: AIPAX_FORM_ID,
+    aipax_form_id: 'f39a476f-ecf2-49e0-8f14-68aad8f6e0e8',
+    aipax_form_id_continuation: '3d6e2798-7124-4abf-ab5c-21d6f54a1e44',
     is_published: true,
     created_at: '',
     updated_at: '',
     city_name: 'Jasło',
+    training_days_label: 'poniedziałki, środy i piątki',
     city_locative: 'w Jaśle',
     hero_image_url: '/images/miasta/jaslo-hero.jpg',
     hall: {
@@ -327,14 +335,15 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       },
       {
         question: 'Jak wygląda zapis?',
-        answer: 'Wybierz grupę z listy i wyślij zgłoszenie przez system AIPAX. Nabór i kontynuacja — ten sam formularz.',
+        answer: 'Wybierz grupę z listy i wyślij zgłoszenie przez system AIPAX. Nabór i kontynuacja mają osobne formularze — oba znajdziesz w sekcji zapisów.',
       },
       {
         question: 'Jak płacić za zajęcia?',
         answer: 'Do 10. dnia miesiąca przelewem na konto Stowarzyszenia Air Squad; po terminie doliczane jest 30 zł.',
       },
     ],
-    aipax_form_id: '452fa7be-ee8c-4573-8849-7051c37607ab',
+    aipax_form_id: '6e3402f5-695a-41dd-92a1-790528a019b1',
+    aipax_form_id_continuation: 'c6412e85-cb36-4201-bbf3-80b0e7deed6d',
     is_published: true,
     created_at: '',
     updated_at: '',
@@ -389,15 +398,18 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     main_content:
       '<p>Zapisy online obowiązują wszystkich uczestników — zarówno nowe dzieci, jak i kontynuujących. O ostatecznej kwalifikacji do grupy decyduje trener prowadzący sekcję.</p>',
     schedule_content: null,
+    // Grafik 1:1 z kalendarza AIPAX Brzostek (sezon 2026/27) — jeden wspólny
+    // formularz dla naboru i kontynuacji.
     groups_info: [
-      { name: 'Acro Brzostek NABÓR', days: 'czw', hours: '16:00–17:00', age: 'od 6 lat', level: 'nowe dzieci', enrolling: true },
-      { name: 'Acro Brzostek I', days: 'czw', hours: '17:00–18:00', age: 'od 7 lat', level: 'średnio-zaawansowana' },
-      { name: 'Acro Brzostek II', days: 'wt 15:45–17:00 · czw', hours: '18:00–19:00', level: 'grupa zaawansowana' },
+      { name: 'AcroBrzostek NABÓR (nowe dzieci)', days: 'wt', hours: '15:45–16:45', level: 'nowe dzieci', enrolling: true },
+      { name: 'AcroBrzostek 1', days: 'czw', hours: '16:00–17:00', level: 'kontynuacja' },
+      { name: 'AcroBrzostek 2', days: 'czw', hours: '17:00–18:00', level: 'kontynuacja' },
+      { name: 'AcroBrzostek 3', days: 'wt 16:30–17:45 · czw 18:00–19:00', hours: '', level: 'kontynuacja · zaawansowani' },
     ],
     faq: [
       {
         question: 'Kiedy trenuje grupa naborowa w Brzostku?',
-        answer: 'W czwartki o 16:00 — dla dzieci od 6. roku życia. Grupy zaawansowane trenują też we wtorki.',
+        answer: 'We wtorki o 15:45 — dla nowych dzieci. Grupy kontynuujące trenują we wtorki i czwartki.',
       },
       {
         question: 'Gdzie odbywają się zajęcia?',
@@ -412,11 +424,12 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
         answer: 'Do 10. dnia miesiąca za następny miesiąc (po terminie +30 zł) — przelew lub gotówka u trenera.',
       },
     ],
-    aipax_form_id: AIPAX_FORM_ID,
+    aipax_form_id: '8454628d-c28f-4ccc-987f-74d0cc862f46',
     is_published: true,
     created_at: '',
     updated_at: '',
     city_name: 'Brzostek',
+    training_days_label: 'wtorki i czwartki',
     city_locative: 'w Brzostku',
     hero_image_url: '/images/miasta/brzostek-hero.jpg',
     hall: {
@@ -481,7 +494,10 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
         answer: 'Do 10. dnia miesiąca z góry (po terminie +30 zł), na konto Stowarzyszenia Air Squad.',
       },
     ],
-    aipax_form_id: AIPAX_FORM_ID,
+    // Formularz AIPAX Pilzno istnieje, ale nie ma jeszcze aktywnych kursów
+    // (kalendarz pusty) — grafik poniżej zostaje wg starej strony do czasu
+    // opublikowania zajęć w AIPAX.
+    aipax_form_id: '9e605c24-26fd-4f43-b345-446446e20d1d',
     is_published: true,
     created_at: '',
     updated_at: '',
@@ -551,7 +567,9 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
         answer: 'Do 10. dnia miesiąca przelewem na konto Stowarzyszenia Air Squad; po terminie doliczane jest 30 zł.',
       },
     ],
-    aipax_form_id: AIPAX_FORM_ID,
+    // Formularz z oryginalnej strony /tyczyn/ (WordPress, system AIPAX v1) —
+    // w widoku v2 kalendarz jest obecnie pusty; grafik poniżej wg starej strony.
+    aipax_form_id: '8fa31a2e-ce36-4a75-ad0f-13df8492d1a3',
     is_published: true,
     created_at: '',
     updated_at: '',
