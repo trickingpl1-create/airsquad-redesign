@@ -1,89 +1,158 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { Sticker } from '@/components/ui/sticker'
-import { ContactForm } from './contact-form'
-import { MapPin, Phone, Mail } from 'lucide-react'
+import { SectionHeader } from '@/components/home/section-header'
+import { CLUB_CONTACT } from '@/lib/content/cities'
+import { MapPin, Phone, Mail, Instagram } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Kontakt | Air Squad',
-  description: 'Skontaktuj się z Air Squad. Telefon, email i formularz kontaktowy.',
+  title: 'Kontakt',
+  description:
+    'Skontaktuj się z Air Squad — telefon, email, social media. Zapisy na zajęcia online przez kalendarz AIPAX na podstronie Twojego miasta.',
 }
+
+// Chipy miast — zapisy dzieci idą przez kalendarze AIPAX na podstronach
+// (chronione root-slugi SEO), nie przez formularz kontaktowy.
+const CITY_CHIPS = [
+  { city: 'Rzeszów', slug: '/rzeszow/' },
+  { city: 'Dębica', slug: '/debica/' },
+  { city: 'Jasło', slug: '/jaslo/' },
+  { city: 'Biecz', slug: '/biecz/' },
+  { city: 'Brzostek', slug: '/brzostek/' },
+  { city: 'Pilzno', slug: '/pilzno/' },
+  { city: 'Tyczyn', slug: '/tyczyn/' },
+] as const
+
+const SOCIALS = [
+  { label: 'Instagram', href: 'https://instagram.com/airsquad_akrobatyka' },
+  { label: 'TikTok', href: 'https://tiktok.com/@airsquad' },
+  { label: 'YouTube', href: 'https://youtube.com/@airsquad' },
+  { label: 'Facebook', href: 'https://facebook.com/airsquad' },
+] as const
 
 export default function ContactPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1 bg-background pt-24">
-        {/* Hero band */}
-        <section className="relative overflow-hidden border-b-2 border-foreground bg-gradient-to-br from-cyan via-primary to-accent">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-cyan/30 blur-3xl"
+        <section className="container mx-auto px-4 pb-20 pt-12">
+          <SectionHeader
+            kicker="Kontakt"
+            kickerColorClass="text-cyan"
+            title="Napisz."
+            gradientPart="Zadzwoń."
+            titleFontWeight={400}
+            gradientFontWeight={400}
+            meta="[Odpowiadamy w 24h] // pn–pt"
+            className="mb-8 md:mb-10"
           />
-          <div className="container relative mx-auto px-4 py-20 md:py-24">
-            <Sticker variant="white" rotate="left" size="sm" className="mb-6">
-              Odpowiadamy w 24h
-            </Sticker>
-            <h1 className="font-[family-name:var(--font-display)] text-6xl font-black uppercase leading-[0.9] tracking-tighter text-primary-foreground sm:text-7xl md:text-8xl">
-              kontakt
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg font-medium text-primary-foreground/85 md:text-xl">
-              Pytania o zapisy, grupy, lokalizacje? Napisz lub zadzwoń.
+
+          {/* Zapisy — kierujemy do kalendarzy AIPAX miast */}
+          <div className="mb-6 rounded-3xl border-2 border-dashed border-violet-soft/50 bg-violet-soft/5 p-6 md:p-8">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-violet-soft">
+              Chcesz zapisać dziecko?
             </p>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+              Najszybciej przez kalendarz zapisów AIPAX na podstronie Twojego miasta — wybierasz
+              grupę, wypełniasz formularz i gotowe. O ostatecznym przydziale do grupy decyduje
+              trener.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {CITY_CHIPS.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={c.slug}
+                  className="rounded-full border border-violet-soft/30 bg-violet-soft/10 px-4 py-1.5 font-mono text-xs text-violet-soft transition-colors hover:bg-violet-soft/20"
+                >
+                  {c.city}
+                </Link>
+              ))}
+              <Link
+                href="/grafik/"
+                className="rounded-full border border-border px-4 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Pełny grafik →
+              </Link>
+            </div>
           </div>
-        </section>
 
-        <section className="container mx-auto px-4 py-16 md:py-20">
-          <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
+          {/* Karty kontaktowe */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <a
-              href="tel:+48728559101"
-              className="group block border-2 border-foreground bg-card p-6 shadow-sticker transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-sticker-lg"
+              href={`tel:${CLUB_CONTACT.phoneSchema}`}
+              className="group rounded-3xl border border-border bg-card p-6 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
             >
-              <Phone className="h-7 w-7 text-primary" aria-hidden />
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-xl font-black uppercase tracking-tighter text-foreground">
+              <Phone className="h-6 w-6 text-emerald" aria-hidden />
+              <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-emerald">
                 Telefon
-              </h2>
-              <p className="mt-2 text-base font-bold text-foreground transition-colors group-hover:text-primary">
-                728 559 101
               </p>
-              <p className="text-sm font-bold text-foreground transition-colors group-hover:text-primary">
-                722 248 546
+              <p className="display-bold mt-2 text-xl text-foreground" style={{ fontWeight: 500 }}>
+                {CLUB_CONTACT.phone}
+              </p>
+              <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+                klub · zapisy
+              </p>
+              <p className="mt-3 text-base text-foreground transition-colors group-hover:text-cyan">
+                {CLUB_CONTACT.phoneTrainer}
+              </p>
+              <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+                trener Gabriel
               </p>
             </a>
 
             <a
-              href="mailto:kontakt@airsquad.pl"
-              className="group block border-2 border-foreground bg-card p-6 shadow-sticker transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-sticker-lg"
+              href={`mailto:${CLUB_CONTACT.email}`}
+              className="group rounded-3xl border border-border bg-card p-6 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
             >
-              <Mail className="h-7 w-7 text-primary" aria-hidden />
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-xl font-black uppercase tracking-tighter text-foreground">
+              <Mail className="h-6 w-6 text-violet-soft" aria-hidden />
+              <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-violet-soft">
                 Email
-              </h2>
-              <p className="mt-2 break-all text-sm font-bold text-foreground transition-colors group-hover:text-primary">
-                kontakt@airsquad.pl
+              </p>
+              <p className="mt-2 break-all text-base text-foreground transition-colors group-hover:text-cyan">
+                {CLUB_CONTACT.email}
+              </p>
+              <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+                pytania · faktury · współpraca
               </p>
             </a>
 
-            <div className="border-2 border-foreground bg-card p-6 shadow-sticker">
-              <MapPin className="h-7 w-7 text-primary" aria-hidden />
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-xl font-black uppercase tracking-tighter text-foreground">
+            <div className="rounded-3xl border border-border bg-card p-6">
+              <MapPin className="h-6 w-6 text-pink" aria-hidden />
+              <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-pink">
                 Siedziba
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">ul. Sportowa 15</p>
-              <p className="text-sm text-muted-foreground">35-001 Rzeszów</p>
+              </p>
+              <p className="mt-2 text-base text-foreground">ul. Wojtyły 227b/6</p>
+              <p className="text-base text-foreground">35-304 Rzeszów</p>
+              <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+                Stowarzyszenie Air Squad
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-border bg-card p-6">
+              <Instagram className="h-6 w-6 text-cyan" aria-hidden />
+              <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-cyan">
+                Social media
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {SOCIALS.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-md border border-cyan/25 bg-cyan/10 px-2 py-0.5 font-mono text-[11px] text-cyan transition-colors hover:bg-cyan/20"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </div>
+              <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+                @airsquad_akrobatyka
+              </p>
             </div>
           </div>
 
-          <div className="mx-auto mt-12 max-w-3xl border-2 border-foreground bg-card p-8 shadow-sticker-lg md:p-12">
-            <h2 className="font-[family-name:var(--font-display)] text-3xl font-black uppercase tracking-tighter text-foreground md:text-4xl">
-              Wyślij wiadomość
-            </h2>
-            <p className="mt-2 text-muted-foreground">Odpowiadamy w 24 godziny.</p>
-            <div className="mt-8">
-              <ContactForm />
-            </div>
-          </div>
         </section>
       </main>
       <Footer />
