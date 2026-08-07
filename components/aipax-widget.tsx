@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 
 const AIPAX_SRC =
-  'https://aipax.eu/scripts/aipax-enrolment-widget.v1.js?v=20260505'
+  'https://aipax.pro/scripts/aipax-enrolment-widget.v1.js?v=20260505'
 const AIPAX_FORM_ID = '5f7b99af-6154-4e74-92f7-2be9066a38f6'
 const CONTAINER_ID = 'aipax-enrolment-container'
 
@@ -22,6 +22,7 @@ export function AipaxWidget() {
     script.async = true
     script.setAttribute('data-aipax-form-id', AIPAX_FORM_ID)
     script.setAttribute('data-aipax-locale', 'pl')
+    script.setAttribute('data-aipax-view', 'calendar')
     script.setAttribute('data-aipax-container-id', CONTAINER_ID)
     host.appendChild(script)
 
