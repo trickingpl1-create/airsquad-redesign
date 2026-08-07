@@ -18,6 +18,7 @@ function AipaxCalendarWidget({ formId, cityName }: { formId: string; cityName: s
     script.async = true
     script.setAttribute('data-aipax-form-id', formId)
     script.setAttribute('data-aipax-locale', 'pl')
+    script.setAttribute('data-aipax-view', 'calendar')
     host.appendChild(script)
 
     return () => {

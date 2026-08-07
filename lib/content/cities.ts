@@ -48,19 +48,25 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     main_content:
       '<p><strong>Tricking</strong> to połączenie akrobatyki z elementami sztuk walki (np. kopnięcia) oraz elementami breakdance&rsquo;u — widowiskowa forma ruchu dla młodzieży i dorosłych.</p><p><strong>Tumbling</strong>, czyli skoki na ścieżce, to nauka przewrotów, przerzutów i salt — od podstaw po zaawansowane akrobacje.</p>',
     schedule_content: null,
+    // Grafik 1:1 z kalendarzy AIPAX Rzeszów (sezon 2026/27): formularz naborowy
+    // (aipax_form_id) + formularz kontynuacji (aipax_form_id_continuation).
+    // Warianty dni tej samej grupy (2x/3x w tyg.) zwinięte do jednej karty —
+    // dokładny wybór wariantu robi się w kalendarzu AIPAX w sekcji #zapisy.
     groups_info: [
-      { name: 'AcroRzeszów', days: 'pn · śr', hours: '16:30–17:30', age: 'od 7 lat', level: 'grupa naborowa', enrolling: true },
-      { name: 'AcroTricking', days: 'wt · czw', hours: '16:30–17:30', age: 'od 8 lat', level: 'akrobatyka + tricking', enrolling: true },
-      { name: 'AcroKids', days: 'pn · śr', hours: '17:30–18:30', level: 'grupa dziecięca' },
-      { name: 'AcroKids 2', days: 'wt · czw', hours: '17:30–18:30', level: 'grupa dziecięca' },
-      { name: 'AcroJunior', days: 'wt · czw', hours: '18:30–19:30', level: 'młodzież' },
-      { name: 'AcroTricking PRO', days: 'pn · śr', hours: '18:30–20:00', level: 'grupa zaawansowana' },
+      { name: 'AcroRzeszów NABÓR 7+', days: 'wt · czw', hours: '16:00–17:00', age: 'od 7 lat', level: 'nowe dzieci', enrolling: true },
+      { name: 'AcroRzeszów NABÓR 9+', days: 'pn / śr / pt', hours: '16:00–17:00', age: 'od 9 lat', level: 'nowe dzieci · 2 lub 3 treningi w tyg.', enrolling: true },
+      { name: 'Tricking NABÓR Rzeszów 9+', days: 'wt · czw', hours: '18:00–19:00', age: 'od 9 lat', level: 'tricking · nowe osoby', enrolling: true },
+      { name: 'Acro Kids Rzeszów', days: 'wt · czw', hours: '17:00–18:00', level: 'kontynuacja zajęć' },
+      { name: 'Acro Junior Rzeszów', days: 'pn / śr / pt', hours: '18:00–19:00', level: 'kontynuacja · 2 lub 3 treningi w tyg.' },
+      { name: 'Acro Junior PRO Rzeszów', days: 'pn · śr · pt', hours: '19:00–20:15', level: 'kontynuacja · grupa zaawansowana' },
+      { name: 'Tricking PRO Rzeszów', days: 'wt · czw', hours: '18:00–19:00', level: 'kontynuacja · zaawansowani' },
+      { name: 'Akrobatyka Dorośli', days: 'pn · śr', hours: '20:00–21:15', age: 'dorośli', level: 'karnet miesięczny' },
     ],
     faq: [
       {
         question: 'Od ilu lat dziecko może zacząć akrobatykę w Rzeszowie?',
         answer:
-          'Najmłodsze grupy (AcroKids) przyjmują dzieci od 4 lat. Grupy naborowe AcroRzeszów startują od 7 lat, a AcroTricking od 8 lat.',
+          'Grupy naborowe AcroRzeszów przyjmują dzieci od 7 lat (grupa 7+) i od 9 lat (grupy 9+ w wariantach 2 lub 3 treningów w tygodniu). Nabór do trickingu — od 9 lat.',
       },
       {
         question: 'Gdzie odbywają się treningi w Rzeszowie?',
@@ -83,7 +89,8 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
           'Wystarczy wygodny strój sportowy i woda. Ćwiczymy boso lub w skarpetkach — na super-miękkich matach AirTrack.',
       },
     ],
-    aipax_form_id: '860001af-05fb-440b-a699-404b78200c86',
+    aipax_form_id: 'ce4c6cf2-3bbf-42b9-8433-9dd0a99cd9c4',
+    aipax_form_id_continuation: 'cb0ef3b1-03c8-4c96-92be-b61302e7a25f',
     is_published: true,
     created_at: '',
     updated_at: '',

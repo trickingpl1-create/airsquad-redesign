@@ -181,6 +181,9 @@ export interface CityPage {
   faq: Record<string, unknown>[]
   // ID formularza AIPAX dla tego miasta (kalendarz zapisów filtrowany do jego grup)
   aipax_form_id?: string | null
+  /** Osobny formularz AIPAX kontynuacji zajęć — gdy ustawiony, sekcja #zapisy renderuje
+   *  drugi kalendarz, a karty grup bez `enrolling` linkują do niego zamiast do naboru */
+  aipax_form_id_continuation?: string | null
   is_published: boolean
   created_at: string
   updated_at: string

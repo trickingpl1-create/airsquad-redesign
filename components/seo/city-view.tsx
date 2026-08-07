@@ -252,14 +252,19 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
             />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {groups.map((group) => {
-                const enrolUrl = city.aipax_form_id
-                  ? `${AIPAX_ENROLMENT_BASE}/${city.aipax_form_id}`
+                // Grupy kontynuujące (bez `enrolling`) zapisują się przez osobny
+                // formularz kontynuacji, jeśli miasto go ma.
+                const groupFormId = group.enrolling
+                  ? city.aipax_form_id
+                  : (city.aipax_form_id_continuation ?? city.aipax_form_id)
+                const enrolUrl = groupFormId
+                  ? `${AIPAX_ENROLMENT_BASE}/${groupFormId}`
                   : '#zapisy'
                 return (
                   <a
                     key={group.name}
                     href={enrolUrl}
-                    {...(city.aipax_form_id
+                    {...(groupFormId
                       ? { target: '_blank', rel: 'noopener noreferrer' }
                       : {})}
                     className={`group rounded-3xl border p-6 transition-transform hover:-translate-y-1 ${
@@ -519,6 +524,7 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           <div className={city.videos && city.videos.length > 0 ? '' : 'md:col-span-2'}>
             <p className="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-emerald">
               Zapisz dziecko {cityLocative}
+              {city.aipax_form_id_continuation ? ' — nabór (nowe osoby)' : ''}
             </p>
             <div className="overflow-hidden rounded-3xl border-2 border-dashed border-emerald/50 bg-emerald/5">
               <CityAipaxCalendar formId={city.aipax_form_id} cityName={cityName} />
@@ -529,6 +535,21 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
             </p>
           </div>
         </section>
+
+        {/* Drugi kalendarz AIPAX — kontynuacja zajęć (tylko miasta z osobnym formularzem) */}
+        {city.aipax_form_id_continuation && (
+          <section className="container mx-auto px-4 pt-12">
+            <p className="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-cyan">
+              Kontynuacja zajęć — dla już trenujących
+            </p>
+            <div className="overflow-hidden rounded-3xl border-2 border-dashed border-cyan/50 bg-cyan/5">
+              <CityAipaxCalendar
+                formId={city.aipax_form_id_continuation}
+                cityName={`${cityName} — kontynuacja`}
+              />
+            </div>
+          </section>
+        )}
 
         {/* Cross-linki */}
         <section className="container mx-auto px-4 pb-20 pt-12">
