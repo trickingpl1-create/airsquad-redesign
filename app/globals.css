@@ -67,11 +67,11 @@
 
 /* ========== Light mode — refined premium aesthetic ========== */
 .light {
-  /* 
-    Soft ivory-cream background with subtle warmth
-    Creates a welcoming, less sterile feel than pure white 
+  /*
+    Lavender-tinted background — cool violet cast instead of ivory,
+    ties the light theme to the brand violet while cards stay white
   */
-  --background: oklch(0.98 0.008 85);
+  --background: oklch(0.963 0.022 292);
   --foreground: oklch(0.22 0.03 285);
   
   /* Cards: pure white for contrast separation */
@@ -99,17 +99,17 @@
   --rose: oklch(0.6 0.22 20);
   --blue-deep: oklch(0.42 0.24 260);
 
-  /* Surfaces — warm grays with subtle violet undertone */
-  --secondary: oklch(0.96 0.01 280);
+  /* Surfaces — aligned to the lavender background hue (292) */
+  --secondary: oklch(0.945 0.025 292);
   --secondary-foreground: oklch(0.22 0.03 285);
-  --muted: oklch(0.94 0.012 280);
+  --muted: oklch(0.93 0.026 292);
   --muted-foreground: oklch(0.5 0.02 285);
-  
+
   /* Functional */
   --destructive: oklch(0.5 0.24 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.9 0.015 280);
-  --input: oklch(0.96 0.01 280);
+  --border: oklch(0.885 0.028 292);
+  --input: oklch(0.945 0.025 292);
   --ring: oklch(0.48 0.26 290);
 
   /* Charts inherit brand palette */
@@ -120,17 +120,17 @@
   --chart-5: var(--cyan);
 
   /* Sidebar — slightly cooler for subtle differentiation */
-  --sidebar: oklch(0.97 0.008 275);
+  --sidebar: oklch(0.955 0.02 292);
   --sidebar-foreground: oklch(0.22 0.03 285);
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.95 0.012 278);
+  --sidebar-accent: oklch(0.935 0.024 292);
   --sidebar-accent-foreground: oklch(0.22 0.03 285);
-  --sidebar-border: oklch(0.92 0.01 280);
+  --sidebar-border: oklch(0.9 0.024 292);
   --sidebar-ring: var(--primary);
 
-  /* Scrim behind hero banner photo/video (podstrony miast) — biały na jasnym motywie */
-  --hero-scrim: oklch(0.995 0.002 280);
+  /* Scrim behind hero banner photo/video (podstrony miast) — zlewa się z lawendowym tłem */
+  --hero-scrim: oklch(0.963 0.022 292);
 }
 
 /* Fade lewej krawędzi zdjęcia/wideo w hero podstron miast (/rzeszow/, /biecz/, ...).
