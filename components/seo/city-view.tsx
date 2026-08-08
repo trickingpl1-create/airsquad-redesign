@@ -500,11 +500,6 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
         <PricingSection
           hidePlans={city.pricing_hide_plans}
           hideDropIns={city.pricing_hide_drop_ins}
-          enrolHref={
-            city.pricing_enrol_via_aipax && city.aipax_form_id
-              ? `${AIPAX_ENROLMENT_BASE}/${city.aipax_form_id}`
-              : undefined
-          }
         />
 
         {/* Zajawki + zapisy */}

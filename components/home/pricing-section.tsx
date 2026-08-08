@@ -55,12 +55,9 @@ interface PricingSectionProps {
   hidePlans?: string[]
   /** Ukrywa wskazane wejścia jednorazowe (dopasowanie po nazwie, np. ['Open Training']) */
   hideDropIns?: string[]
-  /** Gdy podany, przyciski planów prowadzą tu (np. formularz AIPAX danego miasta) zamiast /kontakt,
-   *  a etykieta traci nazwę planu ("Wybierz" zamiast "Wybierz Standard") */
-  enrolHref?: string
 }
 
-export function PricingSection({ hidePlans = [], hideDropIns = [], enrolHref }: PricingSectionProps = {}) {
+export function PricingSection({ hidePlans = [], hideDropIns = [] }: PricingSectionProps = {}) {
   const visiblePlans = plans.filter((p) => !hidePlans.includes(p.name))
   const visibleDropIns = dropIn.filter(([name]) => !hideDropIns.includes(name))
   return (
@@ -132,7 +129,7 @@ export function PricingSection({ hidePlans = [], hideDropIns = [], enrolHref }: 
                 </span>
               </div>
 
-              <ul className="m-0 mb-8 flex-1 list-none space-y-3 p-0">
+              <ul className="m-0 flex-1 list-none space-y-3 p-0">
                 {p.features.map((f) => (
                   <li
                     key={f}
@@ -153,26 +150,6 @@ export function PricingSection({ hidePlans = [], hideDropIns = [], enrolHref }: 
                   </li>
                 ))}
               </ul>
-
-              <Link
-                href={enrolHref ?? '/kontakt'}
-                {...(enrolHref ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="block rounded-2xl px-6 py-4 text-center text-sm font-bold tracking-tight text-foreground transition-transform hover:-translate-y-0.5"
-                style={
-                  p.popular
-                    ? {
-                        background:
-                          'linear-gradient(135deg, var(--primary), var(--accent))',
-                        boxShadow: '0 12px 30px oklch(0.58 0.24 290 / 0.3)',
-                      }
-                    : {
-                        background: 'color-mix(in oklch, var(--foreground) 4%, transparent)',
-                        border: '1px solid var(--border)',
-                      }
-                }
-              >
-                {enrolHref ? 'Wybierz' : `Wybierz ${p.name}`}
-              </Link>
             </div>
           ))}
         </div>
