@@ -2,8 +2,20 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Covered_By_Your_Grace } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
+import { EnrolFab, type EnrolFabCity } from '@/components/enrol-fab'
+import { FALLBACK_CITY_PAGES } from '@/lib/content/cities'
 import { SITE_URL } from '@/lib/seo/site'
 import './globals.css'
+
+// Kompaktowa lista dla pływającego przycisku zapisów — tylko nazwa + formularz
+// naboru AIPAX (nie przekazujemy pełnych rekordów miast do komponentu klienckiego)
+const ENROL_FAB_CITIES: EnrolFabCity[] = Object.entries(FALLBACK_CITY_PAGES)
+  .filter(([, page]) => page.aipax_form_id)
+  .map(([slug, page]) => ({
+    slug,
+    name: page.city_name ?? page.h1_title,
+    formId: page.aipax_form_id!,
+  }))
 
 const inter = Inter({
   subsets: ['latin', 'latin-ext'],
@@ -99,6 +111,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <EnrolFab cities={ENROL_FAB_CITIES} />
         </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
