@@ -1,23 +1,3 @@
-import { SectionHeader } from './section-header'
-
-const steps = [
-  {
-    n: '1',
-    title: 'Krótkie zapisy',
-    desc: 'Wybierasz miasto, dyscyplinę i poziom dziecka. Formularz zajmuje minutę — odpisujemy w 24 godziny.',
-  },
-  {
-    n: '2',
-    title: 'Zajęcia próbne',
-    desc: 'Pierwszy trening kosztuje 40 zł. Wspólnie dobieramy grupę, w której dziecko poczuje się pewnie.',
-  },
-  {
-    n: '3',
-    title: 'Regularne treningi',
-    desc: 'Sezon trwa od września do czerwca, a latem mamy obozy. Małe grupy, dwóch trenerów, profesjonalny sprzęt.',
-  },
-] as const
-
 const audience = [
   {
     title: 'Dzieci 7–10 lat',
@@ -45,52 +25,11 @@ const audience = [
 export function HowAudienceSection() {
   return (
     <section
-      id="jak-zaczac"
+      id="dla-kogo"
       className="relative overflow-hidden bg-background px-6 py-24 md:px-10 md:py-32"
     >
       <div className="relative mx-auto max-w-7xl">
-        <SectionHeader
-          kicker="Jak zacząć"
-          kickerColorClass="text-amber"
-          title="Jak to"
-          gradientPart="działa?"
-          titleFontWeight={400}
-          gradientFontWeight={400}
-        />
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {steps.map((s) => (
-            <div
-              key={s.n}
-              className="relative min-h-56 overflow-hidden rounded-3xl border border-border bg-card p-8"
-            >
-              <span
-                aria-hidden
-                className="stat-number absolute -top-2 text-[140px] leading-none text-gray-200 dark:text-gray-700"
-                style={{ left: s.n === '1' ? '18px' : '-4px' }}
-              >
-                {s.n}
-              </span>
-              <div
-                className="step-badge relative mb-6 grid h-14 w-14 place-items-center rounded-2xl shadow-[0_10px_26px_oklch(0.58_0.24_290/0.3)]"
-                style={{
-                  background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                  fontSize: '36px',
-                }}
-              >
-                <span className="stat-number text-foreground" style={{ fontSize: '36px', fontWeight: 400 }}>{s.n}</span>
-              </div>
-              <h3 className="display-bold m-0 text-2xl text-foreground md:text-[1.625rem]" style={{ fontWeight: 400 }}>
-                {s.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {s.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-20 mb-12 md:mt-24 md:mb-14">
+        <div className="mb-12 md:mb-14">
           <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-pink md:text-xs">
             Dla kogo
           </p>

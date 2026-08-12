@@ -1,4 +1,5 @@
-import Link from 'next/link'
+import { CtaMiniForm } from './cta-mini-form'
+import type { EnrolCity } from '@/lib/content/enrol-cities'
 
 const stats = [
   { value: '1100+', label: 'uczniów / sezon', color: 'text-violet-soft' },
@@ -6,14 +7,7 @@ const stats = [
   { value: '10', label: 'lat istnienia', color: 'text-pink' },
 ] as const
 
-const formFields = [
-  ['Imię dziecka', 'Np. Antek'],
-  ['Email rodzica', 'twoj@email.pl'],
-  ['Miasto', 'Wybierz miasto…'],
-  ['Dyscyplina', 'Akrobatyka / Tricking / Longboard…'],
-] as const
-
-export function CTASection() {
+export function CTASection({ cities }: { cities: EnrolCity[] }) {
   return (
     <section
       id="zapisz"
@@ -74,32 +68,8 @@ export function CTASection() {
           </dl>
         </div>
 
-        {/* RIGHT — visual form (links to real form on /kontakt) */}
-        <div className="rounded-3xl border border-border bg-card p-7 md:p-9">
-          {formFields.map(([label, placeholder]) => (
-            <div key={label} className="mb-4">
-              <div className="mb-2 font-mono text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">
-                {label}
-              </div>
-              <div className="rounded-2xl border border-border bg-background px-5 py-4 text-sm text-muted-foreground/70">
-                {placeholder}
-              </div>
-            </div>
-          ))}
-
-          <Link
-            href="/kontakt"
-            className="mt-3 block w-full rounded-2xl px-6 py-5 text-center text-sm font-bold tracking-tight text-primary-foreground shadow-[0_12px_32px_oklch(0.58_0.24_290/0.35)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan"
-            style={{
-              background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-            }}
-          >
-            Wyślij zgłoszenie
-          </Link>
-          <p className="mt-3 text-center text-xs text-muted-foreground/70">
-            Bez spamu. Odzywamy się tylko z konkretami.
-          </p>
-        </div>
+        {/* RIGHT — mini-formularz: miasto + poziom → modal z formularzem AIPAX */}
+        <CtaMiniForm cities={cities} />
       </div>
     </section>
   )

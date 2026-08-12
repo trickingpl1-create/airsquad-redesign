@@ -115,7 +115,7 @@ export function DisciplinesSection() {
             <Link
               key={d.num}
               href={`/dyscypliny/${d.slug}`}
-              className="group relative flex min-h-72 flex-col justify-end overflow-hidden rounded-3xl p-7 text-foreground transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
+              className="group relative flex min-h-52 flex-col justify-end overflow-hidden rounded-3xl p-5 text-foreground opacity-65 transition-all duration-300 hover:-translate-y-1 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
               style={{ background: d.gradient }}
             >
               {/* Semitransparent photo behind gradient */}
@@ -140,17 +140,17 @@ export function DisciplinesSection() {
                     'linear-gradient(to top, rgba(0,0,0,0.65), transparent 55%)',
                 }}
               />
-              <span className="stat-number absolute right-6 top-4 text-6xl text-white/20 md:text-7xl">
+              <span className="stat-number absolute right-5 top-3 text-5xl text-white/20 md:text-6xl">
                 {d.num}
               </span>
-              <span className="absolute left-6 top-6 rounded-full border border-white/30 bg-black/30 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-foreground backdrop-blur-sm">
+              <span className="absolute left-5 top-5 rounded-full border border-white/30 bg-black/30 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-foreground backdrop-blur-sm">
                 {d.age}
               </span>
               <div className="relative">
-                <h3 className="display-bold m-0 text-3xl md:text-[2.25rem]" style={{ fontWeight: 400 }}>
+                <h3 className="display-bold m-0 text-2xl md:text-3xl" style={{ fontWeight: 400 }}>
                   {d.name}
                 </h3>
-                <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-white/85">
+                <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-white/85">
                   {d.desc}
                 </p>
               </div>

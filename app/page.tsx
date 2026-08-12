@@ -3,6 +3,8 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { HeroSection } from '@/components/home/hero-section'
 import { CitiesSection } from '@/components/home/cities-section'
+import { HowStepsSection } from '@/components/home/how-steps-section'
+import { ENROL_CITIES } from '@/lib/content/enrol-cities'
 import { MarqueeSection } from '@/components/home/marquee-section'
 import { TrainingTypesSection } from '@/components/home/training-types-section'
 import { DisciplinesSection } from '@/components/home/disciplines-section'
@@ -50,6 +52,7 @@ export default async function HomePage() {
       <main className="flex-1">
         <HeroSection />
         <CitiesSection />
+        <HowStepsSection cities={ENROL_CITIES} />
         <PromoSection />
         <MarqueeSection />
         <TrainingTypesSection trainingTypes={trainingTypes} />
@@ -57,7 +60,7 @@ export default async function HomePage() {
         <HowAudienceSection />
         <CampsSection camps={camps} />
         <TeamSection trainers={trainers} />
-        <CTASection />
+        <CTASection cities={ENROL_CITIES} />
       </main>
       <Footer />
     </div>

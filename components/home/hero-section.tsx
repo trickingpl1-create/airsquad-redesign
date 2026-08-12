@@ -21,7 +21,7 @@ export function HeroSection() {
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&mute=1&loop=1&playlist=${YOUTUBE_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1&start=9&end=25`}
             allow="autoplay; encrypted-media"
-            className="absolute inset-0 h-full w-full border-0 opacity-80"
+            className="absolute inset-0 h-full w-full border-0 opacity-95"
             title="Air Squad background video"
           />
         </div>
@@ -31,7 +31,7 @@ export function HeroSection() {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(90deg, var(--background) 0%, color-mix(in oklch, var(--background) 78%, transparent) 40%, color-mix(in oklch, var(--background) 12%, transparent) 100%), linear-gradient(180deg, transparent 0%, color-mix(in oklch, var(--background) 40%, transparent) 70%, var(--background) 100%)',
+              'linear-gradient(90deg, var(--background) 0%, color-mix(in oklch, var(--background) 78%, transparent) 40%, color-mix(in oklch, var(--background) 12%, transparent) 100%), linear-gradient(180deg, transparent 0%, color-mix(in oklch, var(--background) 25%, transparent) 70%, color-mix(in oklch, var(--background) 85%, transparent) 100%)',
           }}
         />
       </div>
@@ -126,23 +126,6 @@ export function HeroSection() {
 
             {/* CTA buttons */}
             <div className="mt-9 flex flex-wrap items-center gap-3 md:gap-4">
-              {/* Air Camp badge */}
-              <Link
-                href="#aircamp"
-                className="inline-flex items-center gap-2 rounded-full border border-emerald/40 bg-emerald/5 px-4 py-2.5 backdrop-blur-sm"
-              >
-                <Image
-                  src="/images/aircamp-2026-logo.png"
-                  alt="Air Camp 2026"
-                  width={80}
-                  height={40}
-                  className="h-[24px] w-auto object-contain"
-                />
-                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-emerald">
-                  Zarejestruj się
-                </span>
-              </Link>
-
               <Link
                 href="/kontakt"
                 className="rounded-full px-7 py-4 font-mono text-xs font-bold uppercase tracking-[0.1em] text-primary-foreground shadow-[0_12px_32px_oklch(0.58_0.24_290/0.35)] transition-transform hover:-translate-y-0.5"
