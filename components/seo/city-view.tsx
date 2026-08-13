@@ -134,7 +134,33 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
         {/* Hero */}
         <section className="container mx-auto px-4">
           <div className="relative overflow-hidden rounded-3xl border border-primary/40">
-            {city.hero_video_url ? (
+            {city.hero_youtube_id ? (
+              <>
+                <div aria-hidden className="absolute inset-0" style={{ backgroundColor: 'var(--hero-scrim)' }} />
+                <div
+                  aria-hidden
+                  className="hero-media-fade absolute inset-y-0 right-0 h-full w-full overflow-hidden md:w-3/4"
+                >
+                  {/* Poster pod iframe'em na czas ładowania playera */}
+                  {city.hero_image_url && (
+                    <div
+                      className="absolute inset-0 bg-cover bg-center"
+                      style={{ backgroundImage: `url(${city.hero_image_url})` }}
+                    />
+                  )}
+                  {/* Player 16:9 przeskalowany tak, by pionowa rolka (9:16) w jego
+                      środku pokryła cały banner (odpowiednik object-cover) */}
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${city.hero_youtube_id}?autoplay=1&mute=1&loop=1&playlist=${city.hero_youtube_id}&controls=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1`}
+                    allow="autoplay; encrypted-media"
+                    title=""
+                    tabIndex={-1}
+                    className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-0"
+                    style={{ width: '330%', aspectRatio: '16 / 9' }}
+                  />
+                </div>
+              </>
+            ) : city.hero_video_url ? (
               <>
                 <div aria-hidden className="absolute inset-0" style={{ backgroundColor: 'var(--hero-scrim)' }} />
                 <video
@@ -165,7 +191,9 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
               )
             )}
             <div className="relative max-w-2xl px-8 py-14 md:px-14 md:py-16">
-              <span className="rounded-full bg-primary px-4 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-primary-foreground">
+              {/* whitespace-nowrap + mniejszy font na mobile: długie nazwy sal
+                  (np. "Podkarpackie Centrum Sportów Walki") mieszczą się w jednej linii */}
+              <span className="inline-block whitespace-nowrap rounded-full bg-primary px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.06em] text-primary-foreground md:px-4 md:text-[11px] md:tracking-[0.1em]">
                 {city.hall?.name ?? `Air Squad · ${cityName}`}
               </span>
               <h1 className="display-bold mt-6 text-5xl text-foreground md:text-7xl" style={{ fontWeight: 400 }}>
@@ -522,7 +550,11 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
               {city.aipax_form_id_continuation ? ' — nabór (nowe osoby)' : ''}
             </p>
             <div className="overflow-hidden rounded-3xl border-2 border-dashed border-emerald/50 bg-emerald/5">
-              <CityAipaxCalendar formId={city.aipax_form_id} cityName={cityName} />
+              <CityAipaxCalendar
+                formId={city.aipax_form_id}
+                cityName={cityName}
+                view={city.aipax_embed_view}
+              />
             </div>
             <p className="mt-3 font-mono text-[11px] leading-relaxed text-muted-foreground">
               {PAYMENT_INFO.deadline} {PAYMENT_INFO.lateFee} {PAYMENT_INFO.account} Pytania:{' '}

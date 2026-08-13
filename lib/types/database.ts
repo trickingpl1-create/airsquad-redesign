@@ -196,6 +196,12 @@ export interface CityPage {
   hero_image_size?: string
   /** Wideo w tle baneru hero zamiast zdjęcia (autoplay, muted, loop) — hero_image_url służy jako poster */
   hero_video_url?: string
+  /** ID filmu YouTube jako tło hero (iframe autoplay/mute/loop) — ma pierwszeństwo
+   *  przed hero_video_url; hero_image_url renderuje się pod spodem na czas ładowania */
+  hero_youtube_id?: string
+  /** Widok widgetu AIPAX w sekcji #zapisy: 'form' = pełny formularz zgłoszeniowy
+   *  zamiast domyślnego tygodniowego kalendarza */
+  aipax_embed_view?: 'calendar' | 'form'
   /** Nadpisuje wyliczane z groups_info podsumowanie dni treningów (pasek info) */
   training_days_label?: string
   /** Nadpisuje domyślny opis "dzieci · młodzież · dorośli" w karcie "Małe grupy" (pasek info) */

@@ -189,6 +189,8 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     city_name: 'Dębica',
     city_locative: 'w Dębicy',
     hero_image_url: '/images/miasta/debica-hero.jpg',
+    // Rolka z zajęć w Dębicy (YouTube Short) — grana jako tło hero
+    hero_youtube_id: 'KPxvLDfjE7g',
     hero_image_position: 'right 46%',
     hall: {
       name: 'AIR SPACE Dębica',
@@ -274,6 +276,10 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     training_days_label: 'poniedziałki, środy i piątki',
     city_locative: 'w Jaśle',
     hero_image_url: '/images/miasta/jaslo-hero.jpg',
+    // Rolka z zajęć w Jaśle (YouTube Short, pion 9:16) — grana jako tło hero
+    hero_youtube_id: 'cVqSuMi2WEc',
+    // Zapisy jako pełny formularz AIPAX (bez ?mode=calendar) — decyzja 2026-08-13
+    aipax_embed_view: 'form',
     hall: {
       name: 'Podkarpackie Centrum Sportów Walki',
       address: 'Podkarpackie Centrum Sportów Walki',
@@ -375,13 +381,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       { title: 'Kwalifikacja do grupy', desc: 'O przydziale ostatecznie decyduje trener.' },
     ],
     benefits: ['postawa', 'koordynacja', 'równowaga', 'pewność siebie', 'praca zespołowa'],
-    videos: [
-      {
-        url: `${WP_UPLOADS}/2025/07/akro-biecz.mp4`,
-        poster: '/images/miasta/biecz-zajawka.jpg',
-        label: 'Akro Biecz — zajawka',
-      },
-    ],
+    // Bez sekcji "Nasze zajawki" — ta sama rolka (akro-biecz.mp4) gra już w hero
   },
 
   brzostek: {

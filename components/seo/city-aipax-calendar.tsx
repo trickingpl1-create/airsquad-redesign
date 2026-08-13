@@ -6,7 +6,15 @@ import { useEffect, useRef } from 'react'
 // się od razu przy wejściu na sekcję zapisów.
 const AIPAX_SRC = 'https://aipax.pro/scripts/aipax-enrolment-widget.v1.js?v=20260505'
 
-function AipaxCalendarWidget({ formId, cityName }: { formId: string; cityName: string }) {
+function AipaxCalendarWidget({
+  formId,
+  cityName,
+  view,
+}: {
+  formId: string
+  cityName: string
+  view: 'calendar' | 'form'
+}) {
   const hostRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -18,13 +26,14 @@ function AipaxCalendarWidget({ formId, cityName }: { formId: string; cityName: s
     script.async = true
     script.setAttribute('data-aipax-form-id', formId)
     script.setAttribute('data-aipax-locale', 'pl')
-    script.setAttribute('data-aipax-view', 'calendar')
+    // 'form' = domyślny widok widgetu (pełny formularz zgłoszeniowy, bez ?mode=calendar)
+    if (view === 'calendar') script.setAttribute('data-aipax-view', 'calendar')
     host.appendChild(script)
 
     return () => {
       host.innerHTML = ''
     }
-  }, [formId])
+  }, [formId, view])
 
   return (
     <div
@@ -39,9 +48,12 @@ function AipaxCalendarWidget({ formId, cityName }: { formId: string; cityName: s
 export function CityAipaxCalendar({
   formId,
   cityName,
+  view = 'calendar',
 }: {
   formId: string | null | undefined
   cityName: string
+  /** Widok widgetu: tygodniowy kalendarz (domyślnie) albo pełny formularz zgłoszeniowy */
+  view?: 'calendar' | 'form'
 }) {
   if (!formId) {
     return (
@@ -56,5 +68,5 @@ export function CityAipaxCalendar({
     )
   }
 
-  return <AipaxCalendarWidget key={formId} formId={formId} cityName={cityName} />
+  return <AipaxCalendarWidget key={formId} formId={formId} cityName={cityName} view={view} />
 }
