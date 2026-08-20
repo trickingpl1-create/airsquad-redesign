@@ -1,6 +1,14 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getPublicSupabaseClient } from '@/lib/supabase/public'
-import type { CityPage, Event, Discipline, StaticPage } from '@/lib/types/database'
+import type {
+  Camp,
+  CityPage,
+  Discipline,
+  Event,
+  Location,
+  StaticPage,
+  Trainer,
+} from '@/lib/types/database'
 import type { EnrolmentCity } from '@/components/akrobatyka/city-enrolment'
 import {
   FALLBACK_DISCIPLINES,
@@ -8,6 +16,11 @@ import {
 } from '@/lib/content/akrobatyka'
 import { FALLBACK_EVENTS } from '@/lib/content/letni'
 import { FALLBACK_CITY_PAGES } from '@/lib/content/cities'
+import {
+  FALLBACK_CAMPS,
+  FALLBACK_LOCATIONS,
+  FALLBACK_TRAINERS,
+} from '@/lib/content/hubs'
 
 // Cookieless klient z guardem na placeholder (lib/supabase/public.ts):
 // bez skonfigurowanego Supabase zwraca null i wszystkie gettery od razu
@@ -177,6 +190,53 @@ export async function resolveRootSlug(slug: string): Promise<RootSlugResult> {
   if (event) return { type: 'event', data: event }
   if (staticPage) return { type: 'static', data: staticPage }
   return null
+}
+
+// Huby /lokalizacje/, /trenerzy/ i /obozy/.
+// Wcześniej te strony czytały tabele bezpośrednio przez cookie'owego klienta
+// (lib/supabase/server.ts), co blokowało eksport statyczny. Teraz idą przez
+// cookieless getPublicSupabaseClient() i zapiekają się w czasie builda;
+// fallbacki z lib/content/hubs.ts trzymają je niepuste bez skonfigurowanej bazy.
+export async function getLocations(): Promise<Location[]> {
+  const supabase = getSupabaseClient()
+  if (!supabase) return FALLBACK_LOCATIONS
+
+  const { data, error } = await supabase
+    .from('locations')
+    .select('*')
+    .eq('is_active', true)
+    .order('display_order')
+
+  if (error) console.error('Error fetching locations:', error)
+  return data && data.length > 0 ? data : FALLBACK_LOCATIONS
+}
+
+export async function getTrainers(): Promise<Trainer[]> {
+  const supabase = getSupabaseClient()
+  if (!supabase) return FALLBACK_TRAINERS
+
+  const { data, error } = await supabase
+    .from('trainers')
+    .select('*')
+    .eq('is_active', true)
+    .order('display_order')
+
+  if (error) console.error('Error fetching trainers:', error)
+  return data && data.length > 0 ? data : FALLBACK_TRAINERS
+}
+
+export async function getCamps(): Promise<Camp[]> {
+  const supabase = getSupabaseClient()
+  if (!supabase) return FALLBACK_CAMPS
+
+  const { data, error } = await supabase
+    .from('camps')
+    .select('*')
+    .eq('is_active', true)
+    .order('start_date')
+
+  if (error) console.error('Error fetching camps:', error)
+  return data && data.length > 0 ? data : FALLBACK_CAMPS
 }
 
 // Static Pages

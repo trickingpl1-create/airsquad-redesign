@@ -13,6 +13,10 @@ import {
 // Gettery z lib/seo/queries mają fallbacki w kodzie, więc miasta/dyscypliny/eventy
 // trafiają do sitemapy także bez skonfigurowanego Supabase.
 
+// Eksport statyczny — sitemapa zapieka się w czasie builda (out/sitemap.xml),
+// więc jej treść odzwierciedla stan Supabase z momentu buildu.
+export const dynamic = 'force-static'
+
 // Fallbackowe wiersze mają updated_at: '' — new Date('') to Invalid Date
 // i wywala serializację sitemapy, stąd guard.
 function lastMod(updatedAt?: string): Date {

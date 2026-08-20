@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { getDisciplines } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { Sticker } from '@/components/ui/sticker'
@@ -20,13 +20,7 @@ const TILE_GRADIENTS = [
 ]
 
 export default async function DisciplinesPage() {
-  const supabase = await createClient()
-
-  const { data: disciplines } = await supabase
-    .from('disciplines')
-    .select('*')
-    .eq('is_published', true)
-    .order('display_order', { ascending: true })
+  const disciplines = await getDisciplines()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -54,7 +48,7 @@ export default async function DisciplinesPage() {
         <section className="container mx-auto px-4 py-16 md:py-20">
           {/* Disciplines grid */}
           <div className="grid gap-8 md:grid-cols-2">
-            {disciplines?.map((discipline, idx) => (
+            {disciplines.map((discipline, idx) => (
               <Link
                 key={discipline.id}
                 href={`/dyscypliny/${discipline.slug}`}
@@ -106,7 +100,7 @@ export default async function DisciplinesPage() {
           </div>
 
           {/* Empty state */}
-          {!disciplines?.length && (
+          {!disciplines.length && (
             <div className="border-2 border-dashed border-foreground/30 bg-card p-12 text-center">
               <Flame className="mx-auto h-12 w-12 text-muted-foreground/50" aria-hidden />
               <h3 className="mt-4 font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-foreground">

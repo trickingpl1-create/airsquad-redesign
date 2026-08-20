@@ -1,17 +1,15 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { usePathname } from 'next/navigation'
 import { X } from 'lucide-react'
 import { AipaxModal } from '@/components/aipax-modal'
 import { EnrolPicker } from '@/components/enrol-picker'
 import type { EnrolCity } from '@/lib/content/enrol-cities'
 
 // Pływający przycisk zapisów, montowany w root layout — widoczny na każdej
-// stronie poza /admin. Klik → panel wyboru miasta/wydarzenia; miasto otwiera
-// modal z kalendarzem AIPAX (lazy iframe — nic nie ładuje się przed klikiem).
+// stronie. Klik → panel wyboru miasta/wydarzenia; miasto otwiera modal
+// z kalendarzem AIPAX (lazy iframe — nic nie ładuje się przed klikiem).
 export function EnrolFab({ cities }: { cities: EnrolCity[] }) {
-  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState<EnrolCity | null>(null)
   const [hidden, setHidden] = useState(false)
@@ -47,8 +45,6 @@ export function EnrolFab({ cities }: { cities: EnrolCity[] }) {
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [open, selected])
-
-  if (pathname?.startsWith('/admin')) return null
 
   return (
     <>

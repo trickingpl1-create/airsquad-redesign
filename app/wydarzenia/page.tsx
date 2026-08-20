@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { getEvents } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { Sticker } from '@/components/ui/sticker'
@@ -33,19 +33,12 @@ function formatDate(dateStr: string): string {
 }
 
 export default async function EventsPage() {
-  const supabase = await createClient()
-
-  const { data: events } = await supabase
-    .from('events')
-    .select('*')
-    .eq('is_published', true)
-    .eq('is_active', true)
-    .order('event_date', { ascending: true })
+  const events = await getEvents()
 
   const eventsByType = {
-    airmeeting: events?.filter((e) => e.event_type === 'airmeeting') || [],
-    spotkanie: events?.filter((e) => e.event_type === 'spotkanie') || [],
-    gravityjam: events?.filter((e) => e.event_type === 'gravityjam') || [],
+    airmeeting: events.filter((e) => e.event_type === 'airmeeting'),
+    spotkanie: events.filter((e) => e.event_type === 'spotkanie'),
+    gravityjam: events.filter((e) => e.event_type === 'gravityjam'),
   }
 
   return (

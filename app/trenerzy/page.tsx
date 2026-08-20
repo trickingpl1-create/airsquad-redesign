@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getTrainers } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { Sticker } from '@/components/ui/sticker'
@@ -20,13 +20,7 @@ const TILE_GRADIENTS = [
 ]
 
 export default async function TrainersPage() {
-  const supabase = await createClient()
-
-  const { data: trainers } = await supabase
-    .from('trainers')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order')
+  const trainers = await getTrainers()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -40,7 +34,7 @@ export default async function TrainersPage() {
           />
           <div className="container relative mx-auto px-4 py-20 md:py-28">
             <Sticker variant="cyan" rotate="right" size="sm" className="mb-6">
-              {trainers?.length || 'Pasjonaci'} · 12+ lat doświadczenia
+              {trainers.length} · 12+ lat doświadczenia
             </Sticker>
             <h1 className="font-[family-name:var(--font-display)] text-6xl font-black uppercase leading-[0.9] tracking-tighter text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
               trenerzy
@@ -53,7 +47,7 @@ export default async function TrainersPage() {
 
         <section className="container mx-auto px-4 py-16 md:py-20">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {trainers?.map((trainer, idx) => (
+            {trainers.map((trainer, idx) => (
               <article
                 key={trainer.id}
                 className="group overflow-hidden border-2 border-foreground bg-card shadow-sticker transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-sticker-lg"
@@ -116,7 +110,7 @@ export default async function TrainersPage() {
             ))}
           </div>
 
-          {!trainers?.length && (
+          {!trainers.length && (
             <div className="border-2 border-dashed border-foreground/30 bg-card p-12 text-center">
               <User className="mx-auto h-12 w-12 text-muted-foreground/50" aria-hidden />
               <h3 className="mt-4 font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-foreground">

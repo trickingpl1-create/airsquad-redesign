@@ -6,13 +6,40 @@ Ten dokument opisuje to, co JEST. Nie analizuje wariantów (WordPress vs Astro v
 
 | Warstwa | Technologia | Dlaczego |
 |---|---|---|
-| Frontend | Next.js 16 (App Router) | Server Components, ISR, dobre SEO, Vercel-native. |
-| Hosting | Vercel | Edge deploy, zero-config dla Next.js, automatyczne previews. |
+| Frontend (publiczny) | Next.js 16, `output: 'export'` | Statyczny HTML, dobre SEO, hosting na zwykłym serwerze plików. |
+| Hosting (publiczny) | dowolny serwer plików (nginx/Apache) | Katalog `out/` do wgrania, bez Node.js po stronie serwera. |
+| Panel admina | Next.js 16 (SSR) w `admin-app/` | Osobna aplikacja — patrz „Dwie aplikacje" niżej. |
+| Hosting (panel) | Vercel, osobny projekt | SSR + proxy auth po cookies działa natywnie, ruch znikomy. |
 | Baza danych | Supabase (Postgres) | RLS, realtime, REST + JS SDK, niski koszt na start. |
-| Auth (admin) | Hasło + middleware | Mały zespół, prosty model. Bez OAuth. |
+| Auth (admin) | Hasło + proxy (`admin-app/proxy.ts`) | Mały zespół, prosty model. Bez OAuth. |
 | Storage (zdjęcia) | Supabase Storage | Spójne z bazą, prosty API. |
 | CMS treści | Custom panel `/admin` | Polski, dopasowany do typów treści, bez zewnętrznej zależności. |
 | Klub-management | AIPAX (zewnętrzny) | Zapisy, grafik, płatności, portal rodzica. Embed iframe. |
+
+## Dwie aplikacje — dlaczego admin jest osobno
+
+Statyczny eksport nie ma serwera, a więc nie ma proxy (dawnego middleware) — a to jedyna ochrona `/admin`. Zostawienie panelu w tej aplikacji wyeksportowałoby `out/admin/*/index.html` jako **publiczne pliki dostępne bez logowania**. Dlatego:
+
+| | `airsquad-web/` (root repo) | `airsquad-web/admin-app/` |
+|---|---|---|
+| Charakter | statyczny eksport, `out/` | aplikacja serwerowa (SSR) |
+| Ochrona tras | brak potrzeby — same publiczne | `proxy.ts` + `supabase.auth.getUser()` po cookies |
+| Klient Supabase | `lib/supabase/public.ts` (cookieless) i `client.ts` (przeglądarka) | `lib/supabase/server.ts` + `proxy.ts` (cookies) |
+| Deploy | wgranie `out/` na serwer | push → Vercel |
+
+Obie aplikacje czytają **tę samą bazę i te same tabele**. Typy bazy mają jedno źródło: `lib/types/database.ts` w aplikacji publicznej — `admin-app/lib/types/database.ts` tylko je re-eksportuje. Dlatego `admin-app/next.config.mjs` ustawia `turbopack.root` i `outputFileTracingRoot` na katalog nadrzędny, a projekt panelu na Vercelu wymaga włączonego **„Include files outside of the Root Directory in the Build Step"** (Root Directory = `admin-app`).
+
+## Konsekwencje eksportu statycznego
+
+Czego **nie ma** i czego nie wolno dopisywać do aplikacji publicznej:
+
+- **route handlerów `/api/*` i Server Actions** — nie ma serwera, który by je wykonał;
+- **middleware/proxy** — jw.;
+- **ISR** (`revalidate`) i renderu on-demand — każdy URL musi być znany w czasie builda przez `generateStaticParams`. Slug dodany w bazie **po** buildzie daje 404 do czasu przebudowy;
+- **optymalizacji obrazów** przez `next/image` (`images.unoptimized: true`);
+- **`cookies()` / `headers()`** w komponentach serwerowych.
+
+Wszystko, co ma być świeże bez przebudowy, musi pobierać dane **w przeglądarce** (`lib/supabase/client.ts`) — tak działają `/sklep` i `/media`.
 
 ## Model treści w bazie
 
@@ -41,10 +68,11 @@ Pola SEO (`slug`, `meta_title`, `meta_description`, `h1_title`) są w każdej ta
 | `/akrobatyka` (i inne dyscypliny) | `app/[slug]/page.tsx` | tabela `disciplines` |
 | `/airmeeting`, `/letni`, `/gravityjam` | `app/[slug]/page.tsx` | tabela `events` |
 | `/zapisy`, `/airspace`, `/aktualnosci` | `app/[slug]/page.tsx` | tabela `static_pages` |
-| `/sklep` | `app/sklep/page.tsx` | tabela `products` |
-| `/admin/*` | `app/admin/...` | wszystkie tabele |
-| `/sitemap.xml` | `app/sitemap.ts` | wszystkie tabele z `is_published=true` |
-| `/robots.txt` | `public/robots.txt` | statyczny |
+| `/sklep` | `app/sklep/page.tsx` | tabela `products` (fetch w przeglądarce) |
+| `/lokalizacje`, `/trenerzy`, `/obozy` | huby w `app/` | `getLocations()` / `getTrainers()` / `getCamps()` z fallbackiem `lib/content/hubs.ts` |
+| `/admin/*` | `admin-app/app/admin/...` | wszystkie tabele (osobna aplikacja, osobny host) |
+| `/sitemap.xml` | `app/sitemap.ts` | wszystkie tabele z `is_published=true`, zapiekane w buildzie |
+| `/robots.txt` | `app/robots.ts` | zapiekany w buildzie |
 
 **Wzorzec routingu:** jeden catch-all `/[slug]` kolejno sprawdza tabele `locations`, `disciplines`, `events`, `static_pages`. Pierwsza, która zwróci wiersz, renderuje stronę. To upraszcza routing i pozwala zachować historyczne URL-e bez podziału na `/lokalizacje/`, `/zajecia/` itd. (zgodnie z `02-plan-seo.md`).
 
@@ -100,10 +128,71 @@ To miejsce na wątpliwości, nie deklaracje. Jeżeli któraś z tych decyzji bol
 
 ## Wydajność
 
-- **ISR** dla stron z bazy (rewalidacja co 1h dla treści, co 5min dla `aktualnosci`).
-- **`next/image`** dla wszystkich zdjęć z Supabase Storage.
-- **Generic catch-all** rozwiązany w jednym `generateStaticParams`, który prefetchuje wszystkie publiczne slugi przy buildzie.
-- **Brak client-side fetch** dla treści wizerunkowej — wszystko w RSC.
+- **Statyczny HTML** dla całej treści wizerunkowej — zero renderu na żądanie (ISR odpadł razem z serwerem).
+- **`next/image` bez optymalizacji** (`images.unoptimized: true`) — eksport statyczny nie ma loadera; zdjęcia trzeba przygotować w docelowym rozmiarze.
+- **Generic catch-all** rozwiązany w jednym `generateStaticParams`, który zbiera wszystkie publiczne slugi przy buildzie.
+- **Client-side fetch tylko tam, gdzie treść musi być świeża** bez rebuildu (`/sklep`, `/media`) — reszta w RSC, zapieczona.
+
+## Deploy strony publicznej
+
+```bash
+npm run build          # → out/  (~33 MB, 38 stron HTML)
+```
+
+Na serwer idzie **cała zawartość `out/`** — HTML, `_next/`, `images/`, `sitemap.xml`, `robots.txt`, `404.html` oraz pliki `__next.*.txt` (payloady RSC dla nawigacji klienckiej — bez nich przejścia między stronami robią pełne przeładowanie).
+
+nginx:
+
+```nginx
+server {
+    root /var/www/airsquad;   # zawartość out/
+    index index.html;
+
+    # trailingSlash: true — /rzeszow ma zostać przekierowane na /rzeszow/
+    location / {
+        if (-d $request_filename) { rewrite ^(.*[^/])$ $1/ permanent; }
+        try_files $uri $uri/index.html =404;
+    }
+
+    error_page 404 /404.html;
+
+    # hashowane assety są niezmienne, HTML musi być świeży po każdym wgraniu
+    location /_next/static/ { add_header Cache-Control "public, max-age=31536000, immutable"; }
+    location ~* \.html$     { add_header Cache-Control "no-cache"; }
+}
+```
+
+Apache (`.htaccess` w katalogu `out/`) — `DirectorySlash On` jest domyślne i samo dokłada 301 ze slashem:
+
+```apache
+DirectoryIndex index.html
+DirectorySlash On
+ErrorDocument 404 /404.html
+Options -Indexes
+```
+
+**Zmienne środowiskowe muszą być ustawione w momencie builda** — `NEXT_PUBLIC_*` są wkompilowane w JS i HTML, a nie czytane na serwerze:
+
+| Zmienna | Do czego | Skutek błędnej wartości |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | `sitemap.xml`, `robots.txt`, canonicale, OG | canonicale i sitemapa z `localhost` → utrata SEO |
+| `NEXT_PUBLIC_SUPABASE_URL` | treść zapiekana w buildzie **oraz** fetch w przeglądarce (`/sklep`, `/media`) | pusta treść z fallbacków; sklep i media wiszą na „Ładowanie" |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | jw. | jw. |
+
+## Aktualizacja treści po zmianie w adminie
+
+Treść z bazy dzieli się na dwie ścieżki:
+
+| Ścieżka | Co obejmuje | Kiedy się aktualizuje |
+|---|---|---|
+| Zapiekane w buildzie | strony miast, dyscypliny, wydarzenia, huby, meta tagi, sitemapa | dopiero po `npm run build` i wgraniu `out/` |
+| Na żywo w przeglądarce | produkty i zamówienia (`/sklep`), feed Instagrama i galeria (`/media`), zapisy AIPAX | natychmiast, bez rebuildu |
+
+Zmiana w adminie dotycząca treści SEO **nie pojawi się na stronie sama z siebie**. Warianty wyzwalania przebudowy (do decyzji, nie wdrożone):
+
+1. **Ręcznie** — `npm run build` + rsync `out/` na serwer. Zero infrastruktury, ale ktoś musi pamiętać.
+2. **Webhook z Supabase → CI** — trigger na `city_pages`/`disciplines`/`events` woła workflow, który buduje i wgrywa. Automatyczne, ale wymaga runnera i klucza SSH w sekretach.
+3. **Build z harmonogramu** (np. nocny cron) — najprostsza automatyzacja, kosztem opóźnienia do doby.
 
 ## Co dalej w architekturze
 

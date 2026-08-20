@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Covered_By_Your_Grace } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import { EnrolFab } from '@/components/enrol-fab'
 import { ENROL_CITIES } from '@/lib/content/enrol-cities'
@@ -103,7 +102,10 @@ export default function RootLayout({
           {children}
           <EnrolFab cities={ENROL_CITIES} />
         </ThemeProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {/* Bez <Analytics /> z @vercel/analytics — skrypt ładuje się z
+            /_vercel/insights/script.js, które istnieje tylko na Vercelu.
+            Na docelowym serwerze statycznym dawał 404 przy każdym wejściu.
+            Statystyki: dołożyć skrypt hostowany osobno (Plausible/Umami/GA). */}
       </body>
     </html>
   )

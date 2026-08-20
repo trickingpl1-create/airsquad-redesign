@@ -1,6 +1,8 @@
 import { ImageResponse } from 'next/og'
 
-export const runtime = 'edge'
+// Eksport statyczny (output: 'export') nie ma runtime'u edge — obrazek OG
+// generuje się raz, w czasie builda, i ląduje w out/ jako plik PNG.
+export const dynamic = 'force-static'
 export const alt = 'Air Squad — Akrobatyka, Tricking, Longboard'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'

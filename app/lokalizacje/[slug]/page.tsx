@@ -1,11 +1,8 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { generateSEOMetadata } from '@/lib/seo/metadata'
-import { getCityPage } from '@/lib/seo/queries'
+import { getCityPage, getCityPages } from '@/lib/seo/queries'
 import { CityPageView } from '@/components/seo/city-view'
-
-// Enable dynamic rendering - don't pre-render at build time
-export const dynamic = 'force-dynamic'
 
 interface CityPageProps {
   params: Promise<{ slug: string }>
@@ -36,9 +33,12 @@ export async function generateMetadata({
   }
 }
 
-// Return empty array - pages will be generated on-demand
+// Eksport statyczny wymaga pełnej listy slugów w czasie builda — nie ma
+// renderu on-demand. Ten hub jest duplikatem kanonicznego `/{slug}/`
+// (docs/03-mapa-url.md), więc listę bierzemy z tego samego gettera.
 export async function generateStaticParams() {
-  return []
+  const cityPages = await getCityPages()
+  return cityPages.map((page) => ({ slug: page.slug }))
 }
 
 export default async function CityPage({ params }: CityPageProps) {

@@ -8,7 +8,8 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 ## Co jest zrobione
 
 ### Infrastruktura
-- Next.js 16 (App Router) na Vercel
+- Next.js 16 (App Router), **strona publiczna jako eksport statyczny** (`output: 'export'` → katalog `out/`, hosting na zwykłym serwerze plików bez Node.js)
+- Panel admina wydzielony do osobnej aplikacji `admin-app/` (SSR + proxy auth), hosting na Vercelu jako osobny projekt — uzasadnienie w `04-architektura.md`
 - Supabase: Postgres + Auth + Storage + RLS
 - Domena: do podpięcia przed launchem
 
@@ -23,7 +24,8 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 
 ### Panel admina
 - CRUD dla: lokalizacji, trenerów, obozów, produktów sklepu, postów Instagram
-- Hasło chronione przez middleware
+- Hasło chronione przez proxy (`admin-app/proxy.ts`)
+- Osobna aplikacja i osobny host — w eksporcie statycznym proxy nie istnieje, więc panel w tym samym buildzie byłby publiczny
 
 ### Sklep
 - Lista produktów z bazy, koszyk w localStorage, formularz zamówienia
@@ -50,11 +52,13 @@ Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
 - [ ] Otrzymać URL-e iframe od AIPAX i podpiąć w `/zapisy` i `/grafik` (komponent `components/iframe-wrapper.tsx` gotowy do użycia)
 - [ ] Wgrać realne zdjęcia trenerów (min. 3) i lokalizacji (wszystkie 7) do Supabase Storage
 - [ ] Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200
+- [ ] **Zbudować `out/` z produkcyjnym `.env.local`** — `NEXT_PUBLIC_*` są wkompilowane w JS w momencie builda; build z placeholderem wypuszcza sitemapę i canonicale z `http://localhost:3000`
+- [ ] Ustalić procedurę przebudowy po zmianie treści w adminie (webhook Supabase vs ręczna komenda) — patrz `04-architektura.md`
 
 ### Ważne, ale nie blokujące
 - [ ] Podpiąć email service (Resend) do formularza kontaktowego i zamówień ze sklepu
 - [ ] Google Search Console + sitemap submission
-- [ ] Vercel Analytics
+- [ ] Statystyki odwiedzin — `@vercel/analytics` usunięte ze strony publicznej (skrypt `/_vercel/insights/script.js` istnieje tylko na Vercelu i dawał 404 na serwerze statycznym); do wyboru Plausible/Umami/GA
 - [ ] Test mobile na realnych urządzeniach (iOS Safari, Android Chrome)
 
 ### Po launchu, w trybie monitoringu (2-8 tygodni)

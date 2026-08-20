@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getLocations } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { MapPin, Navigation, Phone } from 'lucide-react'
@@ -19,13 +19,7 @@ const TILE_GRADIENTS = [
 ]
 
 export default async function LocationsPage() {
-  const supabase = await createClient()
-
-  const { data: locations } = await supabase
-    .from('locations')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order')
+  const locations = await getLocations()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -39,7 +33,7 @@ export default async function LocationsPage() {
           />
           <div className="container relative mx-auto px-4 py-20 md:py-28">
             <Sticker variant="cyan" rotate="right" size="sm" className="mb-6">
-              {locations?.length || 7} miast w regionie
+              {locations.length} miast w regionie
             </Sticker>
             <h1 className="font-[family-name:var(--font-display)] text-6xl font-black uppercase leading-[0.9] tracking-tighter text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
               lokalizacje
@@ -53,7 +47,7 @@ export default async function LocationsPage() {
         <section className="container mx-auto px-4 py-16 md:py-20">
           {/* Locations grid */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {locations?.map((location, idx) => (
+            {locations.map((location, idx) => (
               <article
                 key={location.id}
                 id={location.city.toLowerCase()}

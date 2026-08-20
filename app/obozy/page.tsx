@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getCamps } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { Sticker } from '@/components/ui/sticker'
@@ -29,16 +29,13 @@ function formatPrice(price: number): string {
 }
 
 export default async function CampsPage() {
-  const supabase = await createClient()
+  const camps = await getCamps()
 
-  const { data: camps } = await supabase
-    .from('camps')
-    .select('*')
-    .eq('is_active', true)
-    .order('start_date')
-
-  const upcomingCamps = camps?.filter((camp) => new Date(camp.end_date) >= new Date())
-  const pastCamps = camps?.filter((camp) => new Date(camp.end_date) < new Date())
+  // Uwaga: w eksporcie statycznym ten podział zapieka się w czasie builda —
+  // obóz „przechodzi" do archiwum dopiero przy kolejnym buildzie strony.
+  const now = new Date()
+  const upcomingCamps = camps.filter((camp) => new Date(camp.end_date) >= now)
+  const pastCamps = camps.filter((camp) => new Date(camp.end_date) < now)
 
   return (
     <div className="flex min-h-screen flex-col">
