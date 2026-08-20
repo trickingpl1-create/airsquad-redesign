@@ -11,7 +11,7 @@ Ten dokument opisuje to, co JEST. Nie analizuje wariantów (WordPress vs Astro v
 | Panel admina | Next.js 16 (SSR) w `admin-app/` | Osobna aplikacja — patrz „Dwie aplikacje" niżej. |
 | Hosting (panel) | Vercel, osobny projekt | SSR + proxy auth po cookies działa natywnie, ruch znikomy. |
 | Baza danych | Supabase (Postgres) | RLS, realtime, REST + JS SDK, niski koszt na start. |
-| Auth (admin) | Hasło + proxy (`admin-app/proxy.ts`) | Mały zespół, prosty model. Bez OAuth. |
+| Auth (admin) | Supabase Auth + proxy (`admin-app/proxy.ts`) | Mały zespół, prosty model. Bez OAuth, bez ról. |
 | Storage (zdjęcia) | Supabase Storage | Spójne z bazą, prosty API. |
 | CMS treści | Custom panel `/admin` | Polski, dopasowany do typów treści, bez zewnętrznej zależności. |
 | Klub-management | AIPAX (zewnętrzny) | Zapisy, grafik, płatności, portal rodzica. Embed iframe. |
@@ -104,7 +104,7 @@ URL-e iframe konfigurowane w tabeli `static_pages.content` lub w zmiennej środo
 | ORM (Prisma, Drizzle) | Supabase JS SDK + typy TypeScript wystarczają. |
 | State manager (Redux, Zustand) | Server Components + SWR dla klienta = wystarczy. |
 | Headless CMS (Sanity, Strapi) | `/admin` pokrywa potrzeby, mniej zależności zewnętrznych. |
-| Edge functions / middleware logiki | Tylko ochrona `/admin` przez hasło. Reszta to RSC. |
+| Edge functions / middleware logiki | W aplikacji publicznej niemożliwe (eksport statyczny). W panelu tylko ochrona `/admin`. |
 | GraphQL | Supabase REST + RLS = prościej. |
 | Custom backend (Express, NestJS) | RSC + Server Actions = wystarczająca warstwa serwerowa. |
 
@@ -115,14 +115,15 @@ Każda z tych technologii dodawałaby złożoności bez realnej wartości na obe
 To miejsce na wątpliwości, nie deklaracje. Jeżeli któraś z tych decyzji boli — wracamy do niej:
 
 - **Catch-all `/[slug]` z 4 zapytaniami do bazy** — działa szybko dzięki cache Supabase, ale gdyby ruch wzrósł 10x, można cache-ować w Vercel KV.
-- **Hasło zamiast Supabase Auth dla admina** — działa, ale przy >2 administratorach warto przejść na Auth.
+- **Brak ról w panelu** — dostęp ma każde konto z tabeli Auth projektu Supabase. Wystarcza przy 1–2 osobach i wyłączonej rejestracji własnej; przy większej liczbie kont trzeba dołożyć sprawdzanie roli (np. kolumna w tabeli profili albo `app_metadata`).
 - **Sklep w tej samej domenie co strona wizerunkowa** — prostota wygrywa, ale jeżeli sklep urośnie, można odciąć na subdomenę (np. `sklep.airsquad.pl`).
 - **AIPAX jako iframe, nie jako custom integracja przez API** — szybciej i taniej, ale jeżeli AIPAX zacznie ograniczać UX (powolne ładowanie, słaby mobile), warto rozważyć integrację API.
 
 ## Bezpieczeństwo
 
 - **RLS na wszystkich tabelach.** Anonimowy klient czyta tylko `is_published=true`. Pisze tylko serwis przez service role key.
-- **Hasło admina** w env, nie w kodzie.
+- **Logowanie do panelu** to Supabase Auth (`signInWithPassword`) — konto żyje w tabeli Auth projektu Supabase, nie w repo ani w env. Konto zakłada się w Supabase Dashboard → Authentication → Users.
+- **Brak sprawdzania roli**: proxy i layout panelu pytają tylko `supabase.auth.getUser()`, więc dostęp do `/admin/*` ma KAŻDE konto w tym projekcie Supabase. Rejestracja własna („Enable signup") musi być w Supabase wyłączona, inaczej panel jest otwarty dla każdego, kto założy konto.
 - **Service role key** tylko w Server Components / Server Actions, nigdy w client.
 - **Supabase Storage** publiczne dla `images`, prywatne dla `documents` (zamówienia, faktury).
 

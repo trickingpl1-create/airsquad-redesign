@@ -24,7 +24,7 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 
 ### Panel admina
 - CRUD dla: lokalizacji, trenerów, obozów, produktów sklepu, postów Instagram
-- Hasło chronione przez proxy (`admin-app/proxy.ts`)
+- Logowanie przez Supabase Auth, egzekwowane w `admin-app/proxy.ts` (konto zakładane w Supabase Dashboard, nie w repo)
 - Osobna aplikacja i osobny host — w eksporcie statycznym proxy nie istnieje, więc panel w tym samym buildzie byłby publiczny
 
 ### Sklep
@@ -48,7 +48,7 @@ Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
 
 ### Blokery launchu
 - [ ] Wstawić realne dane kontaktowe (telefon, email, adresy) do `components/layout/footer.tsx`
-- [ ] Zmienić domyślne hasło admina na produkcyjne
+- [ ] Założyć konto administratora w Supabase (Authentication → Users → Add user, „Auto Confirm") i **wyłączyć rejestrację własną** — panel nie sprawdza roli, więc każde konto w projekcie ma pełny dostęp
 - [ ] Otrzymać URL-e iframe od AIPAX i podpiąć w `/zapisy` i `/grafik` (komponent `components/iframe-wrapper.tsx` gotowy do użycia)
 - [ ] Wgrać realne zdjęcia trenerów (min. 3) i lokalizacji (wszystkie 7) do Supabase Storage
 - [ ] Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200

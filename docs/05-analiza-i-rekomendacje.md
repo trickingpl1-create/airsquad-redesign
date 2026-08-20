@@ -279,7 +279,7 @@ export function VideoBackground({ videoId, start = 9, end = 25 }: {
 
 | Tydzień | Zadania | Odpowiedzialność |
 |---------|---------|------------------|
-| 1 | Dane kontaktowe, hasło admina, zdjęcia trenerów | Air Squad |
+| 1 | Dane kontaktowe, konto admina w Supabase Auth, zdjęcia trenerów | Air Squad |
 | 1 | URL-e iframe AIPAX | Air Squad + AIPAX |
 | 2 | Test iframe na mobile, test wszystkich URL-i | Developer |
 | 2 | Google Search Console, Vercel Analytics | Developer |
@@ -334,7 +334,6 @@ Przed deployem na produkcję sprawdź w Vercel → Settings → Environment Vari
 | `SUPABASE_SERVICE_ROLE_KEY` | Tak | Supabase Dashboard → API (server-only) |
 | `RESEND_API_KEY` | Tak (po podpięciu) | resend.com/api-keys |
 | `NEXT_PUBLIC_SITE_URL` | Tak | `https://airsquad.pl` |
-| `ADMIN_PASSWORD` | Tak | Wygenerować silne hasło |
 | `NEXT_PUBLIC_AIPAX_URL` | Tak | AIPAX support |
 
 Zasada: zmienne `NEXT_PUBLIC_*` widoczne w przeglądarce, reszta tylko po stronie serwera. Service role key NIGDY nie może wyciec do klienta.

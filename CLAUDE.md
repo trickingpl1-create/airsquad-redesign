@@ -85,7 +85,7 @@ Część treści istnieje jako statyczne fallbacki w `lib/content/*.ts` (`cities
 ### Dwa klienty Supabase — nie mieszać
 - `lib/supabase/public.ts` (`getPublicSupabaseClient`) — bez cookies, do treści zapiekanej w buildzie (strony `[slug]`, strona główna, huby, sitemapa). **Jedyny** klient serwerowy dozwolony w aplikacji publicznej: `cookies()` wywala eksport statyczny.
 - `lib/supabase/client.ts` (`getBrowserSupabaseClient`) — klient przeglądarki, do danych świeżych bez rebuildu (`/sklep`, `/media`). Ma ten sam guard na placeholder co `public.ts` i **zwraca `null`**, więc każdy wołający musi pokazać stan pusty; bez tego fetch leci na martwy host i komponent wisi na „Ładowanie…".
-- `admin-app/lib/supabase/server.ts` i `admin-app/lib/supabase/proxy.ts` — cookie-based, żyją **wyłącznie** w aplikacji panelu (auth przez hasło + proxy, nie Supabase Auth).
+- `admin-app/lib/supabase/server.ts` i `admin-app/lib/supabase/proxy.ts` — cookie-based, żyją **wyłącznie** w aplikacji panelu (auth przez Supabase Auth, sprawdzane w proxy i w layoucie panelu).
 
 ### SEO — nie ruszać istniejących URL-i bez analizy
 - `next.config.mjs`: `trailingSlash: true` — WordPress miał URL-e ze slashem; bez tego stare linki dostają 308 i tracą część SEO equity.
@@ -100,7 +100,7 @@ Zapisy, grafik zajęć, płatności za zajęcia, portal rodzica i frekwencja to 
 Nagłówki ozdobne używają klasy `display-bold` (font odręczny „Covered By Your Grace"; klasa ustawia font-weight 800 = sztuczne pogrubienie jednowagowego fontu). Przy tworzeniu NOWYCH treści duże nagłówki (hero H1, tytuły sekcji) zawsze ściągaj do wagi **400**: `style={{ fontWeight: 400 }}` na elemencie albo `titleFontWeight={400}` + `gradientFontWeight={400}` na `SectionHeader`. Mniejsze tytuły kart bywają na 500 (wzorzec: `components/home/pricing-section.tsx`).
 
 ### Panel admina — osobna aplikacja
-`admin-app/` — CRUD dla lokalizacji/trenerów/obozów/produktów/postów IG pod `/admin/*`, chroniony hasłem przez `admin-app/proxy.ts` (konwencja proxy Next 16, dawne middleware; nie Supabase Auth — mały zespół, prosty model). Panel **musi** zostać aplikacją serwerową: w eksporcie statycznym proxy nie istnieje, więc `out/admin/*/index.html` byłyby publicznymi plikami dostępnymi bez logowania.
+`admin-app/` — CRUD dla lokalizacji/trenerów/obozów/produktów/postów IG pod `/admin/*`, chroniony przez `admin-app/proxy.ts` (konwencja proxy Next 16, dawne middleware). Autoryzacja to **Supabase Auth** — `signInWithPassword` na stronie logowania, `supabase.auth.getUser()` w proxy i w layoucie panelu. Loginu ani hasła nie ma w repo: to użytkownik z tabeli Auth w projekcie Supabase, zakładany w jego panelu. **Nie ma sprawdzania roli** — wystarczy dowolne konto w tym projekcie Supabase, więc rejestracja własna musi zostać w Supabase wyłączona. Panel **musi** zostać aplikacją serwerową: w eksporcie statycznym proxy nie istnieje, więc `out/admin/*/index.html` byłyby publicznymi plikami dostępnymi bez logowania.
 
 Panel ma własną kopię prymitywów `components/ui/*` (vendorowany shadcn — normalny model tego narzędzia, każda aplikacja ma swój rejestr). Współdzielone są tylko typy bazy. Zmiana w `components/ui/*` po stronie publicznej **nie** propaguje się do panelu i odwrotnie.
 
