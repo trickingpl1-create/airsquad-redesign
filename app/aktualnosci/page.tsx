@@ -5,7 +5,7 @@ import { SectionHeader } from '@/components/home/section-header'
 import { CLUB_CONTACT } from '@/lib/content/cities'
 
 export const metadata = {
-  title: 'Aktualności | Air Squad',
+  title: 'Aktualności',
   description:
     'Ogłoszenia klubu Air Squad — wydarzenia, obozy, zapisy i bieżące informacje dla rodziców i zawodników.',
 }

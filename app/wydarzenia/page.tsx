@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { Calendar, MapPin, ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Wydarzenia | Air Squad',
+  title: 'Wydarzenia',
   description:
     'Nadchodzące wydarzenia Air Squad — AirMeeting, spotkania akrobatyczne i Gravity Jam.',
 }

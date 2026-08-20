@@ -9,8 +9,9 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
   id: 'fallback-akrobatyka',
   slug: 'akrobatyka',
   name: 'Akrobatyka',
-  meta_title:
-    'Akrobatyka dla dzieci i dorosłych — Rzeszów i Podkarpacie | Air Squad',
+  // Bez sufiksu "| Air Squad" — dokleja go szablon title z app/layout.tsx
+  // (ta sama konwencja co w lib/content/cities.ts; wiersze w DB też jej wymagają)
+  meta_title: 'Akrobatyka dla dzieci i dorosłych — Rzeszów i Podkarpacie',
   meta_description:
     'Zajęcia akrobatyki od 4 lat w 7 miastach na Podkarpaciu. Małe grupy, dwóch trenerów, ścieżki AirTrack. Pierwszy trening za 40 zł. Zapisz się!',
   h1_title: 'Akrobatyka',

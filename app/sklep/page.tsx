@@ -4,7 +4,7 @@ import { Footer } from '@/components/layout/footer'
 import { StoreClient } from './store-client'
 
 export const metadata: Metadata = {
-  title: 'Sklep - Air Squad',
+  title: 'Sklep',
   description: 'Kup oficjalne gadżetki i odzież Air Squad.',
 }
 

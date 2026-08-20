@@ -6,7 +6,7 @@ import { Instagram, User } from 'lucide-react'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Trenerzy | Air Squad',
+  title: 'Trenerzy',
   description:
     'Poznaj zespół trenerów Air Squad. Doświadczeni instruktorzy akrobatyki, trickingu i tumblingu.',
 }

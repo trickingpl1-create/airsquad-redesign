@@ -4,6 +4,8 @@ import type { Camp } from '@/lib/types/database'
 
 interface CampsSectionProps {
   camps: Camp[]
+  /** Slugi obozów, które mają istniejący landing — patrz getCampLandingSlugs() */
+  landingSlugs: string[]
 }
 
 // Ta sama zajawka co na /letni/ (lib/content/letni.ts → LETNI_EVENT.youtubeId)
@@ -38,8 +40,12 @@ function formatDate(dateStr: string): string {
   })
 }
 
-export function CampsSection({ camps }: CampsSectionProps) {
+export function CampsSection({ camps, landingSlugs }: CampsSectionProps) {
   const featured = camps[0]
+  // Landing obozu to historyczny URL root-level (/letni/), nie /obozy/{slug} —
+  // ta trasa nigdy nie istniała, więc bez landingu nie renderujemy linku.
+  const featuredHref =
+    featured && landingSlugs.includes(featured.slug) ? `/${featured.slug}/` : null
 
   return (
     <section
@@ -167,12 +173,14 @@ export function CampsSection({ camps }: CampsSectionProps) {
                       )}
                   </div>
                 )}
-                <Link
-                  href={`/obozy/${featured.slug}`}
-                  className="rounded-2xl border-2 border-foreground/15 px-6 py-3 font-mono text-xs font-extrabold uppercase tracking-[0.1em] text-foreground transition-colors hover:border-foreground/40"
-                >
-                  Szczegóły turnusu →
-                </Link>
+                {featuredHref && (
+                  <Link
+                    href={featuredHref}
+                    className="rounded-2xl border-2 border-foreground/15 px-6 py-3 font-mono text-xs font-extrabold uppercase tracking-[0.1em] text-foreground transition-colors hover:border-foreground/40"
+                  >
+                    Szczegóły turnusu →
+                  </Link>
+                )}
               </div>
             </div>
 

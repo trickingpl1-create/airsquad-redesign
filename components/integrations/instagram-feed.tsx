@@ -1,34 +1,43 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { getBrowserSupabaseClient } from '@/lib/supabase/client'
 import type { InstagramPost } from '@/lib/types/database'
 import { Card } from '@/components/ui/card'
 
 export function InstagramFeed({ limit = 6 }: { limit?: number }) {
-  const supabase = createClient()
+  const supabase = getBrowserSupabaseClient()
   const [posts, setPosts] = useState<InstagramPost[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function fetchPosts() {
-      const { data, error } = await supabase
-        .from('instagram_posts')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true })
-        .limit(limit)
-
-      if (error) {
-        console.error('[v0] Error fetching Instagram posts:', error)
-        return
-      }
-
-      setPosts(data || [])
+    // Brak skonfigurowanego Supabase — od razu stan pusty zamiast wiszącego
+    // „Ładowanie…" (fetch i tak poleciałby na martwy host).
+    if (!supabase) {
       setLoading(false)
+      return
     }
 
-    fetchPosts()
+    async function fetchPosts(client: NonNullable<typeof supabase>) {
+      try {
+        const { data, error } = await client
+          .from('instagram_posts')
+          .select('*')
+          .eq('is_active', true)
+          .order('display_order', { ascending: true })
+          .limit(limit)
+
+        if (error) throw error
+        setPosts(data ?? [])
+      } catch (error) {
+        console.error('[air-squad] Nie udało się pobrać postów z Instagrama:', error)
+      } finally {
+        // Zawsze — inaczej błąd zostawia komponent na „Ładowanie…" na zawsze
+        setLoading(false)
+      }
+    }
+
+    fetchPosts(supabase)
   }, [supabase, limit])
 
   if (loading) {

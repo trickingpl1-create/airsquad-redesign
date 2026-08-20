@@ -6,7 +6,9 @@ import { Handshake, MapPin, TrendingUp, Phone } from 'lucide-react'
 
 // Nowa strona (dokładana, nie zastępuje żadnego chronionego URL-a z docs/03-mapa-url.md).
 export const metadata: Metadata = {
-  title: 'Franczyza — otwórz salę Air Squad',
+  // Marka jest doklejana przez szablon title z app/layout.tsx — bez tego
+  // w SERP-ie wychodziło „…salę Air Squad | Air Squad"
+  title: 'Franczyza — otwórz własną salę',
   description:
     'Otwórz salę akrobatyczną Air Squad w swoim mieście. Sprawdzony model treningowy, rozpoznawalna marka na Podkarpaciu i wsparcie na start.',
   alternates: { canonical: '/franczyza/' },

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { getBrowserSupabaseClient } from '@/lib/supabase/client'
 import { useCart } from '@/lib/hooks/use-cart'
 import type { Product } from '@/lib/types/database'
 import { Button } from '@/components/ui/button'
@@ -13,7 +13,7 @@ import { ShoppingCart, X, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 
 export function StoreClient() {
-  const supabase = createClient()
+  const supabase = getBrowserSupabaseClient()
   const { cart, addItem, removeItem, updateQuantity, total } = useCart()
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
@@ -27,24 +27,33 @@ export function StoreClient() {
   const [quantity, setQuantity] = useState(1)
 
   useEffect(() => {
-    async function fetchProducts() {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true })
-
-      if (error) {
-        console.error('[v0] Error fetching products:', error)
-        return
-      }
-
-      setProducts(data || [])
-      setFilteredProducts(data || [])
+    // Brak skonfigurowanego Supabase — od razu stan pusty zamiast wiszącego
+    // „Ładowanie produktów…" (fetch i tak poleciałby na martwy host).
+    if (!supabase) {
       setLoading(false)
+      return
     }
 
-    fetchProducts()
+    async function fetchProducts(client: NonNullable<typeof supabase>) {
+      try {
+        const { data, error } = await client
+          .from('products')
+          .select('*')
+          .eq('is_active', true)
+          .order('display_order', { ascending: true })
+
+        if (error) throw error
+        setProducts(data ?? [])
+        setFilteredProducts(data ?? [])
+      } catch (error) {
+        console.error('[air-squad] Nie udało się pobrać produktów:', error)
+      } finally {
+        // Zawsze — inaczej błąd zostawia stronę na „Ładowanie…" na zawsze
+        setLoading(false)
+      }
+    }
+
+    fetchProducts(supabase)
   }, [supabase])
 
   useEffect(() => {
@@ -294,7 +303,7 @@ function CheckoutForm({
   onClose: () => void
   onSuccess: () => void
 }) {
-  const supabase = createClient()
+  const supabase = getBrowserSupabaseClient()
   const { clearCart } = useCart()
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -307,6 +316,12 @@ function CheckoutForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+
+    if (!supabase) {
+      alert('Zamówienia są chwilowo niedostępne. Zadzwoń: 728 559 101')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -330,7 +345,7 @@ function CheckoutForm({
         onSuccess()
       }, 2000)
     } catch (error) {
-      console.error('[v0] Error submitting order:', error)
+      console.error('[air-squad] Nie udało się złożyć zamówienia:', error)
       alert('Błąd przy tworzeniu zamówienia')
     } finally {
       setLoading(false)

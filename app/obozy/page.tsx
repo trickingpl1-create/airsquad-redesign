@@ -1,4 +1,4 @@
-import { getCamps } from '@/lib/seo/queries'
+import { getCampLandingSlugs, getCamps } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { Sticker } from '@/components/ui/sticker'
@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { CAMP_TYPES } from '@/lib/types/database'
 
 export const metadata = {
-  title: 'Obozy | Air Squad',
+  title: 'Obozy',
   description:
     'Obozy sportowe Air Squad — letnie i zimowe. Intensywne treningi, integracja i niezapomniane przygody.',
 }
@@ -29,7 +29,11 @@ function formatPrice(price: number): string {
 }
 
 export default async function CampsPage() {
-  const camps = await getCamps()
+  const [camps, landingSlugs] = await Promise.all([
+    getCamps(),
+    getCampLandingSlugs(),
+  ])
+  const landings = new Set(landingSlugs)
 
   // Uwaga: w eksporcie statycznym ten podział zapieka się w czasie builda —
   // obóz „przechodzi" do archiwum dopiero przy kolejnym buildzie strony.
@@ -138,14 +142,18 @@ export default async function CampsPage() {
                             </span>
                           )}
                         </div>
-                        <Link
-                          href={`/obozy/${camp.slug}`}
-                          aria-disabled={!camp.registration_open}
-                          className="inline-flex items-center gap-2 border-2 border-foreground bg-primary px-5 py-3 text-sm font-black uppercase tracking-wider text-primary-foreground transition-all hover:bg-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50"
-                        >
-                          {camp.registration_open ? 'Zapisy' : 'Brak'}
-                          <ArrowRight className="h-4 w-4" aria-hidden />
-                        </Link>
+                        {/* Landing obozu to historyczny URL root-level (/letni/),
+                            nie /obozy/{slug} — patrz getCampLandingSlugs(). */}
+                        {landings.has(camp.slug) && (
+                          <Link
+                            href={`/${camp.slug}/`}
+                            aria-disabled={!camp.registration_open}
+                            className="inline-flex items-center gap-2 border-2 border-foreground bg-primary px-5 py-3 text-sm font-black uppercase tracking-wider text-primary-foreground transition-all hover:bg-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50"
+                          >
+                            {camp.registration_open ? 'Zapisy' : 'Brak'}
+                            <ArrowRight className="h-4 w-4" aria-hidden />
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </article>

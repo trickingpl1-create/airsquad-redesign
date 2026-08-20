@@ -1,4 +1,5 @@
 import { getPublicSupabaseClient } from '@/lib/supabase/public'
+import { getCampLandingSlugs } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { HeroSection } from '@/components/home/hero-section'
@@ -46,6 +47,8 @@ export default async function HomePage() {
       ]).then((results) => results.map((result) => result.data ?? []))
     : [[], [], []]
 
+  const campLandingSlugs = await getCampLandingSlugs()
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -58,7 +61,7 @@ export default async function HomePage() {
         <TrainingTypesSection trainingTypes={trainingTypes} />
         <DisciplinesSection />
         <HowAudienceSection />
-        <CampsSection camps={camps} />
+        <CampsSection camps={camps} landingSlugs={campLandingSlugs} />
         <TeamSection trainers={trainers} />
         <CTASection cities={ENROL_CITIES} />
       </main>

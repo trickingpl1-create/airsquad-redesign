@@ -12,8 +12,9 @@ export const LETNI_EVENT: Event = {
   id: 'fallback-letni',
   slug: 'letni',
   title: 'Air Camp 2026',
-  meta_title:
-    'Air Camp 2026 — letni obóz sportowy dla dzieci i młodzieży | Air Squad',
+  // Bez sufiksu "| Air Squad" — dokleja go szablon title z app/layout.tsx
+  // (ta sama konwencja co w lib/content/cities.ts; wiersze w DB też jej wymagają)
+  meta_title: 'Air Camp 2026 — letni obóz sportowy dla dzieci i młodzieży',
   meta_description:
     'Air Camp 2026: akrobatyka, tricking, kajaki, longboardy, paintball. 25 lipca – 2 sierpnia 2026, Janów Lubelski. Małe grupy, dwóch trenerów. Zarezerwuj turnus!',
   event_type: 'oboz',
@@ -157,7 +158,7 @@ export const AIRMEETING_EVENT: Event = {
   id: 'fallback-airmeeting',
   slug: 'airmeeting',
   title: 'Air Meeting 2026',
-  meta_title: 'Air Meeting 2026 — zlot akrobatyczny | Air Squad',
+  meta_title: 'Air Meeting 2026 — zlot akrobatyczny',
   meta_description:
     'Air Meeting 2026 — spotkanie, zawody i wspólne emocje. Niezapomniane wydarzenie dla członków klubu Air Squad.',
   event_type: 'airmeeting',
@@ -185,7 +186,7 @@ export const GRAVITYJAM_EVENT: Event = {
   id: 'fallback-gravityjam',
   slug: 'gravityjam',
   title: 'Gravity Jam — święto kultury ulicznej',
-  meta_title: 'Gravity Jam — jam akrobatyczny i święto kultury ulicznej | Air Squad',
+  meta_title: 'Gravity Jam — jam akrobatyczny i święto kultury ulicznej',
   meta_description:
     'Gravity Jam — warsztaty rolkowe, akrobatyczne, strefa longboardowa i gier drewnianych. Air Squad razem z MB Park i Street Life Rzeszów.',
   event_type: 'gravityjam',

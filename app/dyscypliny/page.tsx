@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { Flame, Users, ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Dyscypliny | Air Squad',
+  title: 'Dyscypliny',
   description:
     'Poznaj nasze dyscypliny treningowe — akrobatyka, tricking, tumbling i longboardy. Zajęcia dla każdego poziomu zaawansowania.',
 }

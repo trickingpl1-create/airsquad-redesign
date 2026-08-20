@@ -239,6 +239,22 @@ export async function getCamps(): Promise<Camp[]> {
   return data && data.length > 0 ? data : FALLBACK_CAMPS
 }
 
+/**
+ * Slugi obozów, dla których faktycznie istnieje landing.
+ *
+ * Trasa `/obozy/{slug}` nigdy nie istniała (nie ma `app/obozy/[slug]`), a landing
+ * obozu żyje pod historycznym URL-em root-level — `/letni/` dla Air Campu
+ * (docs/03-mapa-url.md) — obsługiwanym przez kaskadę w `app/[slug]`. Kaskada
+ * rozwiązuje jednak tabelę `events`, nie `camps`, więc obóz bez odpowiadającego
+ * wydarzenia nie ma dokąd linkować: w eksporcie statycznym taki URL to twardy 404,
+ * bo strona nie zostanie w ogóle wygenerowana. Widoki pytają o ten zbiór i dla
+ * obozów spoza niego po prostu nie renderują przycisku.
+ */
+export async function getCampLandingSlugs(): Promise<string[]> {
+  const events = await getEvents()
+  return events.map((event) => event.slug)
+}
+
 // Static Pages
 export async function getStaticPage(slug: string): Promise<StaticPage | null> {
   const supabase = getSupabaseClient()

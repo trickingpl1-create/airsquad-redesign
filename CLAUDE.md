@@ -78,7 +78,7 @@ Część treści istnieje jako statyczne fallbacki w `lib/content/*.ts` (`cities
 
 ### Dwa klienty Supabase — nie mieszać
 - `lib/supabase/public.ts` (`getPublicSupabaseClient`) — bez cookies, do treści zapiekanej w buildzie (strony `[slug]`, strona główna, huby, sitemapa). **Jedyny** klient serwerowy dozwolony w aplikacji publicznej: `cookies()` wywala eksport statyczny.
-- `lib/supabase/client.ts` — klient przeglądarki, do danych świeżych bez rebuildu (`/sklep`, `/media`).
+- `lib/supabase/client.ts` (`getBrowserSupabaseClient`) — klient przeglądarki, do danych świeżych bez rebuildu (`/sklep`, `/media`). Ma ten sam guard na placeholder co `public.ts` i **zwraca `null`**, więc każdy wołający musi pokazać stan pusty; bez tego fetch leci na martwy host i komponent wisi na „Ładowanie…".
 - `admin-app/lib/supabase/server.ts` i `admin-app/lib/supabase/proxy.ts` — cookie-based, żyją **wyłącznie** w aplikacji panelu (auth przez hasło + proxy, nie Supabase Auth).
 
 ### SEO — nie ruszać istniejących URL-i bez analizy

@@ -5,7 +5,7 @@ import { InstagramFeed } from '@/components/integrations/instagram-feed'
 import { YouTubeSection } from '@/components/integrations/youtube-section'
 
 export const metadata: Metadata = {
-  title: 'Media - Air Squad',
+  title: 'Media',
   description: 'Galeria wideo i zdjęcia z Air Squad. Śledź nas na Instagramie!',
 }
 
@@ -13,7 +13,9 @@ export default function MediaPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-background">
+      {/* pt-24 = odstęp na przyklejony Header, jak na pozostałych podstronach —
+          bez tego H1 „Media" chowa się pod logo */}
+      <main className="min-h-screen bg-background pt-24">
         <div className="container py-12">
           <div className="mb-12">
             <h1 className="text-4xl font-bold font-display mb-2">Media</h1>
