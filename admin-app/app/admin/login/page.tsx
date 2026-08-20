@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { loginToEmail } from '@/lib/auth-login'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -13,7 +14,7 @@ import { AlertCircle } from 'lucide-react'
 
 export default function AdminLoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
+  const [login, setLogin] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -25,13 +26,15 @@ export default function AdminLoginPage() {
 
     const supabase = createClient()
 
+    // Supabase przyjmuje tylko adres e-mail — pole „Login" mapujemy
+    // na <login>@airsquad.pl (lib/auth-login.ts).
     const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
+      email: loginToEmail(login),
       password,
     })
 
     if (signInError) {
-      setError('Nieprawidlowy email lub haslo')
+      setError('Nieprawidłowy login lub hasło')
       setLoading(false)
       return
     }
@@ -49,7 +52,7 @@ export default function AdminLoginPage() {
           </div>
           <CardTitle className="text-foreground">Panel administracyjny</CardTitle>
           <CardDescription>
-            Zaloguj sie, aby zarzadzac trescia strony
+            Zaloguj się, aby zarządzać treścią strony
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -62,23 +65,28 @@ export default function AdminLoginPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="login">Login</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="admin@airsquad.pl"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="login"
+                type="text"
+                autoComplete="username"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                placeholder="nazwa użytkownika"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
                 required
                 disabled={loading}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Haslo</Label>
+              <Label htmlFor="password">Hasło</Label>
               <Input
                 id="password"
                 type="password"
+                autoComplete="current-password"
                 placeholder="********"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -94,7 +102,7 @@ export default function AdminLoginPage() {
                   Logowanie...
                 </>
               ) : (
-                'Zaloguj sie'
+                'Zaloguj się'
               )}
             </Button>
           </form>

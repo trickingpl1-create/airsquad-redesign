@@ -17,6 +17,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
+import { emailToLogin } from '@/lib/auth-login'
 import { 
   LayoutDashboard, 
   MapPin, 
@@ -116,7 +117,8 @@ export function AdminHeader({ user }: AdminHeaderProps) {
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <UserIcon className="h-4 w-4" />
               </div>
-              <span className="hidden text-sm md:inline">{user.email}</span>
+              {/* konto trzymamy jako <login>@airsquad.pl — pokazujemy sam login */}
+              <span className="hidden text-sm md:inline">{emailToLogin(user.email)}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
@@ -124,7 +126,7 @@ export function AdminHeader({ user }: AdminHeaderProps) {
               <div className="flex flex-col gap-1">
                 <span>Moje konto</span>
                 <span className="text-xs font-normal text-muted-foreground">
-                  {user.email}
+                  {emailToLogin(user.email)}
                 </span>
               </div>
             </DropdownMenuLabel>
