@@ -32,7 +32,6 @@ Strona publiczna (katalog główny repo):
 ```bash
 npm run dev              # dev server, domyślnie :3000 (w tej sesji podgląd chodzi na :2003 — patrz ../.claude/launch.json)
 npm run build             # eksport statyczny → out/ (uwaga: typescript.ignoreBuildErrors=true — build NIE wychwytuje błędów typów)
-npm run lint                # eslint .
 npx tsc --noEmit             # jedyny sposób realnej weryfikacji typów, bo build ich nie sprawdza
 npx serve out                 # podgląd gotowego out/ (konfiguracja „airsquad-out" na :2004)
 ```
@@ -50,7 +49,7 @@ cd admin-app && npx tsc --noEmit
 
 Panel wymaga własnego `admin-app/.env.local` — bez `NEXT_PUBLIC_SUPABASE_*` strona logowania rzuca 500 (`createServerClient` nie przyjmuje pustego URL-a). Rootowy `tsconfig.json` wyklucza `admin-app`, więc każdą aplikację typuje się osobno.
 
-Brak testów automatycznych (brak frameworku testowego w `package.json`, brak katalogu `__tests__`/`*.test.*`). Weryfikacja poprawności = `tsc --noEmit` + ręczne sprawdzenie w przeglądarce (curl / preview).
+Brak testów automatycznych (brak frameworku testowego w `package.json`, brak katalogu `__tests__`/`*.test.*`) i **brak lintera** — `eslint` nie jest zainstalowany ani skonfigurowany, więc dawny skrypt `npm run lint` tylko wywalał się na „command not found" i został usunięty. Weryfikacja poprawności = `tsc --noEmit` + `npm run build` + ręczne sprawdzenie w przeglądarce (`npx serve out` / preview).
 
 Migracje bazy to surowe pliki SQL w `scripts/001..005_*.sql` — nie ma narzędzia migracyjnego (Prisma/Drizzle); wklejane ręcznie w Supabase SQL editor w kolejności numerycznej.
 
