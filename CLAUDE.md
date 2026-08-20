@@ -34,7 +34,14 @@ npm run dev              # dev server, domyślnie :3000 (w tej sesji podgląd ch
 npm run build             # eksport statyczny → out/ (uwaga: typescript.ignoreBuildErrors=true — build NIE wychwytuje błędów typów)
 npx tsc --noEmit             # jedyny sposób realnej weryfikacji typów, bo build ich nie sprawdza
 npx serve out                 # podgląd gotowego out/ (konfiguracja „airsquad-out" na :2004)
+./scripts/deploy.sh            # build + rsync na serwer (DEPLOY_HOST, DEPLOY_PATH; --dry-run)
 ```
+
+**Build jest zablokowany na lokalnym/placeholderowym env.** Hook `prebuild`
+(`scripts/check-build-env.mjs`) przerywa, gdy `NEXT_PUBLIC_SITE_URL` wskazuje
+localhost albo `NEXT_PUBLIC_SUPABASE_URL` to zaślepka — inaczej `out/` wygląda
+poprawnie, a ma canonicale i sitemapę na localhost oraz puste `/sklep` i `/media`.
+Do buildów podglądowych: `ALLOW_PLACEHOLDER_BUILD=1 npm run build`.
 
 `npm run start` nie ma zastosowania przy `output: 'export'` — nie ma czego serwować Nodem.
 

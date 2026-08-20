@@ -52,8 +52,9 @@ Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
 - [ ] Otrzymać URL-e iframe od AIPAX i podpiąć w `/zapisy` i `/grafik` (komponent `components/iframe-wrapper.tsx` gotowy do użycia)
 - [ ] Wgrać realne zdjęcia trenerów (min. 3) i lokalizacji (wszystkie 7) do Supabase Storage
 - [ ] Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200
-- [ ] **Zbudować `out/` z produkcyjnym `.env.local`** — `NEXT_PUBLIC_*` są wkompilowane w JS w momencie builda; build z placeholderem wypuszcza sitemapę i canonicale z `http://localhost:3000`
-- [ ] Ustalić procedurę przebudowy po zmianie treści w adminie (webhook Supabase vs ręczna komenda) — patrz `04-architektura.md`
+- [ ] **Wpisać produkcyjne `NEXT_PUBLIC_SUPABASE_*` do `.env.local`** (i do zmiennych hostingu) — `NEXT_PUBLIC_*` są wkompilowane w JS w momencie builda. Hook `prebuild` blokuje build na zaślepkach, więc pomyłka nie przejdzie po cichu, ale bez realnych wartości nie da się w ogóle zbudować produkcyjnego `out/`
+- [ ] Utworzyć projekt Vercel dla panelu (Root Directory `admin-app`, „Include files outside…" włączone, env Supabase) — kroki w `04-architektura.md`
+- [ ] Podpiąć serwer docelowy: `DEPLOY_HOST` / `DEPLOY_PATH` dla `scripts/deploy.sh` + konfiguracja nginx/Apache z `04-architektura.md`
 
 ### Ważne, ale nie blokujące
 - [ ] Podpiąć email service (Resend) do formularza kontaktowego i zamówień ze sklepu

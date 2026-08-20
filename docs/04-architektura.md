@@ -136,8 +136,18 @@ To miejsce na wątpliwości, nie deklaracje. Jeżeli któraś z tych decyzji bol
 ## Deploy strony publicznej
 
 ```bash
-npm run build          # → out/  (~33 MB, 38 stron HTML)
+DEPLOY_HOST=user@serwer DEPLOY_PATH=/var/www/airsquad ./scripts/deploy.sh
+./scripts/deploy.sh --dry-run     # pokazuje, co poszłoby na serwer
 ```
+
+Skrypt buduje i wysyła `out/` przez `rsync --delete`. Sam `npm run build` też
+wystarcza — `out/` wgrywa się dowolnym narzędziem.
+
+`npm run build` odpala hook `prebuild` → `scripts/check-build-env.mjs`, który
+**zatrzymuje build**, gdy env jest lokalny lub placeholderowy. Bez tego łatwo
+wypuścić katalog wyglądający poprawnie, a mający canonicale i sitemapę na
+localhost oraz puste `/sklep` i `/media`. Świadomy build podglądowy:
+`ALLOW_PLACEHOLDER_BUILD=1 npm run build`.
 
 Na serwer idzie **cała zawartość `out/`** — HTML, `_next/`, `images/`, `sitemap.xml`, `robots.txt`, `404.html` oraz pliki `__next.*.txt` (payloady RSC dla nawigacji klienckiej — bez nich przejścia między stronami robią pełne przeładowanie).
 
@@ -179,6 +189,26 @@ Options -Indexes
 | `NEXT_PUBLIC_SUPABASE_URL` | treść zapiekana w buildzie **oraz** fetch w przeglądarce (`/sklep`, `/media`) | pusta treść z fallbacków; sklep i media wiszą na „Ładowanie" |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | jw. | jw. |
 
+## Deploy panelu admina (Vercel, osobny projekt)
+
+Panel nie jedzie razem ze statyką — to druga aplikacja z tego samego repo.
+Konfiguracja jednorazowa w panelu Vercela (nie da się jej ustawić plikiem w repo):
+
+1. **Add New → Project** → to samo repo `airsquad-redesign`.
+2. **Root Directory** = `admin-app` (przycisk „Edit" przy wyborze katalogu).
+3. **Include files outside of the Root Directory in the Build Step** — musi
+   zostać **włączone**. Panel importuje typy bazy z katalogu nadrzędnego
+   (`admin-app/lib/types/database.ts` re-eksportuje `lib/types/database.ts`);
+   bez tego build nie znajdzie pliku.
+4. **Environment Variables** — `NEXT_PUBLIC_SUPABASE_URL` i
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY` z realnego projektu Supabase. Bez nich
+   `/admin/login` zwraca 500 (`createServerClient` nie przyjmuje pustego URL-a).
+5. Framework preset wykrywa się sam (Next.js), Build Command i Output Directory
+   zostają domyślne.
+
+Projekt strony publicznej (dotąd budujący całą aplikację) po tej zmianie buduje
+już tylko statykę — `/admin` z tego deploya znika i jest to zamierzone.
+
 ## Aktualizacja treści po zmianie w adminie
 
 Treść z bazy dzieli się na dwie ścieżki:
@@ -188,11 +218,22 @@ Treść z bazy dzieli się na dwie ścieżki:
 | Zapiekane w buildzie | strony miast, dyscypliny, wydarzenia, huby, meta tagi, sitemapa | dopiero po `npm run build` i wgraniu `out/` |
 | Na żywo w przeglądarce | produkty i zamówienia (`/sklep`), feed Instagrama i galeria (`/media`), zapisy AIPAX | natychmiast, bez rebuildu |
 
-Zmiana w adminie dotycząca treści SEO **nie pojawi się na stronie sama z siebie**. Warianty wyzwalania przebudowy (do decyzji, nie wdrożone):
+Zmiana w adminie dotycząca treści SEO **nie pojawi się na stronie sama z siebie**.
 
-1. **Ręcznie** — `npm run build` + rsync `out/` na serwer. Zero infrastruktury, ale ktoś musi pamiętać.
-2. **Webhook z Supabase → CI** — trigger na `city_pages`/`disciplines`/`events` woła workflow, który buduje i wgrywa. Automatyczne, ale wymaga runnera i klucza SSH w sekretach.
-3. **Build z harmonogramu** (np. nocny cron) — najprostsza automatyzacja, kosztem opóźnienia do doby.
+**Wdrożone: wariant ręczny** — `./scripts/deploy.sh` (build + rsync, jedna komenda).
+Zero dodatkowej infrastruktury, kosztem tego, że ktoś musi pamiętać o uruchomieniu.
+
+Warianty automatyczne (nie wdrożone — wymagają infrastruktury, której jeszcze nie ma):
+
+- **Webhook z Supabase → CI** — trigger na `city_pages`/`disciplines`/`events` woła
+  `workflow_dispatch` w GitHub Actions, workflow robi to samo co `deploy.sh`.
+  Wymaga: runnera, klucza SSH do serwera w sekretach repo i tokenu GitHuba po
+  stronie Supabase. Najbliżej „zmieniam w adminie, widzę na stronie".
+- **Build z harmonogramu** (nocny cron na serwerze albo `schedule:` w Actions) —
+  najprostsza automatyzacja, kosztem opóźnienia do doby.
+
+Oba sprowadzają się do wywołania `deploy.sh` z odpowiednim środowiskiem, więc
+przejście na nie nie wymaga zmian w kodzie strony.
 
 ## Co dalej w architekturze
 
