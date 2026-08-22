@@ -3,43 +3,31 @@ import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { 
-  MapPin, 
-  Users, 
-  Dumbbell, 
-  Calendar,
-  Tent,
+import {
   ShoppingBag,
   ClipboardList,
+  Image as ImageIcon,
   ArrowRight,
   TrendingUp,
-  Sparkles
 } from 'lucide-react'
 import { ORDER_STATUSES } from '@/lib/types/database'
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient()
 
-  // Fetch counts in parallel
-  const [
-    locationsResult,
-    trainersResult,
-    trainingTypesResult,
-    sessionsResult,
-    campsResult,
-    productsResult,
-    ordersResult,
-    pendingOrdersResult,
-  ] = await Promise.all([
-    supabase.from('locations').select('id', { count: 'exact', head: true }),
-    supabase.from('trainers').select('id', { count: 'exact', head: true }),
-    supabase.from('training_types').select('id', { count: 'exact', head: true }),
-    supabase.from('training_sessions').select('id', { count: 'exact', head: true }),
-    supabase.from('camps').select('id', { count: 'exact', head: true }),
-    supabase.from('products').select('id', { count: 'exact', head: true }),
-    supabase.from('orders').select('id', { count: 'exact', head: true }),
-    supabase.from('orders').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
-  ])
+  // Liczniki tylko dla tego, czym panel zarządza. Lokalizacje, trenerzy, typy
+  // zajęć i obozy są zapiekane w buildzie statycznym — nie ma ich gdzie edytować,
+  // a training_sessions nie jest czytana nigdzie na stronie publicznej.
+  const [productsResult, ordersResult, pendingOrdersResult, instagramResult] =
+    await Promise.all([
+      supabase.from('products').select('id', { count: 'exact', head: true }),
+      supabase.from('orders').select('id', { count: 'exact', head: true }),
+      supabase
+        .from('orders')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'pending'),
+      supabase.from('instagram_posts').select('id', { count: 'exact', head: true }),
+    ])
 
   // Fetch recent orders
   const { data: recentOrders } = await supabase
@@ -49,61 +37,29 @@ export default async function AdminDashboardPage() {
     .limit(5)
 
   const stats = [
-    { 
-      label: 'Lokalizacje', 
-      value: locationsResult.count || 0, 
-      icon: MapPin, 
-      href: '/admin/lokalizacje',
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-500/10',
-    },
-    { 
-      label: 'Trenerzy', 
-      value: trainersResult.count || 0, 
-      icon: Users, 
-      href: '/admin/trenerzy',
-      color: 'text-green-500',
-      bgColor: 'bg-green-500/10',
-    },
-    { 
-      label: 'Typy zajec', 
-      value: trainingTypesResult.count || 0, 
-      icon: Dumbbell, 
-      href: '/admin/typy-zajec',
-      color: 'text-violet-500',
-      bgColor: 'bg-violet-500/10',
-    },
-    { 
-      label: 'Zajecia w grafiku', 
-      value: sessionsResult.count || 0, 
-      icon: Calendar, 
-      href: '/admin/grafik',
-      color: 'text-purple-500',
-      bgColor: 'bg-purple-500/10',
-    },
-    { 
-      label: 'Obozy', 
-      value: campsResult.count || 0, 
-      icon: Tent, 
-      href: '/admin/obozy',
-      color: 'text-teal-500',
-      bgColor: 'bg-teal-500/10',
-    },
-    { 
-      label: 'Produkty', 
-      value: productsResult.count || 0, 
-      icon: ShoppingBag, 
+    {
+      label: 'Produkty',
+      value: productsResult.count || 0,
+      icon: ShoppingBag,
       href: '/admin/produkty',
       color: 'text-pink-500',
       bgColor: 'bg-pink-500/10',
     },
-    { 
-      label: 'Dyscypliny', 
-      value: 6, 
-      icon: Sparkles, 
-      href: '/admin/dyscypliny',
-      color: 'text-cyan-500',
-      bgColor: 'bg-cyan-500/10',
+    {
+      label: 'Zamówienia',
+      value: ordersResult.count || 0,
+      icon: ClipboardList,
+      href: '/admin/zamowienia',
+      color: 'text-blue-500',
+      bgColor: 'bg-blue-500/10',
+    },
+    {
+      label: 'Posty Instagram',
+      value: instagramResult.count || 0,
+      icon: ImageIcon,
+      href: '/admin/instagram',
+      color: 'text-violet-500',
+      bgColor: 'bg-violet-500/10',
     },
   ]
 
@@ -113,7 +69,7 @@ export default async function AdminDashboardPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">
-          Przegladaj statystyki i zarzadzaj trescia strony Air Squad
+          Sklep, zamówienia i Instagram. Treść stron edytuje się w kodzie.
         </p>
       </div>
 
@@ -127,16 +83,16 @@ export default async function AdminDashboardPage() {
               </div>
               <div>
                 <p className="font-medium">
-                  {pendingOrdersResult.count} nowych zamowien do realizacji
+                  {pendingOrdersResult.count} nowych zamówień do realizacji
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Sprawdz i potwierdz zamowienia
+                  Sprawdź i potwierdź zamówienia
                 </p>
               </div>
             </div>
             <Link href="/admin/zamowienia">
               <Button>
-                Zobacz zamowienia
+                Zobacz zamówienia
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

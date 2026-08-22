@@ -4,7 +4,16 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { User } from '@supabase/supabase-js'
-import { Menu, LogOut, User as UserIcon, Bell } from 'lucide-react'
+import {
+  Menu,
+  LogOut,
+  User as UserIcon,
+  Bell,
+  LayoutDashboard,
+  ShoppingBag,
+  ClipboardList,
+  Image,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -18,30 +27,17 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { emailToLogin } from '@/lib/auth-login'
-import { 
-  LayoutDashboard, 
-  MapPin, 
-  Users, 
-  Dumbbell, 
-  Calendar,
-  Tent,
-  ShoppingBag,
-  ClipboardList,
-  Image,
-  Settings,
-} from 'lucide-react'
 
+// Panel obsługuje wyłącznie sklep i Instagram — czyli te tabele, które strona
+// publiczna czyta w przeglądarce, więc zmiana jest widoczna od razu. Lokalizacje,
+// trenerzy, typy zajęć i obozy są zapiekane w buildzie statycznym: klik w panelu
+// nie zmieniłby nic do czasu przebudowy, a wiersz w bazie nadpisuje bogatszy
+// fallback z lib/content/. Treść stron edytuje się w kodzie (docs/04-architektura.md).
 const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard', exact: true },
-  { href: '/admin/lokalizacje', icon: MapPin, label: 'Lokalizacje' },
-  { href: '/admin/trenerzy', icon: Users, label: 'Trenerzy' },
-  { href: '/admin/typy-zajec', icon: Dumbbell, label: 'Typy zajec' },
-  { href: '/admin/grafik', icon: Calendar, label: 'Grafik zajec' },
-  { href: '/admin/obozy', icon: Tent, label: 'Obozy' },
   { href: '/admin/produkty', icon: ShoppingBag, label: 'Produkty' },
-  { href: '/admin/zamowienia', icon: ClipboardList, label: 'Zamowienia' },
+  { href: '/admin/zamowienia', icon: ClipboardList, label: 'Zamówienia' },
   { href: '/admin/instagram', icon: Image, label: 'Instagram' },
-  { href: '/admin/ustawienia', icon: Settings, label: 'Ustawienia' },
 ]
 
 interface AdminHeaderProps {
@@ -131,16 +127,9 @@ export function AdminHeader({ user }: AdminHeaderProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/admin/ustawienia">
-                <Settings className="mr-2 h-4 w-4" />
-                Ustawienia
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
               <LogOut className="mr-2 h-4 w-4" />
-              Wyloguj sie
+              Wyloguj się
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

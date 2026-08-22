@@ -2,34 +2,25 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { 
-  LayoutDashboard, 
-  MapPin, 
-  Users, 
-  Dumbbell, 
-  Calendar,
-  Tent,
+import {
+  LayoutDashboard,
   ShoppingBag,
   ClipboardList,
   Image,
-  Settings,
   ExternalLink,
-  Sparkles
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+// Panel obsługuje wyłącznie sklep i Instagram — czyli te tabele, które strona
+// publiczna czyta w przeglądarce, więc zmiana jest widoczna od razu. Lokalizacje,
+// trenerzy, typy zajęć i obozy są zapiekane w buildzie statycznym: klik w panelu
+// nie zmieniłby nic do czasu przebudowy, a wiersz w bazie nadpisuje bogatszy
+// fallback z lib/content/. Treść stron edytuje się w kodzie (docs/04-architektura.md).
 const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard', exact: true },
-  { href: '/admin/lokalizacje', icon: MapPin, label: 'Lokalizacje' },
-  { href: '/admin/trenerzy', icon: Users, label: 'Trenerzy' },
-  { href: '/admin/typy-zajec', icon: Dumbbell, label: 'Typy zajec' },
-  { href: '/admin/grafik', icon: Calendar, label: 'Grafik zajec' },
-  { href: '/admin/obozy', icon: Tent, label: 'Obozy' },
-  { href: '/admin/dyscypliny', icon: Sparkles, label: 'Dyscypliny' },
   { href: '/admin/produkty', icon: ShoppingBag, label: 'Produkty' },
-  { href: '/admin/zamowienia', icon: ClipboardList, label: 'Zamowienia' },
+  { href: '/admin/zamowienia', icon: ClipboardList, label: 'Zamówienia' },
   { href: '/admin/instagram', icon: Image, label: 'Instagram' },
-  { href: '/admin/ustawienia', icon: Settings, label: 'Ustawienia' },
 ]
 
 export function AdminSidebar() {
