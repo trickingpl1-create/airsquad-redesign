@@ -145,7 +145,8 @@ wstawiają treść uboższą albo wprost fałszywą:
 |---|---|
 | `001_create_tables.sql` | ✅ całość |
 | `002_rls_policies.sql` | ✅ całość — bez RLS rola `anon` nic nie przeczyta |
-| `003_seed_data.sql` | ⚠️ **tylko blok `INSERT INTO products`**. Blok `trainers` wstawia atrapy („Kamil Nowak", „Anna Kowalska"), które zastąpiłyby prawdziwą kadrę na `/trenerzy/` i stronie głównej; `locations` i `camps` są uboższe od fallbacków z `lib/content/hubs.ts` |
+| `003_seed_data.sql` | ❌ **nie uruchamiać** — blok `trainers` wstawia atrapy („Kamil Nowak", „Anna Kowalska"), które zastąpiłyby prawdziwą kadrę na `/trenerzy/` i stronie głównej; `locations` i `camps` są uboższe od fallbacków z `lib/content/hubs.ts` |
+| `003a_seed_products.sql` | ✅ całość — wycięty z `003` blok produktów, jedyne co ze sklepu potrzebuje bazy |
 | `004_seo_tables.sql` | ✅ całość (same tabele, zostają puste) |
 | `005_seed_seo_pages.sql` | ❌ **pomijamy**. Chude `city_pages` skasowałyby sale, kadrę, grafiki grup, FAQ, wideo hero i **ID formularzy AIPAX** — czyli zapisy przestałyby działać |
 
