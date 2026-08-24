@@ -75,6 +75,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    // Historyczne URL-e WordPressa obsługiwane jawnymi trasami (nie przez
+    // `static_pages`), więc nie wejdą tu przez staticPageEntries — patrz
+    // docs/03-mapa-url.md, sekcja „Zachowane URL-e".
+    {
+      url: `${SITE_URL}/zapisy/`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/obozy-sportowe/`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
     {
       url: `${SITE_URL}/sklep/`,
       lastModified: new Date(),

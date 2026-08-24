@@ -1,5 +1,5 @@
 import { getPublicSupabaseClient } from '@/lib/supabase/public'
-import { getCampLandingSlugs } from '@/lib/seo/queries'
+import { getCampLandingSlugs, getCamps, getTrainers } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { HeroSection } from '@/components/home/hero-section'
@@ -23,31 +23,25 @@ export const revalidate = 3600
 export default async function HomePage() {
   const supabase = getPublicSupabaseClient()
 
-  const [trainingTypes, camps, trainers] = supabase
+  // training_types nie ma fallbacku i sekcja świadomie chowa się przy pustych
+  // danych (TrainingTypesSection → return null), bo DisciplinesSection pokazuje
+  // już dyscypliny ze zdjęciami. Trenerzy i obozy idą przez gettery z fallbackiem
+  // — inaczej przy pustej bazie znikała cała sekcja „Zespół".
+  const [trainingTypes] = supabase
     ? await Promise.all([
         supabase
           .from('training_types')
           .select('*')
           .eq('is_active', true)
           .order('display_order'),
-        supabase
-          .from('camps')
-          .select('*')
-          .eq('is_active', true)
-          .eq('is_featured', true)
-          .gte('end_date', new Date().toISOString().split('T')[0])
-          .order('start_date')
-          .limit(2),
-        supabase
-          .from('trainers')
-          .select('*')
-          .eq('is_active', true)
-          .order('display_order')
-          .limit(8),
       ]).then((results) => results.map((result) => result.data ?? []))
-    : [[], [], []]
+    : [[]]
 
-  const campLandingSlugs = await getCampLandingSlugs()
+  const [trainers, camps, campLandingSlugs] = await Promise.all([
+    getTrainers(),
+    getCamps(),
+    getCampLandingSlugs(),
+  ])
 
   return (
     <div className="flex min-h-screen flex-col">

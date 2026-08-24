@@ -146,9 +146,129 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
   updated_at: '',
 }
 
-// Mapa fallbacków dyscyplin po slug (na razie tylko akrobatyka ma pełną treść).
+
+// Pozostałe dyscypliny z chronionych URL-i (docs/03-mapa-url.md): /tricking-akademia/,
+// /tumbling/, /longboardy/. Treść bazowa przeniesiona z scripts/005_seed_seo_pages.sql
+// i uzupełniona faktami z podstron miast — seeda celowo NIE uruchamiamy, bo wiersz
+// z bazy nadpisałby bogatsze fallbacki (patrz docs/04-architektura.md).
+// Wieku nie bierzemy z seeda, tylko z realnych grafików grup w lib/content/cities.ts.
+export const TRICKING_DISCIPLINE: Discipline = {
+  id: 'fallback-tricking',
+  slug: 'tricking-akademia',
+  name: 'Tricking',
+  meta_title: 'Tricking — akrobatyka, sztuki walki i breakdance',
+  meta_description:
+    'Tricking w Air Squad: salta, kopnięcia i kombinacje na matach AirTrack. Grupy naborowe od 9 lat oraz grupa zaawansowana. Rzeszów i Podkarpacie.',
+  h1_title: 'Tricking Akademia',
+  hero_tagline: 'akrobatyka, która wygląda jak film.',
+  hero_image_url: '/images/dyscypliny/tricking.jpg',
+  hero_video_url: null,
+  short_description:
+    'Połączenie akrobatyki z elementami sztuk walki i breakdance’u — widowiskowa forma ruchu dla młodzieży i dorosłych. Uczymy od pierwszego kopnięcia po pełne kombinacje.',
+  full_description: null,
+  age_requirement: 'od 9 lat',
+  benefits: [],
+  stats: [
+    { value: '9+', label: 'wiek startowy w naborze' },
+    { value: '2', label: 'grupy: nabór i zaawansowana' },
+    { value: '2', label: 'trenerów na każdej sali' },
+  ],
+  levels: [
+    { num: '01', title: 'Baza akrobatyczna', desc: 'Przewroty, rundak, przerzuty i bezpieczne lądowania. Bez tego nie ma trików.', tag: 'POZIOM START' },
+    { num: '02', title: 'Kopnięcia i obroty', desc: 'Elementy ze sztuk walki: kopnięcia z obrotu, praca bioder i osi ciała.', tag: 'POZIOM 2' },
+    { num: '03', title: 'Pierwsze triki', desc: 'Połączenie akrobatyki z kopnięciem — moment, w którym tricking zaczyna wyglądać jak tricking.', tag: 'POZIOM 3' },
+    { num: '04', title: 'Kombinacje', desc: 'Łączenie trików w sekwencje, własny styl, nagrania i pokazy.', tag: 'POZIOM PRO' },
+  ],
+  session_flow: [],
+  age_groups: [],
+  gallery: [],
+  faq: [],
+  is_published: true,
+  display_order: 2,
+  created_at: '',
+  updated_at: '',
+}
+
+export const TUMBLING_DISCIPLINE: Discipline = {
+  id: 'fallback-tumbling',
+  slug: 'tumbling',
+  name: 'Tumbling',
+  meta_title: 'Tumbling — skoki na ścieżce akrobatycznej',
+  meta_description:
+    'Tumbling w Air Squad — nauka przewrotów, przerzutów i salt na profesjonalnej ścieżce akrobatycznej. Zajęcia dla dzieci i młodzieży na Podkarpaciu.',
+  h1_title: 'Tumbling',
+  hero_tagline: 'seria skoków na jednym oddechu.',
+  hero_image_url: '/images/old-site/tumbling.jpg',
+  hero_video_url: null,
+  short_description:
+    'Skoki na ścieżce akrobatycznej: nauka przewrotów, przerzutów i salt — od podstaw po zaawansowane akrobacje. Miękka nawierzchnia AirTrack pozwala powtarzać element bez obciążania stawów.',
+  full_description: null,
+  age_requirement: 'od 7 lat',
+  benefits: [],
+  stats: [
+    { value: '12', label: 'maks. osób w grupie' },
+    { value: '2', label: 'trenerów na każdej sali' },
+    { value: '7', label: 'miast na Podkarpaciu' },
+  ],
+  levels: [
+    { num: '01', title: 'Przewroty i mostki', desc: 'Kontrola ciała i bezpieczne lądowanie — fundament każdego skoku.', tag: 'POZIOM START' },
+    { num: '02', title: 'Rundak i przerzuty', desc: 'Pierwsze elementy dynamiczne na ścieżce, zawsze z asekuracją trenera.', tag: 'POZIOM 2' },
+    { num: '03', title: 'Flik-flak', desc: 'Metodyka krok po kroku: z wałka, z pasów, na AirTracku, na parkiet.', tag: 'POZIOM 3' },
+    { num: '04', title: 'Salta i śruby', desc: 'Łączenie elementów w serie — to, po co przychodzi się na tumbling.', tag: 'POZIOM PRO' },
+  ],
+  session_flow: [],
+  age_groups: [],
+  gallery: [],
+  faq: [],
+  is_published: true,
+  display_order: 3,
+  created_at: '',
+  updated_at: '',
+}
+
+export const LONGBOARD_DISCIPLINE: Discipline = {
+  id: 'fallback-longboardy',
+  slug: 'longboardy',
+  name: 'Longboard',
+  meta_title: 'Longboardy — nauka jazdy i pierwsze triki',
+  meta_description:
+    'Longboard z Air Squad — nauka jazdy od podstaw, hamowanie, skręty i pierwsze triki. Deski do wypożyczenia na miejscu. Zajęcia i wyjazdy longboardowe.',
+  h1_title: 'Longboardy',
+  hero_tagline: 'asfalt zamiast maty.',
+  hero_image_url: '/images/old-site/longboard.jpg',
+  hero_video_url: null,
+  short_description:
+    'Nauka jazdy na longboardzie od podstaw do pierwszych trików. Sprzęt mamy na miejscu — na start wystarczysz Ty, reszta jest do wypożyczenia.',
+  full_description: null,
+  age_requirement: 'od 8 lat',
+  benefits: [],
+  stats: [
+    { value: '0', label: 'własnego sprzętu na start' },
+    { value: '2', label: 'trenerów na grupie' },
+  ],
+  levels: [
+    { num: '01', title: 'Pierwsza jazda', desc: 'Postawa, odpychanie, utrzymanie kierunku. I najważniejsze — jak bezpiecznie zejść z deski.', tag: 'POZIOM START' },
+    { num: '02', title: 'Hamowanie i skręty', desc: 'Footbrake, slajd i płynne skręcanie — bez tego nie ma jazdy poza płaskim.', tag: 'POZIOM 2' },
+    { num: '03', title: 'Pierwsze triki', desc: 'Manuale, obroty i praca z deską w ruchu.', tag: 'POZIOM 3' },
+  ],
+  session_flow: [],
+  age_groups: [],
+  gallery: [],
+  faq: [],
+  is_published: true,
+  display_order: 4,
+  created_at: '',
+  updated_at: '',
+}
+
+// Mapa fallbacków dyscyplin po slug. Komplet slugów z sekcji „Zachowane URL-e"
+// docs/03-mapa-url.md — bez nich generateStaticParams ich nie widzi, a w eksporcie
+// statycznym brakująca strona to twarde 404 aż do przebudowy.
 export const FALLBACK_DISCIPLINES: Record<string, Discipline> = {
   akrobatyka: AKROBATYKA_DISCIPLINE,
+  'tricking-akademia': TRICKING_DISCIPLINE,
+  tumbling: TUMBLING_DISCIPLINE,
+  longboardy: LONGBOARD_DISCIPLINE,
 }
 
 // 7 miast do sekcji zapisów. aipax_form_id = placeholder (wspólny formularz);
