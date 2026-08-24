@@ -49,7 +49,7 @@ Każdy typ ma własną tabelę. Brak hierarchii, brak nadbudowanych abstrakcji. 
 locations          → /rzeszow, /debica, ...
 disciplines        → /akrobatyka, /tricking-akademia, ...
 events             → /airmeeting, /letni, /gravityjam
-static_pages       → /zapisy, /airspace, /aktualnosci
+static_pages       → (pusta; /zapisy/, /obozy-sportowe/ i /aktualnosci/ to jawne trasy w app/)
 trainers           → karta trenera (osadzane w stronach miast)
 camps              → karta obozu (osadzane w event)
 products           → /sklep
@@ -67,7 +67,7 @@ Pola SEO (`slug`, `meta_title`, `meta_description`, `h1_title`) są w każdej ta
 | `/rzeszow` (i inne miasta) | `app/[slug]/page.tsx` | tabela `locations` |
 | `/akrobatyka` (i inne dyscypliny) | `app/[slug]/page.tsx` | tabela `disciplines` |
 | `/airmeeting`, `/letni`, `/gravityjam` | `app/[slug]/page.tsx` | tabela `events` |
-| `/zapisy`, `/airspace`, `/aktualnosci` | `app/[slug]/page.tsx` | tabela `static_pages` |
+| `/zapisy/`, `/obozy-sportowe/`, `/aktualnosci/` | jawne trasy w `app/` | treść w kodzie — `static_pages` zostaje pusta |
 | `/sklep` | `app/sklep/page.tsx` | tabela `products` (fetch w przeglądarce) |
 | `/lokalizacje`, `/trenerzy`, `/obozy` | huby w `app/` | `getLocations()` / `getTrainers()` / `getCamps()` z fallbackiem `lib/content/hubs.ts` |
 | `/admin/*` | `admin-app/app/admin/...` | wszystkie tabele (osobna aplikacja, osobny host) |
@@ -85,8 +85,8 @@ Strona Air Squad (Next.js + Supabase)
   ├─ Treści SEO i wizerunek
   ├─ Sklep z merchem
   └─ Embed AIPAX
-       ├─ /zapisy   → iframe formularza
-       └─ /grafik   → iframe kalendarza
+       ├─ /{miasto}/#zapisy → kalendarz per-miasto (realne form-id z cities.ts)
+       └─ /grafik          → rozjazd do podstron miast
                   ↓
               AIPAX
               ├─ Baza uczniów
@@ -95,7 +95,7 @@ Strona Air Squad (Next.js + Supabase)
               └─ Portal rodzica
 ```
 
-URL-e iframe konfigurowane w tabeli `static_pages.content` lub w zmiennej środowiskowej `NEXT_PUBLIC_AIPAX_REGISTRATION_URL` (do ustalenia przed launchem).
+ID formularzy AIPAX żyją w `lib/content/cities.ts` (`aipax_form_id`, `aipax_form_id_continuation`) — po jednym na miasto. `components/aipax-widget.tsx` trzyma jeszcze placeholderowy form-id wspólnego formularza (`5f7b99af-…`) do podmiany przed launchem.
 
 ## Co nie jest częścią architektury
 
@@ -133,6 +133,41 @@ To miejsce na wątpliwości, nie deklaracje. Jeżeli któraś z tych decyzji bol
 - **`next/image` bez optymalizacji** (`images.unoptimized: true`) — eksport statyczny nie ma loadera; zdjęcia trzeba przygotować w docelowym rozmiarze.
 - **Generic catch-all** rozwiązany w jednym `generateStaticParams`, który zbiera wszystkie publiczne slugi przy buildzie.
 - **Client-side fetch tylko tam, gdzie treść musi być świeża** bez rebuildu (`/sklep`, `/media`) — reszta w RSC, zapieczona.
+
+## Skrypty SQL — których NIE uruchamiać
+
+`scripts/00*.sql` to surowe pliki wklejane ręcznie w SQL editorze Supabase.
+**Nie uruchamia się ich w całości.** Gettery działają wg `data ?? FALLBACK`,
+więc wiersz z bazy zawsze wygrywa z treścią w `lib/content/*.ts` — a oba seedy
+wstawiają treść uboższą albo wprost fałszywą:
+
+| Plik | |
+|---|---|
+| `001_create_tables.sql` | ✅ całość |
+| `002_rls_policies.sql` | ✅ całość — bez RLS rola `anon` nic nie przeczyta |
+| `003_seed_data.sql` | ⚠️ **tylko blok `INSERT INTO products`**. Blok `trainers` wstawia atrapy („Kamil Nowak", „Anna Kowalska"), które zastąpiłyby prawdziwą kadrę na `/trenerzy/` i stronie głównej; `locations` i `camps` są uboższe od fallbacków z `lib/content/hubs.ts` |
+| `004_seo_tables.sql` | ✅ całość (same tabele, zostają puste) |
+| `005_seed_seo_pages.sql` | ❌ **pomijamy**. Chude `city_pages` skasowałyby sale, kadrę, grafiki grup, FAQ, wideo hero i **ID formularzy AIPAX** — czyli zapisy przestałyby działać |
+
+Druga pułapka: `data.length > 0 ? data : fallback` — **częściowe dane zastępują
+cały fallback**. Zaseedowanie samych brakujących dyscyplin wyrzuciłoby
+`akrobatyka` z `generateStaticParams`, więc `/akrobatyka/` dostałoby 404.
+
+Konsekwencja: treść SEO żyje w kodzie, a Supabase obsługuje tylko sklep,
+zamówienia, Instagram i logowanie do panelu. Panel i tak nigdy nie miał CRUD-a
+dla `city_pages`, `events` ani `static_pages`.
+
+### Kontrola kompletu chronionych URL-i
+
+```bash
+awk '/^## Zachowane URL-e/,/^## Nowe strony/' docs/03-mapa-url.md \
+  | grep -oE '`/[a-z0-9-]*/`' | tr -d '`' \
+  | while read u; do s=${u#/}; s=${s%/}; \
+      [ -f "out/$s/index.html" ] && echo "OK $u" || echo "BRAK $u"; done
+```
+
+Wszystkie 17 adresów musi dawać „OK". W eksporcie statycznym brakująca strona
+to twarde 404 aż do przebudowy — nie naprawi się sama po dodaniu wiersza do bazy.
 
 ## Deploy strony publicznej
 

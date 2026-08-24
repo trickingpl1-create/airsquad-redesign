@@ -17,13 +17,14 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 - 7 stron miast (`/rzeszow`, `/debica`, `/jaslo`, `/biecz`, `/brzostek`, `/tyczyn`, `/pilzno`)
 - 4 strony dyscyplin (`/akrobatyka`, `/tricking-akademia`, `/tumbling`, `/longboardy`)
 - 3 strony wydarzeń (`/airmeeting`, `/letni`, `/gravityjam`)
-- 4 strony statyczne (`/zapisy`, `/airspace`, `/aktualnosci`, `/polityka-prywatnosci`)
+- Strony `/zapisy/`, `/obozy-sportowe/`, `/aktualnosci/` jako jawne trasy w `app/` (nie przez tabelę `static_pages`)
 - Sitemap.xml generowany dynamicznie z bazy
 - Schema.org: LocalBusiness, Event, Course, BreadcrumbList
 - Meta tags + Open Graph dla wszystkich stron z bazy
 
 ### Panel admina
-- CRUD dla: lokalizacji, trenerów, obozów, produktów sklepu, postów Instagram
+- CRUD dla produktów sklepu, zamówień i postów Instagram — czyli tabel, które strona publiczna czyta w przeglądarce, więc zmiana jest widoczna bez przebudowy
+- Treść stron (miasta, dyscypliny, wydarzenia) **nie ma** CRUD-a i nigdy nie miała — żyje w `lib/content/*.ts` i wymaga przebudowy
 - Logowanie przez Supabase Auth, egzekwowane w `admin-app/proxy.ts` (konto zakładane w Supabase Dashboard, nie w repo)
 - Osobna aplikacja i osobny host — w eksporcie statycznym proxy nie istnieje, więc panel w tym samym buildzie byłby publiczny
 
@@ -47,12 +48,12 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
 
 ### Blokery launchu
-- [ ] Wstawić realne dane kontaktowe (telefon, email, adresy) do `components/layout/footer.tsx`
 - [ ] Założyć konto administratora w Supabase (Authentication → Users → Add user, „Auto Confirm") i **wyłączyć rejestrację własną** — panel nie sprawdza roli, więc każde konto w projekcie ma pełny dostęp
-- [ ] Otrzymać URL-e iframe od AIPAX i podpiąć w `/zapisy` i `/grafik` (komponent `components/iframe-wrapper.tsx` gotowy do użycia)
+- [ ] Podmienić placeholderowy form-id AIPAX w `components/aipax-widget.tsx` (`5f7b99af-…`, ten sam oznaczony jako zaślepka w `lib/content/akrobatyka.ts`). Podstrony miast mają już realne, per-miasto ID w `cities.ts` — brakuje tylko formularza ogólnego
 - [ ] Wgrać realne zdjęcia trenerów (min. 3) i lokalizacji (wszystkie 7) do Supabase Storage
-- [ ] Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200
-- [ ] **Wpisać produkcyjne `NEXT_PUBLIC_SUPABASE_*` do `.env.local`** (i do zmiennych hostingu) — `NEXT_PUBLIC_*` są wkompilowane w JS w momencie builda. Hook `prebuild` blokuje build na zaślepkach, więc pomyłka nie przejdzie po cichu, ale bez realnych wartości nie da się w ogóle zbudować produkcyjnego `out/`
+- [x] ~~Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200~~ — wszystkie 17 obecnych w `out/`; skrypt porównujący w `04-architektura.md`
+- [x] ~~Wpisać produkcyjne `NEXT_PUBLIC_SUPABASE_*`~~ — projekt podłączony, canonicale i sitemapa budują się na `https://airsquad.pl`
+- [ ] **Uruchomić SQL wybiórczo**: `001`, `002`, `004` w całości; z `003` **tylko blok `INSERT INTO products`**; `005` **pomijamy**. Reszta `003` i całe `005` wstawiają treść uboższą albo atrapy trenerów, a wiersz z bazy nadpisuje bogatszy fallback z `lib/content/` — łącznie z ID formularzy AIPAX. Uzasadnienie w `04-architektura.md`
 - [ ] Utworzyć projekt Vercel dla panelu (Root Directory `admin-app`, „Include files outside…" włączone, env Supabase) — kroki w `04-architektura.md`
 - [ ] Podpiąć serwer docelowy: `DEPLOY_HOST` / `DEPLOY_PATH` dla `scripts/deploy.sh` + konfiguracja nginx/Apache z `04-architektura.md`
 
