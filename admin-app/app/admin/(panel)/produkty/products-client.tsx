@@ -225,7 +225,7 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
     },
     {
       key: 'stock',
-      header: 'Dostepnosc',
+      header: 'Dostępność',
       cell: (product) => (
         <Badge
           variant={
@@ -283,21 +283,21 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Produkty</h1>
-        <p className="text-muted-foreground">Zarzadzaj produktami w sklepie</p>
+        <p className="text-muted-foreground">Zarządzaj produktami w sklepie</p>
       </div>
 
       <DataTable
         data={products}
         columns={columns}
         searchKey="name"
-        searchPlaceholder="Szukaj produktow..."
+        searchPlaceholder="Szukaj produktów..."
         onAdd={() => {
           resetForm()
           setEditingProduct(null)
           setFormOpen(true)
         }}
         addLabel="Dodaj produkt"
-        emptyTitle="Brak produktow"
+        emptyTitle="Brak produktów"
         emptyDescription="Dodaj pierwszy produkt do sklepu."
       />
 
@@ -415,7 +415,7 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="stock_status">Dostepnosc</FieldLabel>
+                <FieldLabel htmlFor="stock_status">Dostępność</FieldLabel>
                 <Select
                   value={formData.stock_status}
                   onValueChange={(value: 'available' | 'low' | 'out_of_stock') => setFormData({ ...formData, stock_status: value })}
@@ -463,9 +463,9 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Usunac produkt?</AlertDialogTitle>
+            <AlertDialogTitle>Usunąć produkt?</AlertDialogTitle>
             <AlertDialogDescription>
-              Czy na pewno chcesz usunac produkt &quot;{deletingProduct?.name}&quot;?
+              Czy na pewno chcesz usunąć produkt &quot;{deletingProduct?.name}&quot;?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

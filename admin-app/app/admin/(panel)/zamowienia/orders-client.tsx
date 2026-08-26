@@ -119,7 +119,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
     }
 
     setOrders((prev) => prev.filter((o) => o.id !== deletingOrder.id))
-    toast.success('Zamowienie usuniete')
+    toast.success('Zamówienie usunięte')
     setDeleteDialogOpen(false)
     setDeletingOrder(null)
   }
@@ -127,7 +127,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
   const columns: Column<OrderWithLocation>[] = [
     {
       key: 'order',
-      header: 'Zamowienie',
+      header: 'Zamówienie',
       cell: (order) => (
         <div>
           <p className="font-medium">{order.order_number}</p>
@@ -152,7 +152,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
         const items = order.items as OrderItem[]
         return (
           <span className="text-muted-foreground">
-            {items.length} {items.length === 1 ? 'produkt' : 'produktow'}
+            {items.length} {items.length === 1 ? 'produkt' : 'produktów'}
           </span>
         )
       },
@@ -222,8 +222,8 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Zamowienia</h1>
-        <p className="text-muted-foreground">Zarzadzaj zamowieniami ze sklepu</p>
+        <h1 className="text-3xl font-bold tracking-tight">Zamówienia</h1>
+        <p className="text-muted-foreground">Zarządzaj zamówieniami ze sklepu</p>
       </div>
 
       <DataTable
@@ -231,15 +231,15 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
         columns={columns}
         searchKey="customer_name"
         searchPlaceholder="Szukaj po nazwisku klienta..."
-        emptyTitle="Brak zamowien"
-        emptyDescription="Zamowienia pojawia sie tutaj automatycznie."
+        emptyTitle="Brak zamówień"
+        emptyDescription="Zamówienia pojawią się tutaj automatycznie."
       />
 
       {/* Order Details Dialog */}
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Zamowienie {selectedOrder?.order_number}</DialogTitle>
+            <DialogTitle>Zamówienie {selectedOrder?.order_number}</DialogTitle>
             <DialogDescription>
               {selectedOrder && formatDate(selectedOrder.created_at)}
             </DialogDescription>
@@ -321,7 +321,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
 
               {/* Status */}
               <div className="rounded-lg border p-4 space-y-3">
-                <h3 className="font-semibold">Status zamowienia</h3>
+                <h3 className="font-semibold">Status zamówienia</h3>
                 <Select
                   value={selectedOrder.status}
                   onValueChange={(value) => handleStatusChange(selectedOrder.id, value)}
@@ -352,9 +352,9 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Usunac zamowienie?</AlertDialogTitle>
+            <AlertDialogTitle>Usunąć zamówienie?</AlertDialogTitle>
             <AlertDialogDescription>
-              Czy na pewno chcesz usunac zamowienie &quot;{deletingOrder?.order_number}&quot;?
+              Czy na pewno chcesz usunąć zamówienie &quot;{deletingOrder?.order_number}&quot;?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

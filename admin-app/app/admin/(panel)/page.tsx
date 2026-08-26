@@ -123,9 +123,9 @@ export default async function AdminDashboardPage() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle>Ostatnie zamowienia</CardTitle>
+            <CardTitle>Ostatnie zamówienia</CardTitle>
             <CardDescription>
-              {ordersResult.count || 0} zamowien lacznie
+              {ordersResult.count || 0} zamówień łącznie
             </CardDescription>
           </div>
           <Link href="/admin/zamowienia">
@@ -174,7 +174,7 @@ export default async function AdminDashboardPage() {
           ) : (
             <div className="flex flex-col items-center justify-center py-8 text-center">
               <ClipboardList className="mb-4 h-12 w-12 text-muted-foreground/50" />
-              <p className="text-muted-foreground">Brak zamowien</p>
+              <p className="text-muted-foreground">Brak zamówień</p>
             </div>
           )}
         </CardContent>

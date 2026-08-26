@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { OrdersClient } from './orders-client'
 
 export const metadata = {
-  title: 'Zamowienia',
+  title: 'Zamówienia',
 }
 
 export default async function OrdersPage() {
