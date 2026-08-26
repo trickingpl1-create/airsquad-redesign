@@ -15,6 +15,13 @@ type SectionHeaderProps = {
   titleFontWeight?: number
   /** Optional fontWeight for gradient part */
   gradientFontWeight?: number
+  /**
+   * Poziom nagłówka. Domyślnie 'h2' — nagłówek sekcji.
+   * 'h1' tylko tam, gdzie ten komponent jest JEDYNYM nagłówkiem strony
+   * (np. /sklep) — każda podstrona musi mieć dokładnie jeden h1
+   * (docs/02-plan-seo.md).
+   */
+  as?: 'h1' | 'h2'
 }
 
 export function SectionHeader({
@@ -26,6 +33,7 @@ export function SectionHeader({
   className,
   titleFontWeight,
   gradientFontWeight,
+  as: Heading = 'h2',
 }: SectionHeaderProps) {
   return (
     <div
@@ -43,10 +51,10 @@ export function SectionHeader({
         >
           {kicker}
         </p>
-        <h2 className="display-bold mt-3 text-balance text-4xl text-foreground md:text-5xl lg:text-6xl">
+        <Heading className="display-bold mt-3 text-balance text-4xl text-foreground md:text-5xl lg:text-6xl">
           <span style={titleFontWeight ? { fontWeight: titleFontWeight } : undefined}>{title}</span>{' '}
           <span className="gradient-text" style={gradientFontWeight ? { fontWeight: gradientFontWeight } : undefined}>{gradientPart}</span>
-        </h2>
+        </Heading>
       </div>
       {meta && (
         <p className="max-w-xs font-mono text-xs text-muted-foreground md:text-right">
