@@ -3,10 +3,11 @@
 // żeby konwersja była w jednym miejscu — i formularz, i wyświetlanie nazwy
 // zalogowanego użytkownika muszą się jej trzymać.
 //
-// Konsekwencja: konto w Supabase MUSI mieć adres <login>@airsquad.pl
-// (Authentication → Users → Add user, z zaznaczonym „Auto Confirm User").
-// Wpisanie pełnego adresu nadal działa — konta założone wcześniej na innej
-// domenie logują się bez zmian.
+// Konto w Supabase może mieć dowolny adres (Authentication → Users → Add user,
+// z zaznaczonym „Auto Confirm User"). Jeśli jest na domenie airsquad.pl,
+// wystarczy sama nazwa użytkownika. Na każdej innej domenie — np. koncie
+// gmail — w polu logowania trzeba wpisać PEŁNY adres; wtedy doklejanie
+// domeny się nie uruchamia.
 export const LOGIN_DOMAIN = 'airsquad.pl'
 
 /** „jankowalski" → „jankowalski@airsquad.pl"; pełny adres zostaje bez zmian. */

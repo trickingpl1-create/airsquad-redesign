@@ -26,7 +26,8 @@ export default function AdminLoginPage() {
 
     const supabase = createClient()
 
-    // Supabase przyjmuje tylko adres e-mail — pole „Login" mapujemy
+    // Supabase przyjmuje tylko adres e-mail. Krótki login dostaje doklejoną
+    // domenę, pełny adres przechodzi bez zmian — patrz lib/auth-login.ts
     // na <login>@airsquad.pl (lib/auth-login.ts).
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email: loginToEmail(login),
@@ -65,7 +66,7 @@ export default function AdminLoginPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="login">Login</Label>
+              <Label htmlFor="login">Login lub e-mail</Label>
               <Input
                 id="login"
                 type="text"
@@ -73,7 +74,7 @@ export default function AdminLoginPage() {
                 autoCapitalize="none"
                 autoCorrect="off"
                 spellCheck={false}
-                placeholder="nazwa użytkownika"
+                placeholder="login albo pełny adres e-mail"
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
                 required
