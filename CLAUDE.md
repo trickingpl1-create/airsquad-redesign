@@ -10,7 +10,7 @@ Air Squad (airsquad.pl) — redesign strony klubu akrobatyki/trickingu, Next.js 
 
 | Katalog | Co to | Build | Hosting |
 |---|---|---|---|
-| `airsquad-web/` (root) | publiczna strona, **w pełni statyczna** (`output: 'export'`) | `npm run build` → `out/` | zwykły serwer plików (nginx/Apache), bez Node.js |
+| `airsquad-web/` (root) | publiczna strona, **w pełni statyczna** (`output: 'export'`) | `npm run build` → `out/` | cyber-folks (Apache/LiteSpeed), wdrożenie przez FTPS — `./scripts/deploy-ftp.sh staging`. Wersja testowa: **new.airsquad.pl** |
 | `airsquad-web/admin-app/` | panel `/admin/*`, aplikacja serwerowa (SSR + proxy auth) | `npm run build` w `admin-app/` | Vercel, osobny projekt `airsquad-admin` (deploy: `cd admin-app && vercel --prod`; dev na `--webpack`, patrz niżej) |
 
 **Panel w dev musi chodzić na webpacku** (`npm run dev` w `admin-app/` ma już `--webpack`). Turbopack panikuje przy kompilacji `/admin/(panel)/page`, bo tnie nazwę zawierającą `TWÓRCZOŚĆ` w środku znaku UTF-8. Nie przełączaj z powrotem — szczegóły i trwałe rozwiązanie w `docs/04-architektura.md`. Produkcji to nie dotyczy.
@@ -32,11 +32,13 @@ git pull origin main
 Strona publiczna (katalog główny repo):
 
 ```bash
-npm run dev              # dev server, domyślnie :3000 (w tej sesji podgląd chodzi na :2003 — patrz ../.claude/launch.json)
+npm run dev -- -p 2003   # dev server (konfiguracja „airsquad-web" w ../.claude/launch.json)
 npm run build             # eksport statyczny → out/ (uwaga: typescript.ignoreBuildErrors=true — build NIE wychwytuje błędów typów)
 npx tsc --noEmit             # jedyny sposób realnej weryfikacji typów, bo build ich nie sprawdza
 npx serve out                 # podgląd gotowego out/ (konfiguracja „airsquad-out" na :2004)
-./scripts/deploy.sh            # build + rsync na serwer (DEPLOY_HOST, DEPLOY_PATH; --dry-run)
+./scripts/deploy-ftp.sh staging --dry-run   # pokazuje, co poszłoby na serwer
+./scripts/deploy-ftp.sh staging             # build + synchronizacja FTPS na new.airsquad.pl
+# scripts/deploy.sh (rsync/SSH) NIE DZIAŁA — port 22 na hostingu jest zamknięty
 ```
 
 **Build jest zablokowany na lokalnym/placeholderowym env.** Hook `prebuild`
@@ -76,13 +78,15 @@ Bez hierarchii, bez wspólnej abstrakcji SEO — pola `slug`/`meta_title`/`meta_
 ### Eksport statyczny — czego NIE wolno dodawać do strony publicznej
 `next.config.mjs` ma `output: 'export'`. Nie ma serwera, więc **nie działają**: route handlery `/api/*`, Server Actions, middleware/proxy, `cookies()`/`headers()` w komponentach serwerowych, ISR i render on-demand. Każdy URL musi być znany w czasie builda przez `generateStaticParams` — slug dodany w bazie po buildzie daje 404 aż do przebudowy. Wszystko, co ma być świeże bez rebuildu, pobiera dane **w przeglądarce** (`lib/supabase/client.ts`) — wzorzec: `/sklep` i `/media`.
 
+Sklep nie ma płatności online i nie będzie ich miał w tej fazie: klient płaci trenerowi przy odbiorze. Teksty o tym żyją w `lib/content/shop.ts` (jedno miejsce, bez literałów w JSX), a `admin-app` ma ich kopię, bo nie może importować spoza swojego katalogu. Sposób płatności to stała modelu biznesowego — **nie** kolumna w `orders`.
+
 `NEXT_PUBLIC_*` są wkompilowane w JS w momencie builda — build z placeholderowym `.env.local` wypuszcza sitemapę i canonicale z `http://localhost:3000`.
 
 ### Routing: jeden catch-all rozwiązuje kaskadę typów
 `app/[slug]/page.tsx` (`revalidate = 3600` — martwe przy eksporcie statycznym, zostaje na wypadek powrotu na Vercela) woła `resolveRootSlug(slug)` z `lib/seo/queries.ts`, które sprawdza po kolei: **miasto → dyscyplina → wydarzenie → strona statyczna**, i renderuje pierwszy trafiony typ. To pozwala trzymać historyczne, płaskie URL-e WordPressa (`/rzeszow/`, `/akrobatyka/`, `/airmeeting/`) bez przenoszenia ich pod nowe huby typu `/lokalizacje/rzeszow/`. `generateStaticParams` zbiera sloty ze wszystkich 4 getterów naraz.
 
-### Fallback content pattern (krytyczne, bo baza jest obecnie placeholderem)
-Część treści istnieje jako statyczne fallbacki w `lib/content/*.ts` (`cities.ts`, `akrobatyka.ts`, `letni.ts`). Query zawsze wygląda tak: `data ?? FALLBACK[slug] ?? null` — dane z Supabase, jeśli są, zawsze nadpisują fallback; fallback istnieje tylko żeby strona działała, zanim baza zostanie realnie wypełniona. Przy dodawaniu nowego typu treści z fallbackiem trzymaj się tego wzorca (patrz `getCityPage`/`getCityPages` w `lib/seo/queries.ts` jako referencja).
+### Fallback content pattern (krytyczne — baza jest celowo w większości pusta)
+Część treści istnieje jako statyczne fallbacki w `lib/content/*.ts` (`cities.ts`, `akrobatyka.ts`, `letni.ts`). Query zawsze wygląda tak: `data ?? FALLBACK[slug] ?? null` — dane z Supabase, jeśli są, zawsze nadpisują fallback; fallback nie jest tymczasowy: seedy `003`/`005` są **świadomie pominięte**, bo wstawiają treść uboższą od tej w kodzie, więc tabele treści zostają puste i to fallback jest realnym źródłem. Wypełniona jest tylko tabela `products`. Przy dodawaniu nowego typu treści z fallbackiem trzymaj się tego wzorca (patrz `getCityPage`/`getCityPages` w `lib/seo/queries.ts` jako referencja).
 
 ### Dwa klienty Supabase — nie mieszać
 - `lib/supabase/public.ts` (`getPublicSupabaseClient`) — bez cookies, do treści zapiekanej w buildzie (strony `[slug]`, strona główna, huby, sitemapa). **Jedyny** klient serwerowy dozwolony w aplikacji publicznej: `cookies()` wywala eksport statyczny.
@@ -101,8 +105,10 @@ Zapisy, grafik zajęć, płatności za zajęcia, portal rodzica i frekwencja to 
 ### Typografia display (konwencja — decyzja użytkownika 2026-07-11)
 Nagłówki ozdobne używają klasy `display-bold` (font odręczny „Covered By Your Grace"; klasa ustawia font-weight 800 = sztuczne pogrubienie jednowagowego fontu). Przy tworzeniu NOWYCH treści duże nagłówki (hero H1, tytuły sekcji) zawsze ściągaj do wagi **400**: `style={{ fontWeight: 400 }}` na elemencie albo `titleFontWeight={400}` + `gradientFontWeight={400}` na `SectionHeader`. Mniejsze tytuły kart bywają na 500 (wzorzec: `components/home/pricing-section.tsx`).
 
+**Dlaczego trzeba to robić ręcznie za każdym razem:** sama klasa `.display-bold` ma w `app/globals.css` `font-weight: 800`, a `.display-italic` 900. Każdy nagłówek bez jawnego `style={{ fontWeight }}` renderuje się więc faux-boldem — to nie jest wybór autora, tylko domyślne zachowanie klasy.
+
 ### Panel admina — osobna aplikacja
-`admin-app/` — CRUD dla lokalizacji/trenerów/obozów/produktów/postów IG pod `/admin/*`, chroniony przez `admin-app/proxy.ts` (konwencja proxy Next 16, dawne middleware). Autoryzacja to **Supabase Auth** — `signInWithPassword` na stronie logowania, `supabase.auth.getUser()` w proxy i w layoucie panelu. Loginu ani hasła nie ma w repo: to użytkownik z tabeli Auth w projekcie Supabase, zakładany w jego panelu. **Nie ma sprawdzania roli** — wystarczy dowolne konto w tym projekcie Supabase, więc rejestracja własna musi zostać w Supabase wyłączona. Panel **musi** zostać aplikacją serwerową: w eksporcie statycznym proxy nie istnieje, więc `out/admin/*/index.html` byłyby publicznymi plikami dostępnymi bez logowania.
+`admin-app/` — pod `/admin/*`: **produkty, zamówienia, posty IG** plus dwa podglądy (`/admin/podglad-sklepu`, `/admin/podglad-zamowienia`), chroniony przez `admin-app/proxy.ts` (konwencja proxy Next 16, dawne middleware). Autoryzacja to **Supabase Auth** — `signInWithPassword` na stronie logowania, `supabase.auth.getUser()` w proxy i w layoucie panelu. Loginu ani hasła nie ma w repo: to użytkownik z tabeli Auth w projekcie Supabase, zakładany w jego panelu. **Nie ma sprawdzania roli** — wystarczy dowolne konto w tym projekcie Supabase, więc rejestracja własna musi zostać w Supabase wyłączona. Panel **musi** zostać aplikacją serwerową: w eksporcie statycznym proxy nie istnieje, więc `out/admin/*/index.html` byłyby publicznymi plikami dostępnymi bez logowania.
 
 Panel ma własną kopię prymitywów `components/ui/*` (vendorowany shadcn — normalny model tego narzędzia, każda aplikacja ma swój rejestr). Współdzielone są tylko typy bazy. Zmiana w `components/ui/*` po stronie publicznej **nie** propaguje się do panelu i odwrotnie.
 

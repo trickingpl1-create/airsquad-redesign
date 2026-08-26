@@ -14,7 +14,7 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 - Domena: do podpięcia przed launchem
 
 ### Treść i SEO
-- 7 stron miast (`/rzeszow`, `/debica`, `/jaslo`, `/biecz`, `/brzostek`, `/tyczyn`, `/pilzno`)
+- 6 stron miast (`/rzeszow`, `/debica`, `/jaslo`, `/biecz`, `/brzostek`, `/pilzno`). Tyczyn wycofany — zajęcia zawieszone, adres przekierowany 301 na `/rzeszow/`, szczegóły w `03-mapa-url.md`
 - 4 strony dyscyplin (`/akrobatyka`, `/tricking-akademia`, `/tumbling`, `/longboardy`)
 - 3 strony wydarzeń (`/airmeeting`, `/letni`, `/gravityjam`)
 - Strony `/zapisy/`, `/obozy-sportowe/`, `/aktualnosci/` jako jawne trasy w `app/` (nie przez tabelę `static_pages`)
@@ -25,11 +25,15 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 ### Panel admina
 - CRUD dla produktów sklepu, zamówień i postów Instagram — czyli tabel, które strona publiczna czyta w przeglądarce, więc zmiana jest widoczna bez przebudowy
 - Treść stron (miasta, dyscypliny, wydarzenia) **nie ma** CRUD-a i nigdy nie miała — żyje w `lib/content/*.ts` i wymaga przebudowy
+- **Podgląd sklepu** (`/admin/podglad-sklepu`) i **podgląd całej ścieżki zamówienia** (`/admin/podglad-zamowienia`) — osoba prowadząca sklep widzi, co zobaczy klient, zamiast wierszy tabeli. W oknie edycji produktu podgląd kafelka i okna szczegółów, karmiony formularzem na żywo
 - Logowanie przez Supabase Auth, egzekwowane w `admin-app/proxy.ts` (konto zakładane w Supabase Dashboard, nie w repo)
 - Osobna aplikacja i osobny host — w eksporcie statycznym proxy nie istnieje, więc panel w tym samym buildzie byłby publiczny
 
 ### Sklep
 - Lista produktów z bazy, koszyk w localStorage, formularz zamówienia
+- Wygląd w języku wizualnym reszty serwisu (`SectionHeader`, karty `rounded-3xl`, pigułki kategorii zamiast `Tabs`)
+- **Płatność u trenera przy odbiorze** — komunikowana w koszyku, w formularzu przy kwocie i na potwierdzeniu. Treści w `lib/content/shop.ts`, w jednym miejscu. Sposób płatności to stała modelu biznesowego, nie kolumna w `orders`
+- `stock_status` wreszcie coś robi: `low` daje pigułkę „Ostatnie sztuki", `out_of_stock` blokuje zakup
 - Bez płatności online (faza druga)
 
 ## Co NIE jest zrobione i NIE BĘDZIE w tym projekcie
@@ -48,16 +52,21 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
 
 ### Blokery launchu
-- [ ] Założyć konto administratora w Supabase (Authentication → Users → Add user, „Auto Confirm") i **wyłączyć rejestrację własną** — panel nie sprawdza roli, więc każde konto w projekcie ma pełny dostęp
+- [ ] **Założyć konto administratora w Supabase** — `klub.airsquad@gmail.com`, Authentication → Users → Add user, z „Auto Confirm User". Panel dokleja `@airsquad.pl` tylko do loginu bez małpy, więc pełny adres wpisuje się w całości (`admin-app/lib/auth-login.ts`)
+- [ ] **Wyłączyć rejestrację własną** (Authentication → Providers → Email → „Enable signup") — panel nie sprawdza roli, więc **każde** konto założone w tym projekcie Supabase dostaje pełny dostęp do `/admin/*`. Przy publicznym adresie panelu to jedyna rzecz z tej listy, która jest realnym problemem bezpieczeństwa, a nie wygody
 - [ ] Podmienić placeholderowy form-id AIPAX w `components/aipax-widget.tsx` (`5f7b99af-…`, ten sam oznaczony jako zaślepka w `lib/content/akrobatyka.ts`). Podstrony miast mają już realne, per-miasto ID w `cities.ts` — brakuje tylko formularza ogólnego
-- [ ] Wgrać realne zdjęcia trenerów (min. 3) i lokalizacji (wszystkie 7) do Supabase Storage
-- [x] ~~Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200~~ — wszystkie 17 obecnych w `out/`; skrypt porównujący w `04-architektura.md`
+- [ ] Wgrać realne zdjęcia trenerów (min. 3) i lokalizacji (wszystkie 6) do Supabase Storage
+- [x] ~~Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200~~ — komplet obecny w `out/`; skrypt porównujący w `04-architektura.md`. Wyjątki świadome: `/tyczyn/` wycofany z 301 na `/rzeszow/`, `/zajecia/` to proponowany hub, który nigdy nie istniał
 - [x] ~~Wpisać produkcyjne `NEXT_PUBLIC_SUPABASE_*`~~ — projekt podłączony, canonicale i sitemapa budują się na `https://airsquad.pl`
 - [x] ~~**Uruchomić SQL w kolejności `001` → `002` → `003a` → `004`.**~~ — wykonane; 13 tabel odpowiada, `products` ma 6 wierszy, reszta pusta (treść z fallbacków), RLS zweryfikowane (odczyt `orders` przez `anon` zablokowany, zapis przechodzi).
   `003_seed_data.sql` i `005_seed_seo_pages.sql` celowo pominięte — wstawiają treść uboższą albo atrapy trenerów, a wiersz z bazy nadpisuje bogatszy fallback z `lib/content/`, łącznie z ID formularzy AIPAX. Uzasadnienie w `04-architektura.md`
 - [x] ~~Utworzyć projekt Vercel dla panelu~~ — projekt `airsquad-admin` założony, zmienne Supabase ustawione; panel uniezależniony od katalogu nadrzędnego i wdrażany z CLI (`cd admin-app && vercel --prod`). Zostało samo wywołanie deployu.
-- [ ] **Wpisać realne `NEXT_PUBLIC_SUPABASE_*` w Production projektu `airsquad-web`** — dziś puste stringi, po merge'u sklep na produkcji byłby martwy (Preview i Development już poprawione)
-- [ ] Podpiąć serwer docelowy: `DEPLOY_HOST` / `DEPLOY_PATH` dla `scripts/deploy.sh` + konfiguracja nginx/Apache z `04-architektura.md`
+- [x] ~~**Wpisać realne `NEXT_PUBLIC_SUPABASE_*` w Production projektu `airsquad-web`**~~ — poprawione we wszystkich trzech środowiskach (Production, Preview `static-export`, Development). Były tam **puste stringi**, nie placeholdery; przy pustych sklep i feed IG są martwe, bo czyta je przeglądarka. Wartości Production i Preview są oznaczone jako sensitive, więc `vercel env pull` zwraca dla nich pustkę — to nie znaczy, że są puste
+- [x] ~~Podpiąć serwer docelowy~~ — wdrożenie przez FTPS na cyber-folks (`scripts/deploy-ftp.sh`). Port 22 zamknięty, więc `deploy.sh` na rsync odpada. Wersja testowa stoi na **new.airsquad.pl**
+- [ ] **Włączyć Let's Encrypt dla `new.airsquad.pl`** — DirectAdmin → SSL Certificates → zaznaczyć subdomenę. Dziś serwer podaje certyfikat wystawiony na `airsquad.pl`, więc przeglądarka ostrzega przed niezabezpieczonym połączeniem
+- [ ] **Wdrożyć panel**: `cd admin-app && vercel --prod`
+- [ ] Usunąć testowe zamówienie `TEST-RLS-PROBE` z tabeli `orders`
+- [ ] Poprawić opisy produktów w panelu — dane z seeda są bez polskich znaków („bawelna", „Ciepla", „cwiczen")
 
 ### Ważne, ale nie blokujące
 - [ ] Podpiąć email service (Resend) do formularza kontaktowego i zamówień ze sklepu

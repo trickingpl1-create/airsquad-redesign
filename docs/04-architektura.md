@@ -173,12 +173,52 @@ to twarde 404 aż do przebudowy — nie naprawi się sama po dodaniu wiersza do 
 ## Deploy strony publicznej
 
 ```bash
-DEPLOY_HOST=user@serwer DEPLOY_PATH=/var/www/airsquad ./scripts/deploy.sh
-./scripts/deploy.sh --dry-run     # pokazuje, co poszłoby na serwer
+./scripts/deploy-ftp.sh staging --dry-run   # pokazuje, co poszłoby na serwer
+./scripts/deploy-ftp.sh staging             # wysyła na new.airsquad.pl
 ```
 
-Skrypt buduje i wysyła `out/` przez `rsync --delete`. Sam `npm run build` też
-wystarcza — `out/` wgrywa się dowolnym narzędziem.
+Hosting to cyber-folks (ProFTPD, DirectAdmin). **Port 22 jest zamknięty**, więc
+`scripts/deploy.sh` oparty na rsync przez SSH nie ma jak zadziałać — został
+w repo tylko na wypadek przeprowadzki na hosting z SSH i ma o tym adnotację
+w nagłówku. Wdrażamy przez FTPS na porcie 21.
+
+Konfiguracja hosta w `.deploy-target` (gitignored), hasło w `~/.netrc`
+(chmod 600). Format i uzasadnienie — w komentarzu na górze `deploy-ftp.sh`.
+
+**Trzy rzeczy, które nie są oczywiste i już raz kosztowały pół dnia:**
+
+1. `lftp` nie czyta `~/.netrc`, jeśli nie poda mu się nazwy użytkownika —
+   próbuje logowania anonimowego i zwraca `530 Login incorrect`, identycznie
+   jak przy złym haśle. Skrypt czyta netrc sam.
+2. Serwer wysyła **niekompletny łańcuch certyfikatów**, bez pośredniego CA.
+   `curl` to nadrabia, `lftp` kończy na „unable to get local issuer certificate".
+   Skrypt buduje własny magazyn w `.certs/`, dociągając brakujące ogniwo
+   z adresu w rozszerzeniu AIA certyfikatu serwera. Wyłączenie weryfikacji
+   byłoby prostsze i odbierałoby ochronę przed podstawieniem serwera.
+3. Kilka plików w `public/` miało uprawnienia 600. FTP je zachowuje, Apache
+   działa jako inny użytkownik i zwracał **403 na wszystkie grafiki** — strona
+   ładowała się bez logo i zdjęć, co wyglądało jak błąd budowania.
+   `make-deploy-zip.sh` normalizuje teraz `out/` (644/755) i przerywa, gdy
+   cokolwiek zostanie nieczytelne; `deploy-ftp.sh` używa `--perms`, bo bez tego
+   `mirror` pomija pliki o niezmienionej treści i nigdy by ich nie poprawił.
+
+**Blokada wyjścia poza staging.** Cel `staging` musi kończyć się na `new`.
+Pod `domains/airsquad.pl/public_html` stoi żywy WordPress klubu, a `mirror
+--delete` skasowałby go bez pytania. Konto FTP użyte do wdrożeń widzi całą
+domenę, więc ten warunek jest jedyną rzeczą między literówką w konfiguracji
+a utratą produkcji.
+
+Alternatywa bez FTP — paczka do wgrania ręcznie przez menedżer plików:
+
+```bash
+./scripts/make-deploy-zip.sh staging      # noindex
+./scripts/make-deploy-zip.sh production   # bez noindex
+```
+
+`.htaccess` powstaje w tym skrypcie, a **nie** leży w `public/` — `public/`
+trafia do każdego builda, więc plik z `noindex` wyjechałby też na produkcję
+i wyindeksował ją z Google. Skrypt przerywa, gdyby `noindex` trafił do paczki
+produkcyjnej albo zniknął z testowej.
 
 `npm run build` odpala hook `prebuild` → `scripts/check-build-env.mjs`, który
 **zatrzymuje build**, gdy env jest lokalny lub placeholderowy. Bez tego łatwo
