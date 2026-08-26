@@ -153,11 +153,10 @@ export function CampsSection({ camps, landingSlugs }: CampsSectionProps) {
               <h3 className="display-bold mt-3 text-3xl text-foreground md:text-4xl">
                 {featured.name}
               </h3>
-              {featured.description && (
-                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
-                  {featured.description}
-                </p>
-              )}
+              {/* Bez akapitu opisu — decyzja użytkownika. Sekcja ma zostać
+                  plakatowa jak w pierwszej wersji, a karta ma podawać wyłącznie
+                  termin i cenę. Pełny opis obozu jest na jego landingu, dokąd
+                  prowadzi „Szczegóły turnusu". */}
               <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
                 {featured.price && (
                   <div>
