@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { isWithdrawnLocation } from '@/lib/content/withdrawn-locations'
 import Link from 'next/link'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 
 // Chipy miast — zapisy dzieci idą przez kalendarze AIPAX na podstronach
 // (chronione root-slugi SEO), nie przez formularz kontaktowy.
-const CITY_CHIPS = [
+const ALL_CITY_CHIPS = [
   { city: 'Rzeszów', slug: '/rzeszow/' },
   { city: 'Dębica', slug: '/debica/' },
   { city: 'Jasło', slug: '/jaslo/' },
@@ -23,6 +24,11 @@ const CITY_CHIPS = [
   { city: 'Pilzno', slug: '/pilzno/' },
   { city: 'Tyczyn', slug: '/tyczyn/' },
 ] as const
+
+// Wycofane lokalizacje znikają z listy, ale ich strony zostają pod adresami.
+const CITY_CHIPS = ALL_CITY_CHIPS.filter(
+  (chip) => !isWithdrawnLocation(chip.slug.replaceAll('/', ''))
+)
 
 const SOCIALS = [
   { label: 'Instagram', href: 'https://instagram.com/airsquad_akrobatyka' },

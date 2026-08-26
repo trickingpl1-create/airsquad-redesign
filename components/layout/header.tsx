@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { isWithdrawnLocation } from '@/lib/content/withdrawn-locations'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { Menu, X, ShoppingBag, Moon, Sun, ChevronDown } from 'lucide-react'
@@ -27,7 +28,9 @@ const cityLinks = [
   { href: '/brzostek', label: 'Brzostek' },
   { href: '/pilzno', label: 'Pilzno' },
   { href: '/tyczyn', label: 'Tyczyn' },
-]
+  // Wycofane lokalizacje odpadają niżej. Strony zostają pod adresami —
+  // to chronione URL-e z docs/03-mapa-url.md.
+].filter((city) => !isWithdrawnLocation(city.href.replaceAll('/', '')))
 
 type NavLink =
   | { href: string; label: string }

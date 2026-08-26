@@ -16,6 +16,7 @@ import {
 } from '@/lib/content/akrobatyka'
 import { FALLBACK_EVENTS } from '@/lib/content/letni'
 import { FALLBACK_CITY_PAGES } from '@/lib/content/cities'
+import { isWithdrawnLocation } from '@/lib/content/withdrawn-locations'
 import {
   FALLBACK_CAMPS,
   FALLBACK_LOCATIONS,
@@ -51,7 +52,17 @@ export async function getCityPage(slug: string): Promise<CityPage | null> {
 export async function getCityPages(): Promise<CityPage[]> {
   const fallback = Object.values(FALLBACK_CITY_PAGES)
   const supabase = getSupabaseClient()
-  if (!supabase) return fallback
+
+  // Jedyne wąskie gardło stron miast: karmi sitemapę oraz generateStaticParams
+  // w app/[slug] i app/lokalizacje/[slug]. Odcięcie wycofanych lokalizacji tutaj
+  // sprawia, że ich strony przestają się budować, znikają z sitemapy i przestają
+  // się rozwiązywać — a rekord zostaje w lib/content/cities.ts, więc przywrócenie
+  // to usunięcie jednego wpisu z withdrawn-locations.json, bez odtwarzania treści.
+  // Historyczny adres obsługuje 301 z .htaccess (scripts/emit-redirects.mjs).
+  const withoutWithdrawn = (pages: CityPage[]) =>
+    pages.filter((page) => !isWithdrawnLocation(page.slug))
+
+  if (!supabase) return withoutWithdrawn(fallback)
 
   const { data, error } = await supabase
     .from('city_pages')
@@ -60,7 +71,7 @@ export async function getCityPages(): Promise<CityPage[]> {
     .order('created_at', { ascending: false })
 
   if (error) console.error('Error fetching city pages:', error)
-  return data && data.length > 0 ? data : fallback
+  return withoutWithdrawn(data && data.length > 0 ? data : fallback)
 }
 
 // Lista miast do sekcji zapisów (chipy + per-city form-id AIPAX). Etykietę chipa
@@ -70,9 +81,12 @@ export async function getEnrolmentCities(
 ): Promise<EnrolmentCity[]> {
   const pages = await getCityPages()
   // Brak danych z bazy (Supabase placeholder) → fallback 7 miast z kodu.
-  if (pages.length === 0) return FALLBACK_ENROLMENT_CITIES
+  // Wycofane lokalizacje odpadają w obu ścieżkach — i z bazy, i z fallbacku.
+  if (pages.length === 0)
+    return FALLBACK_ENROLMENT_CITIES.filter((c) => !isWithdrawnLocation(c.slug))
   const prefix = `${disciplineName} `.toLowerCase()
   return pages
+    .filter((c) => !isWithdrawnLocation(c.slug))
     .map((c) => ({
       slug: c.slug,
       name: c.h1_title.toLowerCase().startsWith(prefix)

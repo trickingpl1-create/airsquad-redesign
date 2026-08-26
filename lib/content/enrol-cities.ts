@@ -1,4 +1,5 @@
 import { FALLBACK_CITY_PAGES } from './cities'
+import { isWithdrawnLocation } from './withdrawn-locations'
 
 export interface EnrolCity {
   slug: string
@@ -13,6 +14,7 @@ export interface EnrolCity {
 // wyłącznie w komponentach serwerowych i przekazywać klientom przez props,
 // żeby pełne rekordy miast (cities.ts) nie trafiały do bundla klienta.
 export const ENROL_CITIES: EnrolCity[] = Object.entries(FALLBACK_CITY_PAGES)
+  .filter(([slug]) => !isWithdrawnLocation(slug))
   .filter(([, page]) => page.aipax_form_id)
   .map(([slug, page]) => ({
     slug,

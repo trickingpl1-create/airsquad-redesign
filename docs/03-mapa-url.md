@@ -13,7 +13,7 @@ Cel: zachować obecne publiczne adresy, które mogą mieć widoczność w Google
 | `/jaslo/` | zachowany | lokalizacja | Zachować jako lokalny landing. |
 | `/biecz/` | zachowany | lokalizacja | Zachować jako lokalny landing. |
 | `/brzostek/` | zachowany | lokalizacja | Zachować jako lokalny landing. |
-| `/tyczyn/` | zachowany | lokalizacja | Zachować jako lokalny landing. |
+| `/tyczyn/` | **301 → `/rzeszow/`** | lokalizacja | Zajęcia zawieszone (sierpień 2026), bez planu powrotu — decyzja klubu. Strona nie buduje się, adres przekierowany. Patrz sekcja niżej. |
 | `/pilzno/` | zachowany | lokalizacja | Zachować jako lokalny landing. |
 | `/tricking-akademia/` | zachowany | oferta | Zachować istniejący slug. |
 | `/tumbling/` | zachowany | oferta | Zachować istniejący slug. |
@@ -74,3 +74,25 @@ Jeżeli po publikacji pojawi się URL, który ma zostać usunięty:
 3. Dodać 301, nie 302.
 4. Nie przekierowywać masowo na stronę główną.
 5. Zaktualizować sitemap i ponownie przetestować crawl.
+
+## Wycofane lokalizacje
+
+Adres z kolumny „zachowany" wolno wycofać **wyłącznie razem z przekierowaniem 301**
+na stronę o pokrewnej treści. Bez 301 mielibyśmy 404 na adresie obecnym w Google
+od czasów WordPressa — czyli utratę pozycji i zerwane linki z zewnątrz.
+Z 301 większość mocy adresu przechodzi na cel, więc sens kontraktu zostaje
+dotrzymany, mimo że sama strona znika.
+
+| Adres | Cel 301 | Data | Powód |
+|---|---|---|---|
+| `/tyczyn/` | `/rzeszow/` | sierpień 2026 | Zajęcia zawieszone bez planu powrotu. Rzeszów to najbliższa czynna lokalizacja (ok. 10 km), ta sama oferta. |
+
+Mechanika: wpis w `lib/content/withdrawn-locations.json` robi trzy rzeczy naraz —
+usuwa lokalizację z menu, zapisów i `/kontakt/`, odcina jej stronę w
+`getCityPages()` (więc nie trafia do sitemapy ani do `generateStaticParams`)
+oraz generuje regułę `Redirect 301` w `.htaccess` przez
+`scripts/emit-redirects.mjs`. `scripts/make-deploy-zip.sh` przerywa pakowanie,
+gdy wycofana lokalizacja nadal ma stronę w `out/` albo gdy cel 301 nie istnieje.
+
+Treść strony **zostaje** w `lib/content/cities.ts`. Przywrócenie lokalizacji to
+usunięcie jednego wpisu z JSON-a — bez odtwarzania tekstów.
