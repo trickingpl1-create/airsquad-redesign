@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# UWAGA: NIE DZIAŁA Z OBECNYM HOSTINGIEM.
+# Serwer airsquad.pl (ProFTPD na cyber-folks, 195.78.67.54) ma zamknięty port 22
+# — sprawdzone 2026-08-26 — więc rsync przez SSH nie ma jak się połączyć.
+# Aktualną drogą wdrożenia jest scripts/deploy-ftp.sh (FTPS na porcie 21).
+# Ten plik zostaje na wypadek przeprowadzki na hosting z SSH.
+#
 #
 # Przebudowa strony publicznej i wgranie jej na serwer plików.
 #
