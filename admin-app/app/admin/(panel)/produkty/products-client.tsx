@@ -45,6 +45,11 @@ import { Spinner } from '@/components/ui/spinner'
 import { FieldGroup, Field, FieldLabel } from '@/components/ui/field'
 import { DataTable, Column } from '@/components/admin/data-table'
 import { createClient } from '@/lib/supabase/client'
+import {
+  ShopSurface,
+  ProductCardPreview,
+  PreviewNotices,
+} from '@/components/admin/shop-preview'
 import type { Product } from '@/lib/types/database'
 import { PRODUCT_CATEGORIES, STOCK_STATUSES } from '@/lib/types/database'
 
@@ -309,15 +314,16 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
           resetForm()
         }
       }}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingProduct ? 'Edytuj produkt' : 'Nowy produkt'}</DialogTitle>
             <DialogDescription>
-              {editingProduct ? 'Zaktualizuj dane produktu.' : 'Wypelnij dane nowego produktu.'}
+              {editingProduct ? 'Zaktualizuj dane produktu.' : 'Wypełnij dane nowego produktu.'}
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSubmit}>
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="name">Nazwa</FieldLabel>
@@ -400,12 +406,12 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
                     ...formData,
                     colors: e.target.value.split(',').map((s) => s.trim()).filter(Boolean),
                   })}
-                  placeholder="np. Czarny, Bialy"
+                  placeholder="np. Czarny, Biały"
                 />
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="image_url">URL zdjecia</FieldLabel>
+                <FieldLabel htmlFor="image_url">URL zdjęcia</FieldLabel>
                 <Input
                   id="image_url"
                   type="url"
@@ -435,7 +441,7 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
                 <div>
                   <FieldLabel htmlFor="is_active">Aktywny</FieldLabel>
                   <p className="text-sm text-muted-foreground">
-                    Nieaktywne produkty nie sa wyswietlane w sklepie
+                    Nieaktywne produkty nie są widoczne w sklepie
                   </p>
                 </div>
                 <Switch
@@ -445,6 +451,41 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
                 />
               </Field>
             </FieldGroup>
+
+            {/* Podgląd karmiony formData, nie zapisanym wierszem — pokazuje
+                zmiany w trakcie pisania, zanim klikniesz „Zapisz". */}
+            <aside className="space-y-3 lg:sticky lg:top-0 lg:self-start">
+              <div>
+                <p className="text-sm font-medium">Podgląd karty w sklepie</p>
+                <p className="text-xs text-muted-foreground">
+                  Tak zobaczy ten produkt klient.
+                </p>
+              </div>
+
+              <ShopSurface className="p-4">
+                <ProductCardPreview
+                  product={{
+                    name: formData.name,
+                    description: formData.description || null,
+                    price: formData.price,
+                    category: formData.category,
+                    sizes: formData.sizes,
+                    image_url: formData.image_url || null,
+                  }}
+                  hidden={!formData.is_active}
+                />
+              </ShopSurface>
+
+              <PreviewNotices
+                product={{
+                  description: formData.description || null,
+                  image_url: formData.image_url || null,
+                  stock_status: formData.stock_status,
+                  is_active: formData.is_active,
+                }}
+              />
+            </aside>
+            </div>
 
             <DialogFooter className="mt-6">
               <Button type="button" variant="outline" onClick={() => setFormOpen(false)} disabled={loading}>

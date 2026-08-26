@@ -354,7 +354,7 @@ export const CAMP_TYPES = {
 } as const
 
 export const PRODUCT_CATEGORIES = {
-  odziez: 'Odziez',
+  odziez: 'Odzież',
   akcesoria: 'Akcesoria',
   inne: 'Inne',
 } as const
@@ -368,7 +368,7 @@ export const ORDER_STATUSES = {
 } as const
 
 export const STOCK_STATUSES = {
-  available: 'Dostepny',
+  available: 'Dostępny',
   low: 'Ostatnie sztuki',
-  out_of_stock: 'Niedostepny',
+  out_of_stock: 'Niedostępny',
 } as const
