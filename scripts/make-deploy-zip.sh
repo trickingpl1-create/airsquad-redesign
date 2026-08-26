@@ -28,6 +28,20 @@ if [ ! -f out/index.html ]; then
   exit 1
 fi
 
+# Apache działa jako inny użytkownik niż właściciel plików. Plik 600 jest dla
+# niego nieczytelny i kończy się odpowiedzią 403, mimo że fizycznie jest na
+# serwerze. Kilka plików w public/ miało właśnie takie uprawnienia i po wysyłce
+# przez FTP (który je zachowuje) logo oraz zdjęcia nie wczytywały się na stronie.
+# Normalizujemy tutaj, żeby nie zależeć od uprawnień w repozytorium.
+echo "→ Normalizuję uprawnienia w out/"
+find out -type d -exec chmod 755 {} +
+find out -type f -exec chmod 644 {} +
+NIECZYTELNE=$(find out -type f ! -perm -o+r | wc -l | tr -d ' ')
+if [ "$NIECZYTELNE" != "0" ]; then
+  echo "✗ $NIECZYTELNE plików nadal nieczytelnych dla serwera WWW." >&2
+  exit 1
+fi
+
 STAMP="$(date +%Y%m%d-%H%M)"
 OUTZIP="$ROOT/../airsquad-${TARGET}-${STAMP}.zip"
 

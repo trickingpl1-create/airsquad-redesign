@@ -97,7 +97,10 @@ if [ "$TARGET" = "production" ] && [ "$DRY" != "--dry-run" ]; then
   [ "$A" = "produkcja" ] || { echo "Przerwane."; exit 1; }
 fi
 
-MIRROR="--reverse --delete --verbose --parallel=4 --exclude-glob .DS_Store --exclude-glob cgi-bin/"
+# --perms przenosi uprawnienia na serwer. Bez tego pliki wgrane wcześniej
+# z uprawnieniami 600 zostawałyby nieczytelne dla Apache (403), bo mirror
+# pomija pliki o niezmienionej treści i nigdy by ich nie poprawił.
+MIRROR="--reverse --delete --perms --verbose --parallel=4 --exclude-glob .DS_Store --exclude-glob cgi-bin/"
 [ "$DRY" = "--dry-run" ] && MIRROR="$MIRROR --dry-run"
 
 CMDFILE="$(mktemp)"; chmod 600 "$CMDFILE"
