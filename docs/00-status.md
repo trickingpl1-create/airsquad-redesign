@@ -53,8 +53,10 @@ Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
 - [ ] Wgrać realne zdjęcia trenerów (min. 3) i lokalizacji (wszystkie 7) do Supabase Storage
 - [x] ~~Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200~~ — wszystkie 17 obecnych w `out/`; skrypt porównujący w `04-architektura.md`
 - [x] ~~Wpisać produkcyjne `NEXT_PUBLIC_SUPABASE_*`~~ — projekt podłączony, canonicale i sitemapa budują się na `https://airsquad.pl`
-- [ ] **Uruchomić SQL w kolejności `001` → `002` → `003a` → `004`.** `003_seed_data.sql` i `005_seed_seo_pages.sql` **pomijamy** — `003a_seed_products.sql` to wycięty z `003` blok produktów. Reszta `003` i całe `005` wstawiają treść uboższą albo atrapy trenerów, a wiersz z bazy nadpisuje bogatszy fallback z `lib/content/` — łącznie z ID formularzy AIPAX. Uzasadnienie w `04-architektura.md`
-- [ ] Utworzyć projekt Vercel dla panelu (Root Directory `admin-app`, „Include files outside…" włączone, env Supabase) — kroki w `04-architektura.md`
+- [x] ~~**Uruchomić SQL w kolejności `001` → `002` → `003a` → `004`.**~~ — wykonane; 13 tabel odpowiada, `products` ma 6 wierszy, reszta pusta (treść z fallbacków), RLS zweryfikowane (odczyt `orders` przez `anon` zablokowany, zapis przechodzi).
+  `003_seed_data.sql` i `005_seed_seo_pages.sql` celowo pominięte — wstawiają treść uboższą albo atrapy trenerów, a wiersz z bazy nadpisuje bogatszy fallback z `lib/content/`, łącznie z ID formularzy AIPAX. Uzasadnienie w `04-architektura.md`
+- [x] ~~Utworzyć projekt Vercel dla panelu~~ — projekt `airsquad-admin` założony, zmienne Supabase ustawione; panel uniezależniony od katalogu nadrzędnego i wdrażany z CLI (`cd admin-app && vercel --prod`). Zostało samo wywołanie deployu.
+- [ ] **Wpisać realne `NEXT_PUBLIC_SUPABASE_*` w Production projektu `airsquad-web`** — dziś puste stringi, po merge'u sklep na produkcji byłby martwy (Preview i Development już poprawione)
 - [ ] Podpiąć serwer docelowy: `DEPLOY_HOST` / `DEPLOY_PATH` dla `scripts/deploy.sh` + konfiguracja nginx/Apache z `04-architektura.md`
 
 ### Ważne, ale nie blokujące

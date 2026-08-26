@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "prebuild": "node scripts/check-types-sync.mjs",
+    "sync-types": "node scripts/sync-types.mjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "1.1.15",

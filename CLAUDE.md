@@ -11,9 +11,9 @@ Air Squad (airsquad.pl) — redesign strony klubu akrobatyki/trickingu, Next.js 
 | Katalog | Co to | Build | Hosting |
 |---|---|---|---|
 | `airsquad-web/` (root) | publiczna strona, **w pełni statyczna** (`output: 'export'`) | `npm run build` → `out/` | zwykły serwer plików (nginx/Apache), bez Node.js |
-| `airsquad-web/admin-app/` | panel `/admin/*`, aplikacja serwerowa (SSR + proxy auth) | `npm run build` w `admin-app/` | Vercel, osobny projekt (Root Directory = `admin-app`) |
+| `airsquad-web/admin-app/` | panel `/admin/*`, aplikacja serwerowa (SSR + proxy auth) | `npm run build` w `admin-app/` | Vercel, osobny projekt `airsquad-admin` (deploy: `cd admin-app && vercel --prod`) |
 
-Obie czytają tę samą bazę Supabase. Typy bazy mają jedno źródło — `lib/types/database.ts` w aplikacji publicznej; `admin-app/lib/types/database.ts` tylko je re-eksportuje. Uzasadnienie podziału: `docs/04-architektura.md`, sekcja „Dwie aplikacje".
+Obie czytają tę samą bazę Supabase. Typy bazy mają jedno źródło — `lib/types/database.ts` w aplikacji publicznej; `admin-app/lib/types/database.ts` to jego **kopia** (panel wdrażany z CLI nie może importować spoza swojego katalogu), pilnowana przez `prebuild`. Po zmianie pól: `npm run sync-types` w `admin-app/`. Uzasadnienie podziału: `docs/04-architektura.md`, sekcja „Dwie aplikacje".
 
 ## Zasady pracy (obowiązkowe)
 

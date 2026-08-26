@@ -27,7 +27,7 @@ Statyczny eksport nie ma serwera, a więc nie ma proxy (dawnego middleware) — 
 | Klient Supabase | `lib/supabase/public.ts` (cookieless) i `client.ts` (przeglądarka) | `lib/supabase/server.ts` + `proxy.ts` (cookies) |
 | Deploy | wgranie `out/` na serwer | push → Vercel |
 
-Obie aplikacje czytają **tę samą bazę i te same tabele**. Typy bazy mają jedno źródło: `lib/types/database.ts` w aplikacji publicznej — `admin-app/lib/types/database.ts` tylko je re-eksportuje. Dlatego `admin-app/next.config.mjs` ustawia `turbopack.root` i `outputFileTracingRoot` na katalog nadrzędny, a projekt panelu na Vercelu wymaga włączonego **„Include files outside of the Root Directory in the Build Step"** (Root Directory = `admin-app`).
+Obie aplikacje czytają **tę samą bazę i te same tabele**. Typy bazy mają jedno źródło: `lib/types/database.ts` w aplikacji publicznej. `admin-app/lib/types/database.ts` to jego **kopia**, nie re-eksport — panel jest wdrażany z CLI wprost z własnego katalogu, więc nie może importować niczego spoza niego. Przed rozjazdem chroni `admin-app/scripts/check-types-sync.mjs` (hook `prebuild`): build panelu przerwie się, jeśli kopia różni się od oryginału. Naprawa: `npm run sync-types` w `admin-app/`.
 
 ## Konsekwencje eksportu statycznego
 
@@ -228,22 +228,31 @@ Options -Indexes
 
 ## Deploy panelu admina (Vercel, osobny projekt)
 
-Panel nie jedzie razem ze statyką — to druga aplikacja z tego samego repo.
-Konfiguracja jednorazowa w panelu Vercela (nie da się jej ustawić plikiem w repo):
+Panel nie jedzie razem ze statyką — to druga aplikacja z tego samego repo,
+wdrażana **z CLI wprost z katalogu `admin-app/`**, bez podpinania repo do Vercela:
 
-1. **Add New → Project** → to samo repo `airsquad-redesign`.
-2. **Root Directory** = `admin-app` (przycisk „Edit" przy wyborze katalogu).
-3. **Include files outside of the Root Directory in the Build Step** — musi
-   zostać **włączone**. Panel importuje typy bazy z katalogu nadrzędnego
-   (`admin-app/lib/types/database.ts` re-eksportuje `lib/types/database.ts`);
-   bez tego build nie znajdzie pliku.
-4. **Environment Variables** — `NEXT_PUBLIC_SUPABASE_URL` i
-   `NEXT_PUBLIC_SUPABASE_ANON_KEY` z realnego projektu Supabase. Bez nich
-   `/admin/login` zwraca 500 (`createServerClient` nie przyjmuje pustego URL-a).
-5. Framework preset wykrywa się sam (Next.js), Build Command i Output Directory
-   zostają domyślne.
+```bash
+cd admin-app && vercel --prod
+```
 
-Projekt strony publicznej (dotąd budujący całą aplikację) po tej zmianie buduje
+Projekt na Vercelu: `airsquad-admin` (konto `gabrielmrealquick-5378`), zmienne
+`NEXT_PUBLIC_SUPABASE_URL` i `NEXT_PUBLIC_SUPABASE_ANON_KEY` już ustawione.
+Bez nich `/admin/login` zwraca 500 (`createServerClient` nie przyjmuje pustego URL-a).
+
+**Dlaczego z CLI, a nie przez Git.** Wariant gitowy wymaga trzech ustawień
+klikanych w dashboardzie: Root Directory = `admin-app`, „Include files outside of
+the Root Directory in the Build Step" oraz połączenia konta z GitHubem (CLI zgłasza
+„You need to add a Login Connection to your GitHub account first"). Wdrożenie z CLI
+omija wszystkie trzy. Kosztem jest brak auto-deployu po pushu — panel trzeba wypchnąć
+ręcznie powyższą komendą. Panel zmienia się rzadko, więc to akceptowalna cena.
+
+**Konsekwencja dla kodu:** deploy wysyła wyłącznie katalog `admin-app/`, więc panel
+**nie może importować niczego spoza niego**. Typy bazy są tu kopią oryginału
+(`airsquad-web/lib/types/database.ts`), pilnowaną przez `scripts/check-types-sync.mjs`
+w hooku `prebuild` — build panelu przerwie się przy rozjeździe. Po zmianie pól
+w oryginale uruchom `npm run sync-types` w `admin-app/`.
+
+Projekt strony publicznej (dotąd budujący całą aplikację) po merge'u buduje
 już tylko statykę — `/admin` z tego deploya znika i jest to zamierzone.
 
 ## Aktualizacja treści po zmianie w adminie
