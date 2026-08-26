@@ -68,7 +68,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 bg-background">
+      <main className="flex-1 bg-background pt-24">
         <StructuredData
           type="Event"
           data={{

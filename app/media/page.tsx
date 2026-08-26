@@ -16,7 +16,7 @@ export default function MediaPage() {
       {/* pt-24 = odstęp na przyklejony Header, jak na pozostałych podstronach —
           bez tego H1 „Media" chowa się pod logo */}
       <main className="min-h-screen bg-background pt-24">
-        <div className="container py-12">
+        <div className="container mx-auto px-4 py-12">
           <div className="mb-12">
             <h1 className="text-4xl font-bold font-display mb-2">Media</h1>
             <p className="text-muted-foreground">Wideo i zdjęcia z naszych treningów i eventów</p>

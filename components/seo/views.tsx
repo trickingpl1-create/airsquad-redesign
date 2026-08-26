@@ -76,7 +76,7 @@ export function DisciplineView({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 bg-background">
+      <main className="flex-1 bg-background pt-24">
         {/* Structured Data */}
         <StructuredData
           type="Course"
@@ -94,7 +94,7 @@ export function DisciplineView({
         />
 
         {/* Breadcrumb */}
-        <div className="container pt-8">
+        <div className="container mx-auto px-4 pt-8">
           <Breadcrumb items={breadcrumbs} />
         </div>
 
@@ -105,7 +105,7 @@ export function DisciplineView({
             style={{ backgroundImage: `url(${discipline.hero_image_url})` }}
           >
             <div className="absolute inset-0 bg-gradient-to-b from-background/40 to-background" />
-            <div className="container relative flex h-full flex-col justify-center">
+            <div className="container mx-auto px-4 relative flex h-full flex-col justify-center">
               <h1 className="text-4xl font-bold text-white md:text-5xl">
                 {discipline.h1_title || discipline.name}
               </h1>
@@ -121,7 +121,7 @@ export function DisciplineView({
           </div>
         ) : (
           <div className="relative h-64 bg-gradient-to-br from-primary to-accent md:h-96">
-            <div className="container relative flex h-full flex-col justify-center">
+            <div className="container mx-auto px-4 relative flex h-full flex-col justify-center">
               <h1 className="text-4xl font-bold text-white md:text-5xl">
                 {discipline.h1_title || discipline.name}
               </h1>
@@ -138,7 +138,7 @@ export function DisciplineView({
         )}
 
         {/* Content Section */}
-        <div className="container space-y-12 py-12">
+        <div className="container mx-auto px-4 space-y-12 py-12">
           {/* Pasek statystyk */}
           {stats.length > 0 && (
             <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -435,7 +435,7 @@ export function EventView({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 bg-background">
+      <main className="flex-1 bg-background pt-24">
         {/* Structured Data */}
         <StructuredData
           type="Event"
@@ -459,7 +459,7 @@ export function EventView({
         />
 
         {/* Breadcrumb */}
-        <div className="container pt-8">
+        <div className="container mx-auto px-4 pt-8">
           <Breadcrumb items={breadcrumbs} />
         </div>
 
@@ -471,7 +471,7 @@ export function EventView({
               style={{ backgroundImage: `url(${event.image_url})` }}
             />
           )}
-          <div className="container relative flex h-full flex-col justify-center">
+          <div className="container mx-auto px-4 relative flex h-full flex-col justify-center">
             <h1 className="text-4xl font-bold text-white md:text-5xl">
               {event.title}
             </h1>
@@ -497,7 +497,7 @@ export function EventView({
         </div>
 
         {/* Content Section */}
-        <div className="container space-y-12 py-12">
+        <div className="container mx-auto px-4 space-y-12 py-12">
           {/* Event Info Cards */}
           <div className="grid gap-4 md:grid-cols-3">
             {event.event_date && (
@@ -727,7 +727,7 @@ export function StaticPageView({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 bg-background">
+      <main className="flex-1 bg-background pt-24">
         {/* Structured Data */}
         <StructuredData
           type="WebPage"
@@ -739,13 +739,13 @@ export function StaticPageView({
         />
 
         {/* Breadcrumb */}
-        <div className="container pt-8">
+        <div className="container mx-auto px-4 pt-8">
           <Breadcrumb items={breadcrumbs} />
         </div>
 
         {/* Hero Section */}
         <div className="relative h-48 bg-gradient-to-br from-primary to-accent md:h-64">
-          <div className="container relative flex h-full flex-col justify-center">
+          <div className="container mx-auto px-4 relative flex h-full flex-col justify-center">
             <h1 className="text-4xl font-bold text-white md:text-5xl">
               {page.h1_title || page.meta_title}
             </h1>
@@ -753,7 +753,7 @@ export function StaticPageView({
         </div>
 
         {/* Content Section */}
-        <div className="container py-12">
+        <div className="container mx-auto px-4 py-12">
           <div className="mx-auto max-w-3xl space-y-8">
             {page.content && (
               <div className="prose prose-invert max-w-none">
