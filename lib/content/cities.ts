@@ -358,7 +358,10 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     training_days_label: 'poniedziałki i środy',
     group_ratio_label: '12 uczestników na trenera',
     pricing_hide_plans: ['Premium'],
-    pricing_hide_drop_ins: ['Open Training', 'Pakiet 4 treningi'],
+    // Biecz nie oferuje tych form (decyzja klubu) — zostaje tylko trening próbny.
+    // Nazwy muszą pasować znak w znak do tablicy dropIn w components/home/pricing-section.tsx,
+    // bo filtr działa przez includes() i literówka po cichu przestaje ukrywać pozycję.
+    pricing_hide_drop_ins: ['Pojedynczy trening', 'Open Training', 'Trening w małej grupie', 'Pakiet 4 treningi'],
     pricing_enrol_via_aipax: true,
     hero_image_url: '/images/miasta/biecz-hero.jpg',
     hero_video_url: `${WP_UPLOADS}/2025/07/akro-biecz.mp4`,

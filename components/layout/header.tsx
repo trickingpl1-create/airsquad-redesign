@@ -81,6 +81,20 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Pływający FAB „Zapisz się" (components/enrol-fab.tsx) jest montowany w root
+  // layoucie i nic nie wie o menu, a przy otwartym drawerze siada dokładnie na
+  // CTA „Zapisz dziecko". Sam dolny padding tego nie rozwiązuje, bo drawer ma
+  // własny scroll — CTA i tak trafia pod przycisk przy części pozycji listy.
+  // Flaga na <body> pozwala schować FAB czystym CSS-em, bez przeciągania stanu
+  // przez pół drzewa komponentów.
+  useEffect(() => {
+    if (mobileMenuOpen) document.body.dataset.mobileNavOpen = 'true'
+    else delete document.body.dataset.mobileNavOpen
+    return () => {
+      delete document.body.dataset.mobileNavOpen
+    }
+  }, [mobileMenuOpen])
+
   return (
     <>
       {/* Top status bar */}
@@ -223,33 +237,51 @@ export function Header() {
         </div>
 
         {/* Mobile nav drawer */}
+        {/*
+          Wysokość ograniczona + własny scroll: pełna lista (6 miast + 3 wydarzenia)
+          przy czytelnym stopniu pisma przerasta ekran telefonu i dolne pozycje
+          byłyby nieklikalne. Drawer zaczyna się 86px od góry viewportu
+          (28px paska statusu `top-7` + 58px headera), stąd taki odjemnik.
+          overscroll-contain trzyma przewijanie w menu, zamiast przenosić je
+          na stronę pod spodem po dojechaniu do końca listy.
+        */}
         <div
           className={cn(
-            'absolute inset-x-0 top-[58px] border-b border-white/8 bg-background/98 backdrop-blur-xl lg:hidden',
+            'absolute inset-x-0 top-[58px] max-h-[calc(100dvh-86px)] overflow-y-auto overscroll-contain border-b border-white/8 bg-background/98 backdrop-blur-xl lg:hidden',
             mobileMenuOpen ? 'block' : 'hidden',
           )}
         >
+          {/*
+            Lekko większy padding u dołu niż u góry — domyka listę przy
+            przewinięciu do końca. Kolizji z FAB-em już tu nie ma: przycisk
+            chowa się na czas otwartego menu (reguła w app/globals.css).
+          */}
           <nav
-            className="container mx-auto flex flex-col px-4 py-4"
+            className="container mx-auto flex flex-col px-4 pt-4 pb-8"
             aria-label="Mobilna nawigacja"
           >
             {navLinks.map((link) =>
               'items' in link ? (
-                <div key={link.label} className="border-b border-white/6 py-3.5">
-                  <span className="font-mono text-[10.5px] font-bold tracking-[0.16em] text-foreground/65">
+                <div key={link.label} className="border-b border-white/6 py-4">
+                  {/*
+                    tracking zjechany z 0.16em na 0.13em razem ze wzrostem stopnia
+                    pisma — przy 13px „OBOZY I WYDARZENIA" + badge to ~254px
+                    z 343px dostępnych na 375px, więc etykieta nie łamie się na dwie linie.
+                  */}
+                  <span className="font-mono text-[13px] font-bold tracking-[0.13em] text-foreground/65">
                     {link.label}
                     {'badge' in link && (
-                      <span className="ml-2 inline-block rounded-full bg-emerald px-2 py-0.5 text-[8px] font-black text-emerald-950">
+                      <span className="ml-2 inline-block rounded-full bg-emerald px-2 py-0.5 text-[9px] font-black text-emerald-950">
                         {link.badge}
                       </span>
                     )}
                   </span>
-                  <div className="mt-3 flex flex-col gap-3 pl-3">
+                  <div className="mt-3 flex flex-col gap-3.5 pl-3">
                     {link.items.map((item) => (
                       <Link
                         key={item.href}
                         href={item.href}
-                        className="font-mono text-[10px] font-bold tracking-[0.14em] text-foreground/55 transition-colors hover:text-cyan"
+                        className="font-mono text-[12px] font-bold tracking-[0.11em] text-foreground/55 transition-colors hover:text-cyan"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {item.label}
@@ -261,7 +293,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative border-b border-white/6 py-3.5 font-mono text-[10.5px] font-bold tracking-[0.16em] text-foreground/65 transition-colors hover:text-cyan"
+                  className="relative border-b border-white/6 py-4 font-mono text-[13px] font-bold tracking-[0.13em] text-foreground/65 transition-colors hover:text-cyan"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
@@ -271,7 +303,7 @@ export function Header() {
             <Link
               href="/kontakt"
               onClick={() => setMobileMenuOpen(false)}
-              className="mt-4 flex items-center justify-center gap-2 rounded-full px-5 py-3 font-mono text-[10.5px] font-bold uppercase tracking-[0.12em] text-white"
+              className="mt-4 flex items-center justify-center gap-2 rounded-full px-5 py-3 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-white"
               style={{
                 background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)',
               }}

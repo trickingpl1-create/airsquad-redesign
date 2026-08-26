@@ -56,7 +56,13 @@ export function EnrolFab({ cities }: { cities: EnrolCity[] }) {
         />
       )}
 
+      {/*
+        data-enrol-fab: uchwyt dla reguły w globals.css, która chowa przycisk przy
+        otwartym menu mobilnym (flagę `data-mobile-nav-open` ustawia
+        components/layout/header.tsx). Bez tego FAB siada na CTA w drawerze.
+      */}
       <div
+        data-enrol-fab
         className={`fixed bottom-4 right-4 z-[60] transition-transform duration-300 md:bottom-6 md:right-6 ${
           hidden && !open ? 'translate-y-24' : 'translate-y-0'
         }`}
