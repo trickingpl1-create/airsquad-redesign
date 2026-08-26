@@ -226,6 +226,32 @@ Options -Indexes
 | `NEXT_PUBLIC_SUPABASE_URL` | treść zapiekana w buildzie **oraz** fetch w przeglądarce (`/sklep`, `/media`) | pusta treść z fallbacków; sklep i media wiszą na „Ładowanie" |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | jw. | jw. |
 
+## Panel w dev chodzi na webpacku, nie na Turbopacku
+
+`admin-app/package.json` ma `"dev": "next dev --webpack"` i **tak ma zostać**,
+dopóki projekt leży w ścieżce z polskimi znakami.
+
+Turbopack wywala panikę przy kompilacji `/admin/(panel)/page`:
+
+```
+panicked at turbopack-core/src/ident.rs:354
+start byte index 22 is not a char boundary; it is inside '\u{301}'
+of `Desktop_TWÓRCZOŚĆ_airsquad redesign_...`
+```
+
+Nazwa katalogu `TWÓRCZOŚĆ` jest na dysku w formie NFC (12 bajtów), ale Turbopack
+normalizuje ją do NFD — gdzie `Ó` to `O` plus osobny znak łączący U+0301 — po czym
+tnie wynikową nazwę na sztywnym bajcie 22, który wypada w środku tego znaku.
+To błąd Turbopacka, nie naszego kodu: slice po bajtach zamiast po znakach.
+
+**Produkcji to nie dotyczy.** `next build` przechodzi bez problemu (oba buildy
+weryfikowane), a Vercel buduje w `/vercel/path0`, gdzie żadnych diakrytyków nie ma.
+Objaw jest wyłącznie lokalny, w serwerze deweloperskim.
+
+Trwałe rozwiązanie to zmiana nazwy katalogu na `TWORCZOSC` — wtedy flagę
+`--webpack` można usunąć. Do tego czasu nie przełączaj panelu z powrotem
+na Turbopack, bo `/admin/*` przestanie się otwierać lokalnie.
+
 ## Deploy panelu admina (Vercel, osobny projekt)
 
 Panel nie jedzie razem ze statyką — to druga aplikacja z tego samego repo,

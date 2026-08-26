@@ -11,7 +11,9 @@ Air Squad (airsquad.pl) — redesign strony klubu akrobatyki/trickingu, Next.js 
 | Katalog | Co to | Build | Hosting |
 |---|---|---|---|
 | `airsquad-web/` (root) | publiczna strona, **w pełni statyczna** (`output: 'export'`) | `npm run build` → `out/` | zwykły serwer plików (nginx/Apache), bez Node.js |
-| `airsquad-web/admin-app/` | panel `/admin/*`, aplikacja serwerowa (SSR + proxy auth) | `npm run build` w `admin-app/` | Vercel, osobny projekt `airsquad-admin` (deploy: `cd admin-app && vercel --prod`) |
+| `airsquad-web/admin-app/` | panel `/admin/*`, aplikacja serwerowa (SSR + proxy auth) | `npm run build` w `admin-app/` | Vercel, osobny projekt `airsquad-admin` (deploy: `cd admin-app && vercel --prod`; dev na `--webpack`, patrz niżej) |
+
+**Panel w dev musi chodzić na webpacku** (`npm run dev` w `admin-app/` ma już `--webpack`). Turbopack panikuje przy kompilacji `/admin/(panel)/page`, bo tnie nazwę zawierającą `TWÓRCZOŚĆ` w środku znaku UTF-8. Nie przełączaj z powrotem — szczegóły i trwałe rozwiązanie w `docs/04-architektura.md`. Produkcji to nie dotyczy.
 
 Obie czytają tę samą bazę Supabase. Typy bazy mają jedno źródło — `lib/types/database.ts` w aplikacji publicznej; `admin-app/lib/types/database.ts` to jego **kopia** (panel wdrażany z CLI nie może importować spoza swojego katalogu), pilnowana przez `prebuild`. Po zmianie pól: `npm run sync-types` w `admin-app/`. Uzasadnienie podziału: `docs/04-architektura.md`, sekcja „Dwie aplikacje".
 
