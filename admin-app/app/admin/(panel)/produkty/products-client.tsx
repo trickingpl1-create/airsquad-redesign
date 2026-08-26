@@ -45,9 +45,11 @@ import { Spinner } from '@/components/ui/spinner'
 import { FieldGroup, Field, FieldLabel } from '@/components/ui/field'
 import { DataTable, Column } from '@/components/admin/data-table'
 import { createClient } from '@/lib/supabase/client'
+import { cn } from '@/lib/utils'
 import {
   ShopSurface,
   ProductCardPreview,
+  ProductDetailPreview,
   PreviewNotices,
 } from '@/components/admin/shop-preview'
 import type { Product } from '@/lib/types/database'
@@ -59,6 +61,14 @@ function formatPrice(price: number): string {
     currency: 'PLN',
   }).format(price)
 }
+
+// Przełącznik podglądu. Brak components/ui/tabs w panelu (i brak paczki
+// @radix-ui/react-tabs), więc zakładki są ręczne — ten sam wzorzec co na
+// /admin/podglad-sklepu.
+const PREVIEW_TABS = [
+  { value: 'card', label: 'Kafelek w siatce' },
+  { value: 'detail', label: 'Okno szczegółów' },
+] as const
 
 interface ProductsClientProps {
   initialData: Product[]
@@ -72,6 +82,10 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [deletingProduct, setDeletingProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(false)
+  // Który podgląd sklepu jest na wierzchu w oknie edycji. Brak komponentu Tabs
+  // w admin-app/components/ui — przełącznik jest z gołych <button>ów, tak samo
+  // jak zakładki kategorii na /admin/podglad-sklepu.
+  const [previewMode, setPreviewMode] = useState<'card' | 'detail'>('card')
 
   const [formData, setFormData] = useState({
     name: '',
@@ -129,7 +143,7 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
         .single()
 
       if (error) {
-        toast.error('Blad podczas aktualizacji')
+        toast.error('Błąd podczas aktualizacji')
         setLoading(false)
         return
       }
@@ -144,7 +158,7 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
         .single()
 
       if (error) {
-        toast.error('Blad podczas dodawania')
+        toast.error('Błąd podczas dodawania')
         setLoading(false)
         return
       }
@@ -167,12 +181,12 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
     const { error } = await supabase.from('products').delete().eq('id', deletingProduct.id)
 
     if (error) {
-      toast.error('Blad podczas usuwania')
+      toast.error('Błąd podczas usuwania')
       return
     }
 
     setProducts((prev) => prev.filter((p) => p.id !== deletingProduct.id))
-    toast.success('Produkt usuniety')
+    toast.success('Produkt usunięty')
     setDeleteDialogOpen(false)
     setDeletingProduct(null)
   }
@@ -276,7 +290,7 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
               className="text-destructive"
             >
               <Trash2 className="mr-2 h-4 w-4" />
-              Usun
+              Usuń
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -314,7 +328,7 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
           resetForm()
         }
       }}>
-        <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+        <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingProduct ? 'Edytuj produkt' : 'Nowy produkt'}</DialogTitle>
             <DialogDescription>
@@ -323,7 +337,7 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
           </DialogHeader>
 
           <form onSubmit={handleSubmit}>
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_26rem]">
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="name">Nazwa</FieldLabel>
@@ -453,28 +467,73 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
             </FieldGroup>
 
             {/* Podgląd karmiony formData, nie zapisanym wierszem — pokazuje
-                zmiany w trakcie pisania, zanim klikniesz „Zapisz". */}
+                zmiany w trakcie pisania, zanim klikniesz „Zapisz". Dwa widoki,
+                bo sklep pokazuje produkt w dwóch miejscach i pokazuje w nich
+                CO INNEGO: kafelek nie ma kolorów, okno szczegółów nie ma listy
+                rozmiarów pod nazwą. */}
             <aside className="space-y-3 lg:sticky lg:top-0 lg:self-start">
               <div>
-                <p className="text-sm font-medium">Podgląd karty w sklepie</p>
+                <p className="text-sm font-medium">Podgląd w sklepie</p>
                 <p className="text-xs text-muted-foreground">
                   Tak zobaczy ten produkt klient.
                 </p>
               </div>
 
-              <ShopSurface className="p-4">
-                <ProductCardPreview
-                  product={{
-                    name: formData.name,
-                    description: formData.description || null,
-                    price: formData.price,
-                    category: formData.category,
-                    sizes: formData.sizes,
-                    image_url: formData.image_url || null,
-                  }}
-                  hidden={!formData.is_active}
-                />
-              </ShopSurface>
+              <div className="flex flex-wrap gap-2">
+                {PREVIEW_TABS.map((tab) => (
+                  <button
+                    key={tab.value}
+                    type="button"
+                    onClick={() => setPreviewMode(tab.value)}
+                    className={cn(
+                      'rounded-md px-3 py-1.5 text-xs font-medium transition-colors',
+                      previewMode === tab.value
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/70'
+                    )}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {previewMode === 'card' ? (
+                <ShopSurface className="p-4">
+                  <ProductCardPreview
+                    product={{
+                      name: formData.name,
+                      description: formData.description || null,
+                      price: formData.price,
+                      category: formData.category,
+                      sizes: formData.sizes,
+                      image_url: formData.image_url || null,
+                      stock_status: formData.stock_status,
+                    }}
+                    hidden={!formData.is_active}
+                  />
+                </ShopSurface>
+              ) : (
+                <ShopSurface className="p-4">
+                  <ProductDetailPreview
+                    product={{
+                      name: formData.name,
+                      description: formData.description || null,
+                      price: formData.price,
+                      category: formData.category,
+                      sizes: formData.sizes,
+                      colors: formData.colors,
+                      image_url: formData.image_url || null,
+                      stock_status: formData.stock_status,
+                    }}
+                  />
+                </ShopSurface>
+              )}
+
+              <p className="text-xs text-muted-foreground">
+                {previewMode === 'card'
+                  ? 'Kafelek jest klikalny — otwiera okno szczegółów. Wyjątek: produkt „Niedostępny”, którego sklep nie pozwala kliknąć.'
+                  : 'Warianty pokazane w stanie startowym — klient otwiera okno z niczym niewybranym i bez wyboru nie doda produktu do koszyka. Szerokość jak na telefonie; na desktopie okno ma 512 px.'}
+              </p>
 
               <PreviewNotices
                 product={{
@@ -482,6 +541,8 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
                   image_url: formData.image_url || null,
                   stock_status: formData.stock_status,
                   is_active: formData.is_active,
+                  colors: formData.colors,
+                  sizes: formData.sizes,
                 }}
               />
             </aside>
@@ -512,7 +573,7 @@ export function ProductsClient({ initialData }: ProductsClientProps) {
           <AlertDialogFooter>
             <AlertDialogCancel>Anuluj</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">
-              Usun
+              Usuń
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

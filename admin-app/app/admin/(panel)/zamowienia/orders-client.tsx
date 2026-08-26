@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Eye, Trash2, MoreHorizontal, Package, Mail, Phone, MapPin } from 'lucide-react'
+import { Eye, Trash2, MoreHorizontal, Package, Mail, Phone, MapPin, Wallet } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -43,6 +43,49 @@ import { DataTable, Column } from '@/components/admin/data-table'
 import { createClient } from '@/lib/supabase/client'
 import type { Order, Location, OrderItem } from '@/lib/types/database'
 import { ORDER_STATUSES } from '@/lib/types/database'
+
+// ─── KOPIA treści ze sklepu publicznego ──────────────────────────────────────
+// Oryginał: airsquad-web/lib/content/shop.ts (PAYMENT_NOTICE_SHORT,
+// PAYMENT_NOTICE_LONG, PICKUP_INFO, ORDER_IS_RESERVATION).
+// admin-app/ jest samowystarczalny — deploy z CLI wysyła tylko ten katalog,
+// więc nie wolno importować niczego spoza niego. Po każdej zmianie treści
+// w oryginale zaktualizuj tę kopię RĘCZNIE.
+//
+// Sposób płatności jest STAŁĄ modelu biznesowego, nie danymi per zamówienie:
+// tabela `orders` nie ma i nie dostanie kolumny na płatność. Poniższe zdania są
+// więc tekstem w interfejsie, a nie odczytem z bazy — nie da się z nich wnosić,
+// czy konkretne zamówienie zostało opłacone.
+
+/** Nagłówek bloku przy kwocie — wersja dla panelu (adresat: osoba z klubu). */
+const PAYMENT_NOTICE_TITLE = 'Płatność u trenera przy odbiorze'
+
+/** Rozwinięcie PAYMENT_NOTICE_LONG przepisane z perspektywy klubu. */
+const PAYMENT_NOTICE_ADMIN =
+  'Ta kwota NIE wpłynęła online — sklep nie przyjmuje płatności internetowych. Zamówienie jest wiążącą rezerwacją, a całość klient przekazuje trenerowi gotówką lub BLIK-iem dopiero przy wydaniu towaru.'
+
+/** Kopia PICKUP_INFO, przepisana z perspektywy klubu. */
+const PICKUP_INFO_ADMIN =
+  'Odbiór osobisty u trenera na treningu — lokalizację i dni treningów klient podaje w polu „Uwagi”.'
+
+/** Kopia PAYMENT_NOTICE_SHORT — dosłownie to zdanie widział klient w koszyku. */
+const PAYMENT_NOTICE_SHORT =
+  'Nie płacisz teraz. Całą kwotę przekazujesz trenerowi przy odbiorze.'
+
+/** Kopia ORDER_IS_RESERVATION — dosłownie to zdanie widział klient w koszyku. */
+const ORDER_IS_RESERVATION =
+  'Zamówienie jest wiążącą rezerwacją — przygotowujemy towar specjalnie dla Ciebie.'
+
+/** Krótka etykieta przy kwocie — na liście i w oknie szczegółów. */
+const PAYMENT_BADGE_LABEL = 'Do zapłaty u trenera'
+// ─────────────────────────────────────────────────────────────────────────────
+
+function pluralizeProducts(count: number): string {
+  if (count === 1) return 'produkt'
+  const last = count % 10
+  const lastTwo = count % 100
+  if (last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14)) return 'produkty'
+  return 'produktów'
+}
 
 function formatPrice(price: number): string {
   return new Intl.NumberFormat('pl-PL', {
@@ -89,7 +132,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
       .eq('id', orderId)
 
     if (error) {
-      toast.error('Blad podczas aktualizacji statusu')
+      toast.error('Błąd podczas aktualizacji statusu')
       setLoading(false)
       return
     }
@@ -114,7 +157,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
     const { error } = await supabase.from('orders').delete().eq('id', deletingOrder.id)
 
     if (error) {
-      toast.error('Blad podczas usuwania')
+      toast.error('Błąd podczas usuwania')
       return
     }
 
@@ -152,7 +195,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
         const items = order.items as OrderItem[]
         return (
           <span className="text-muted-foreground">
-            {items.length} {items.length === 1 ? 'produkt' : 'produktów'}
+            {items.length} {pluralizeProducts(items.length)}
           </span>
         )
       },
@@ -161,7 +204,11 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
       key: 'total',
       header: 'Kwota',
       cell: (order) => (
-        <span className="font-medium">{formatPrice(order.total_amount)}</span>
+        <div>
+          <p className="font-medium">{formatPrice(order.total_amount)}</p>
+          {/* Zasada stała: pieniądze bierze trener przy odbiorze, nic nie wpływa online. */}
+          <p className="text-xs text-amber">{PAYMENT_BADGE_LABEL}</p>
+        </div>
       ),
     },
     {
@@ -200,7 +247,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
               setDetailsOpen(true)
             }}>
               <Eye className="mr-2 h-4 w-4" />
-              Szczegoly
+              Szczegóły
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -211,7 +258,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
               className="text-destructive"
             >
               <Trash2 className="mr-2 h-4 w-4" />
-              Usun
+              Usuń
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -270,7 +317,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <MapPin className="h-4 w-4" />
                       <span>
-                        Odbior: {selectedOrder.preferred_location.name} ({selectedOrder.preferred_location.city})
+                        Odbiór: {selectedOrder.preferred_location.name} ({selectedOrder.preferred_location.city})
                       </span>
                     </div>
                   )}
@@ -305,9 +352,33 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center justify-between border-t pt-3 font-semibold">
-                  <span>Razem</span>
-                  <span className="text-lg">{formatPrice(selectedOrder.total_amount)}</span>
+                <div className="space-y-3 border-t pt-3">
+                  <div className="flex items-center justify-between font-semibold">
+                    <div className="flex items-center gap-2">
+                      <span>Razem</span>
+                      <Badge className="border-amber/40 bg-amber/15 text-amber" variant="outline">
+                        {PAYMENT_BADGE_LABEL}
+                      </Badge>
+                    </div>
+                    <span className="text-lg">{formatPrice(selectedOrder.total_amount)}</span>
+                  </div>
+
+                  {/*
+                    Zasada płatności stoi TUTAJ, przy kwocie — żeby nikt z klubu nie
+                    wziął tej liczby za wpłatę, która już przyszła. W bazie nie ma
+                    pola o płatności, więc to stały tekst, nie stan zamówienia.
+                  */}
+                  <div className="flex items-start gap-3 rounded-lg border border-amber/40 bg-amber/10 p-3">
+                    <Wallet className="mt-0.5 h-5 w-5 shrink-0 text-amber" />
+                    <div className="space-y-1.5">
+                      <p className="text-sm font-semibold text-amber">{PAYMENT_NOTICE_TITLE}</p>
+                      <p className="text-sm text-muted-foreground">{PAYMENT_NOTICE_ADMIN}</p>
+                      <p className="text-sm text-muted-foreground">{PICKUP_INFO_ADMIN}</p>
+                      <p className="text-xs text-muted-foreground">
+                        Klient przeczytał w sklepie: „{PAYMENT_NOTICE_SHORT}” oraz „{ORDER_IS_RESERVATION}”
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -360,7 +431,7 @@ export function OrdersClient({ initialData, locations }: OrdersClientProps) {
           <AlertDialogFooter>
             <AlertDialogCancel>Anuluj</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">
-              Usun
+              Usuń
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  Receipt,
   ShoppingBag,
   User as UserIcon,
 } from 'lucide-react'
@@ -38,6 +39,7 @@ const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard', exact: true },
   { href: '/admin/produkty', icon: ShoppingBag, label: 'Produkty' },
   { href: '/admin/podglad-sklepu', icon: Eye, label: 'Podgląd sklepu' },
+  { href: '/admin/podglad-zamowienia', icon: Receipt, label: 'Podgląd zamówienia' },
   { href: '/admin/zamowienia', icon: ClipboardList, label: 'Zamówienia' },
   { href: '/admin/instagram', icon: Image, label: 'Instagram' },
 ]
