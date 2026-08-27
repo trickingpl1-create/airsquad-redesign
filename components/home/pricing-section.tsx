@@ -163,7 +163,20 @@ export function PricingSection({ hidePlans = [], hideDropIns = [] }: PricingSect
           </h3>
         </div>
 
-        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          className={cn(
+            'grid grid-cols-1 gap-3.5',
+            // Ten sam wzorzec co siatka planów wyżej: liczba kart zależy od miasta
+            // (`pricing_hide_drop_ins`), a siatka na sztywno 3-kolumnowa zostawiałaby
+            // np. jedną kartę na 1/3 szerokości dociśniętą do lewej pod pełnowymiarowym
+            // nagłówkiem. Zwężamy i centrujemy, gdy pozycji jest mniej niż kolumn.
+            visibleDropIns.length >= 3
+              ? 'sm:grid-cols-2 lg:grid-cols-3'
+              : visibleDropIns.length === 2
+                ? 'sm:mx-auto sm:max-w-3xl sm:grid-cols-2'
+                : 'sm:mx-auto sm:max-w-md',
+          )}
+        >
           {visibleDropIns.map(([name, price, note]) => (
             <div
               key={name}
