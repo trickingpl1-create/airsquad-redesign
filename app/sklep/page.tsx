@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/footer'
 import { StoreClient } from './store-client'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/sklep/' },
   title: 'Sklep',
   description:
     'Oficjalne gadżety i odzież Air Squad. Zamawiasz online, płacisz u trenera przy odbiorze na treningu.',

@@ -1,4 +1,5 @@
 import { getPublicSupabaseClient } from '@/lib/supabase/public'
+import type { Metadata } from 'next'
 import { getCampLandingSlugs, getCamps, getTrainers } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -14,6 +15,12 @@ import { CampsSection } from '@/components/home/camps-section'
 import { TeamSection } from '@/components/home/team-section'
 import { CTASection } from '@/components/home/cta-section'
 import { PromoSection } from '@/components/home/promo-section'
+
+// Tytuł i opis dziedziczone z app/layout.tsx — tu tylko canonical strony głównej
+// (każda indeksowana strona musi wskazywać swój adres kanoniczny, docs/02-plan-seo.md).
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 // Strona główna jest cache'owalna (ISR) — publiczne dane, brak cookies().
 // Na produkcji przyspiesza render; w dev bez skonfigurowanego Supabase

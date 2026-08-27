@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { CAMP_TYPES } from '@/lib/types/database'
 
 export const metadata = {
+  alternates: { canonical: '/obozy/' },
   title: 'Obozy',
   description:
     'Obozy sportowe Air Squad — letnie i zimowe. Intensywne treningi, integracja i niezapomniane przygody.',

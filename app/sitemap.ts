@@ -97,6 +97,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      // Historyczny URL WordPressa — był w sitemapie starej strony i jest
+      // zachowany w docs/03-mapa-url.md; bez wpisu tutaj Google nie dostaje
+      // sygnału o liście ogłoszeń.
+      url: `${SITE_URL}/aktualnosci/`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      // Strona dokumentów (RODO) — linkowana ze stopki każdej podstrony.
+      url: `${SITE_URL}/polityka-prywatnosci/`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
       url: `${SITE_URL}/kontakt/`,
       lastModified: new Date(),
       changeFrequency: 'monthly',

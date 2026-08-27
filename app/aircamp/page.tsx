@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
+  // /aircamp/ dubluje treść /letni/ — kanoniczny jest historyczny adres Air Camp
+  alternates: { canonical: '/letni/' },
   title: 'Air Camp 2026 — Obóz sportowo-rekreacyjny',
   description: 'Letni obóz Air Squad — akrobatyka, longboard, kajaki, paintball. Zapisy dla dzieci i młodzieży.',
   openGraph: {

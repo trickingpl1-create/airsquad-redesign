@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Calendar, MapPin, ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/wydarzenia/' },
   title: 'Wydarzenia',
   description:
     'Nadchodzące wydarzenia Air Squad — AirMeeting, spotkania akrobatyczne i Gravity Jam.',

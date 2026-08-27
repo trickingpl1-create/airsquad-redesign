@@ -9,6 +9,8 @@ type Discipline = {
   desc: string
   gradient: string
   photo: string
+  /** Nadpisany cel linku, gdy dyscyplina nie ma własnej strony /dyscypliny/[slug] */
+  href?: string
   /** Opcjonalny zoom/kadr zdjęcia w tle (np. gdy domyślny bg-cover ucina istotny fragment) */
   photoPosition?: string
   photoSize?: string
@@ -37,7 +39,7 @@ const DISCIPLINES: Discipline[] = [
   },
   {
     num: '02',
-    slug: 'tricking',
+    slug: 'tricking-akademia',
     name: 'Tricking',
     age: 'OD 7 LAT',
     desc: 'Salta, kicki, twisty — ekspresja i estetyka. Najszybciej rosnąca strefa.',
@@ -56,6 +58,7 @@ const DISCIPLINES: Discipline[] = [
   {
     num: '04',
     slug: 'showdance',
+    href: '/zapisy/', // brak strony /dyscypliny/showdance/ — kierujemy do zapisów
     name: 'Showdance',
     age: 'OD 7 LAT',
     desc: 'Choreografie, technika, lekcje indywidualne.',
@@ -64,7 +67,7 @@ const DISCIPLINES: Discipline[] = [
   },
   {
     num: '05',
-    slug: 'longboard',
+    slug: 'longboardy',
     name: 'Longboard',
     age: 'OD 7 LAT',
     desc: 'Carving, slidy, dancing. Sprzęt wypożyczamy — przyjdź bez deski.',
@@ -76,6 +79,7 @@ const DISCIPLINES: Discipline[] = [
   {
     num: '06',
     slug: 'snowboard',
+    href: '/obozy/', // brak strony /dyscypliny/snowboard/ — wyjazdy zimowe są w obozach
     name: 'Snowboard',
     age: 'OD 7 LAT',
     desc: 'Wyjazdy zimowe, technika, pierwsze tricki w snowparku.',
@@ -114,7 +118,7 @@ export function DisciplinesSection() {
           {DISCIPLINES.map((d) => (
             <Link
               key={d.num}
-              href={`/dyscypliny/${d.slug}`}
+              href={d.href ?? `/dyscypliny/${d.slug}/`}
               className="group relative flex min-h-52 flex-col justify-end overflow-hidden rounded-3xl p-5 text-foreground opacity-65 transition-all duration-300 hover:-translate-y-1 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
               style={{ background: d.gradient }}
             >

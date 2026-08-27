@@ -5,6 +5,7 @@ import { SectionHeader } from '@/components/home/section-header'
 import { CLUB_CONTACT } from '@/lib/content/cities'
 
 export const metadata = {
+  alternates: { canonical: '/aktualnosci/' },
   title: 'Aktualności',
   description:
     'Ogłoszenia klubu Air Squad — wydarzenia, obozy, zapisy i bieżące informacje dla rodziców i zawodników.',
@@ -128,6 +129,7 @@ export default function NewsPage() {
       <main className="flex-1 bg-background pb-24 pt-32 md:pb-32 md:pt-40">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <SectionHeader
+            as="h1"
             kicker="Aktualności"
             kickerColorClass="text-emerald"
             title="Co słychać"

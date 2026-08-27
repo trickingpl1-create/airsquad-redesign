@@ -6,6 +6,7 @@ import { Sticker } from '@/components/ui/sticker'
 import Link from 'next/link'
 
 export const metadata = {
+  alternates: { canonical: '/lokalizacje/' },
   title: 'Lokalizacje',
   description:
     'Znajdź salę treningową Air Squad najbliżej siebie. 7 lokalizacji w regionie Podkarpacia.',

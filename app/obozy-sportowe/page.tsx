@@ -43,6 +43,7 @@ export default function SportsCampsPage() {
       <main className="flex-1 bg-background pb-24 pt-32 md:pb-32 md:pt-40">
         <div className="mx-auto max-w-4xl px-6 md:px-10">
           <SectionHeader
+            as="h1"
             kicker="Obozy"
             kickerColorClass="text-emerald"
             title="Obozy sportowe"

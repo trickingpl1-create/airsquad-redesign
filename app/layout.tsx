@@ -1,27 +1,16 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, JetBrains_Mono, Covered_By_Your_Grace } from 'next/font/google'
+// Fonty self-hosted z paczek @fontsource (te same kroje co wcześniej z Google
+// Fonts). Powody: build nie zależy od sieci (next/font/google pobiera CSS
+// z fonts.googleapis.com w czasie builda i wywala się offline/za firewallem),
+// a pliki i tak serwujemy z własnej domeny. Zmienne CSS ustawia globals.css.
+import '@fontsource-variable/inter'
+import '@fontsource-variable/jetbrains-mono'
+import '@fontsource/covered-by-your-grace'
 import { ThemeProvider } from '@/components/theme-provider'
 import { EnrolFab } from '@/components/enrol-fab'
 import { ENROL_CITIES } from '@/lib/content/enrol-cities'
 import { SITE_URL } from '@/lib/seo/site'
 import './globals.css'
-
-const inter = Inter({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-inter',
-})
-
-const coveredByYourGrace = Covered_By_Your_Grace({
-  subsets: ['latin'],
-  weight: '400',
-  variable: '--font-covered-by-your-grace',
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-jetbrains-mono',
-  weight: ['400', '500', '700'],
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -89,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="pl"
-      className={`${inter.variable} ${coveredByYourGrace.variable} ${jetbrainsMono.variable} bg-background`}
+      className="bg-background"
       suppressHydrationWarning
     >
       <body className="font-sans antialiased min-h-screen bg-background text-foreground">

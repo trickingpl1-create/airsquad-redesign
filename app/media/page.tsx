@@ -5,6 +5,7 @@ import { InstagramFeed } from '@/components/integrations/instagram-feed'
 import { YouTubeSection } from '@/components/integrations/youtube-section'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/media/' },
   title: 'Media',
   description: 'Galeria wideo i zdjęcia z Air Squad. Śledź nas na Instagramie!',
 }

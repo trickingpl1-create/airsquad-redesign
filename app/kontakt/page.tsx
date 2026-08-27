@@ -8,6 +8,7 @@ import { CLUB_CONTACT } from '@/lib/content/cities'
 import { MapPin, Phone, Mail, Instagram } from 'lucide-react'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/kontakt/' },
   title: 'Kontakt',
   description:
     'Skontaktuj się z Air Squad — telefon, email, social media. Zapisy na zajęcia online przez kalendarz AIPAX na podstronie Twojego miasta.',
@@ -44,6 +45,7 @@ export default function ContactPage() {
       <main className="flex-1 bg-background pt-24">
         <section className="container mx-auto px-4 pb-20 pt-12">
           <SectionHeader
+            as="h1"
             kicker="Kontakt"
             kickerColorClass="text-cyan"
             title="Napisz."

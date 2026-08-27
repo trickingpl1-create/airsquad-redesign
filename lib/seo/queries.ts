@@ -213,7 +213,8 @@ export async function resolveRootSlug(slug: string): Promise<RootSlugResult> {
 // fallbacki z lib/content/hubs.ts trzymają je niepuste bez skonfigurowanej bazy.
 export async function getLocations(): Promise<Location[]> {
   const supabase = getSupabaseClient()
-  if (!supabase) return FALLBACK_LOCATIONS
+  if (!supabase)
+    return FALLBACK_LOCATIONS.filter((location) => !isWithdrawnLocation(location.slug ?? ''))
 
   const { data, error } = await supabase
     .from('locations')
@@ -222,7 +223,12 @@ export async function getLocations(): Promise<Location[]> {
     .order('display_order')
 
   if (error) console.error('Error fetching locations:', error)
-  return data && data.length > 0 ? data : FALLBACK_LOCATIONS
+  const locations = data && data.length > 0 ? data : FALLBACK_LOCATIONS
+  // Wycofane lokalizacje (withdrawn-locations.json) nie mogą wracać przez
+  // tabelę `locations` — /lokalizacje/ linkowałoby do strony, której nie ma.
+  return locations.filter(
+    (location) => !isWithdrawnLocation(location.slug ?? location.city?.toLowerCase() ?? '')
+  )
 }
 
 export async function getTrainers(): Promise<Trainer[]> {

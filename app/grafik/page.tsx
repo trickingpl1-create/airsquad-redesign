@@ -5,6 +5,7 @@ import { AipaxWidget } from '@/components/aipax-widget'
 import { SectionHeader } from '@/components/home/section-header'
 
 export const metadata = {
+  alternates: { canonical: '/grafik/' },
   title: 'Grafik zajęć',
   description: 'Sprawdź grafik zajęć Air Squad. Akrobatyka, tricking, skoki na ścieżce w 7 lokalizacjach.',
 }
@@ -28,6 +29,7 @@ export default function SchedulePage() {
         {/* Kafelki miast — wejście w miasto = pełny grafik grup tej sekcji */}
         <section className="container mx-auto px-4 pt-12">
           <SectionHeader
+            as="h1"
             kicker="Grafik zajęć"
             kickerColorClass="text-cyan"
             title="Wybierz swoje"
