@@ -185,7 +185,7 @@ export function HeroSection() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              {/* Cyan stat — LOKALIZACJE */}
+              {/* Cyan stat — KADRA */}
               <div
                 className="relative min-h-40 overflow-hidden rounded-3xl p-6 text-foreground"
                 style={{
@@ -206,13 +206,13 @@ export function HeroSection() {
                     style={{ fontFamily: 'var(--font-covered-by-your-grace)', letterSpacing: '0.025em' }}
                     className="text-[16px] font-bold uppercase text-white/75"
                   >
-                    LOKALIZACJE
+                    KADRA
                   </div>
                   <div className="mt-2 font-[family-name:var(--font-display)] text-6xl font-black text-white" style={{ fontWeight: 400 }}>
-                    8
+                    15
                   </div>
                   <div className="mt-1 text-xs text-white/75">
-                    miast na Podkarpaciu
+                    trenerów
                   </div>
                 </div>
               </div>
@@ -253,11 +253,15 @@ export function HeroSection() {
                     <Instagram aria-hidden className="h-5 w-5 text-white/60 transition-colors group-hover:text-white" />
                   </div>
                   <div>
-                    <div className="font-[family-name:var(--font-display)] text-3xl font-black text-white" style={{ fontWeight: 400 }}>
-                      @airsquad
+                    <div className="font-[family-name:var(--font-display)] text-xl font-black leading-tight text-white md:text-2xl" style={{ fontWeight: 400 }}>
+                      {/* <wbr/> po podkreśleniu: w wąskim kafelku na mobile
+                          uchwyt łamie się na „@airsquad_" + „akrobatyka"
+                          zamiast wyjeżdżać poza obcięcie kafelka. Na szerszych
+                          ekranach zostaje w jednej linii. */}
+                      @airsquad_<wbr />akrobatyka
                     </div>
                     <div className="mt-1 text-xs text-white/75">
-                      Zobacz nasz profil →
+                      Zobacz profil →
                     </div>
                   </div>
                 </div>

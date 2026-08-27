@@ -231,36 +231,66 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
 
         {/* Pasek info */}
         <section className="container mx-auto px-4 pt-4">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {/* Na telefonie jedna kolumna, nie dwie: przy dwóch kartach zostaje
+              ~90 px na tekst obok ikony, więc „Sala AIR SPACE Rzeszów" łamie się
+              na trzy linie. Pełna szerokość mieści każdy wiersz w jednej linii —
+              pasek jest o ~80 px wyższy niż siatka 2×2, ale czytelny.
+              Cztery kolumny dopiero od `lg`: przy `md` (768 px) karta ma 172 px,
+              czyli ~100 px na tekst — nazwa sali i e-mail łamały się na trzy
+              linie. */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {/* Ikona w barwionym chipie 40×40, całość centrowana w pionie —
+                wariant A z makiety, akceptacja użytkownika 2026-08-27. Chip
+                daje ikonie stałą oś, więc karty o różnej liczbie linii tekstu
+                (3-linijkowa nazwa sali w Bieczu obok 1-linijkowych sąsiadów)
+                nie rozjeżdżają wiersza. `min-h` wyrównuje karty także między
+                wierszami siatki 2×2. `min-w-0` + `break-words` pozwalają
+                łamać adres i e-mail zamiast rozpychać kartę. */}
             {city.hall && (
-              <div className="rounded-3xl border border-border bg-card p-5">
-                <MapPin className="h-5 w-5 text-cyan" aria-hidden />
-                <p className="mt-2 text-sm font-medium text-foreground">{city.hall.name}</p>
-                <p className="font-mono text-[11px] text-muted-foreground">{city.hall.address}</p>
+              <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan/15">
+                  <MapPin className="h-5 w-5 text-cyan" aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-foreground">{city.hall.name}</p>
+                  <p className="break-words font-mono text-[11px] text-muted-foreground">{city.hall.address}</p>
+                </div>
               </div>
             )}
             {trainingDays && (
-              <div className="rounded-3xl border border-border bg-card p-5">
-                <Calendar className="h-5 w-5 text-amber" aria-hidden />
-                <p className="mt-2 text-sm font-medium text-foreground">Dni treningów</p>
-                <p className="font-mono text-[11px] text-muted-foreground">{trainingDays}</p>
+              <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber/15">
+                  <Calendar className="h-5 w-5 text-amber" aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-foreground">Dni treningów</p>
+                  <p className="font-mono text-[11px] text-muted-foreground">{trainingDays}</p>
+                </div>
               </div>
             )}
-            <div className="rounded-3xl border border-border bg-card p-5">
-              <Users className="h-5 w-5 text-pink" aria-hidden />
-              <p className="mt-2 text-sm font-medium text-foreground">Małe grupy</p>
-              <p className="font-mono text-[11px] text-muted-foreground">
-                {city.group_ratio_label ?? 'dzieci · młodzież · dorośli'}
-              </p>
+            <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pink/15">
+                <Users className="h-5 w-5 text-pink" aria-hidden />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-foreground">Małe grupy</p>
+                <p className="font-mono text-[11px] text-muted-foreground">
+                  {city.group_ratio_label ?? 'dzieci · młodzież · dorośli'}
+                </p>
+              </div>
             </div>
-            <div className="rounded-3xl border border-border bg-card p-5">
-              <Phone className="h-5 w-5 text-emerald" aria-hidden />
-              <p className="mt-2 text-sm font-medium text-foreground">
-                <a href={`tel:+48${CLUB_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-emerald">
-                  {CLUB_CONTACT.phone}
-                </a>
-              </p>
-              <p className="font-mono text-[11px] text-muted-foreground">{CLUB_CONTACT.email}</p>
+            <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald/15">
+                <Phone className="h-5 w-5 text-emerald" aria-hidden />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-foreground">
+                  <a href={`tel:+48${CLUB_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-emerald">
+                    {CLUB_CONTACT.phone}
+                  </a>
+                </p>
+                <p className="break-words font-mono text-[11px] text-muted-foreground">{CLUB_CONTACT.email}</p>
+              </div>
             </div>
           </div>
         </section>
