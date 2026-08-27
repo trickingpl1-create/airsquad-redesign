@@ -304,7 +304,11 @@
 /* Tabular display numerics for stats */
 .stat-number {
   font-family: var(--font-covered-by-your-grace, 'Covered By Your Grace', cursive);
-  font-weight: 800;
+  /* 400, nie 800. „Covered By Your Grace" ma JEDNĄ wagę, więc każda wyższa
+     wartość to syntetyczne pogrubienie: przeglądarka rozlewa kontur i w cyfrach
+     zalewa się pętla szóstki — „2600 zł" czyta się wtedy jako „2400 zł".
+     Przy cenach i statystykach to nie kwestia gustu, tylko czytelności liczby. */
+  font-weight: 400;
   font-style: normal;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;

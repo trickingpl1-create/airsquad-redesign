@@ -1,12 +1,5 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import type { Camp } from '@/lib/types/database'
-
-interface CampsSectionProps {
-  camps: Camp[]
-  /** Slugi obozów, które mają istniejący landing — patrz getCampLandingSlugs() */
-  landingSlugs: string[]
-}
 
 // Ta sama zajawka co na /letni/ (lib/content/letni.ts → LETNI_EVENT.youtubeId)
 const AIRCAMP_YOUTUBE_ID = '-P1J3YntBpY'
@@ -25,28 +18,7 @@ const stats = [
   ['2500', 'od zł / turnus'],
 ] as const
 
-function formatPrice(value: number): string {
-  return new Intl.NumberFormat('pl-PL', {
-    style: 'currency',
-    currency: 'PLN',
-    minimumFractionDigits: 0,
-  }).format(value)
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('pl-PL', {
-    day: 'numeric',
-    month: 'short',
-  })
-}
-
-export function CampsSection({ camps, landingSlugs }: CampsSectionProps) {
-  const featured = camps[0]
-  // Landing obozu to historyczny URL root-level (/letni/), nie /obozy/{slug} —
-  // ta trasa nigdy nie istniała, więc bez landingu nie renderujemy linku.
-  const featuredHref =
-    featured && landingSlugs.includes(featured.slug) ? `/${featured.slug}/` : null
-
+export function CampsSection() {
   return (
     <section
       id="aircamp"
@@ -142,77 +114,22 @@ export function CampsSection({ camps, landingSlugs }: CampsSectionProps) {
           ))}
         </div>
 
-        {/* Featured camp from DB (if any) */}
-        {featured && (
-          <div className="mt-16 grid gap-4 md:grid-cols-[1.4fr_1fr] md:items-center">
-            <div className="rounded-3xl border border-border bg-card p-8 md:p-10">
-              <div className="font-mono text-[11px] font-extrabold uppercase tracking-[0.16em] text-cyan">
-                {formatDate(featured.start_date)} – {formatDate(featured.end_date)}
-                {featured.location && <> · {featured.location}</>}
-              </div>
-              <h3 className="display-bold mt-3 text-3xl text-foreground md:text-4xl">
-                {featured.name}
-              </h3>
-              {/* Bez akapitu opisu — decyzja użytkownika. Sekcja ma zostać
-                  plakatowa jak w pierwszej wersji, a karta ma podawać wyłącznie
-                  termin i cenę. Pełny opis obozu jest na jego landingu, dokąd
-                  prowadzi „Szczegóły turnusu". */}
-              <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
-                {featured.price && (
-                  <div>
-                    <div className="stat-number text-3xl text-foreground md:text-4xl">
-                      {formatPrice(featured.price)}
-                    </div>
-                    {featured.spots_total !== null &&
-                      featured.spots_total - featured.spots_taken > 0 && (
-                        <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-                          {featured.spots_total - featured.spots_taken} z{' '}
-                          {featured.spots_total} miejsc
-                        </div>
-                      )}
-                  </div>
-                )}
-                {featuredHref && (
-                  <Link
-                    href={featuredHref}
-                    className="rounded-2xl border-2 border-foreground/15 px-6 py-3 font-mono text-xs font-extrabold uppercase tracking-[0.1em] text-foreground transition-colors hover:border-foreground/40"
-                  >
-                    Szczegóły turnusu →
-                  </Link>
-                )}
-              </div>
-            </div>
-
-            <Link
-              href="/obozy"
-              className="block rounded-3xl p-8 text-center text-primary-foreground shadow-[0_14px_36px_oklch(0.58_0.24_290/0.35)] transition-transform hover:-translate-y-1 md:p-10"
-              style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-              }}
-            >
-              <span className="display-bold block text-2xl md:text-3xl">
-                Zarezerwuj turnus
-              </span>
-              <span className="mt-2 block text-xs opacity-80">
-                Wszystkie terminy obozów 2026
-              </span>
-            </Link>
-          </div>
-        )}
-
-        {!featured && (
-          <div className="mt-14 text-center">
-            <Link
-              href="/obozy"
-              className="inline-block rounded-2xl px-10 py-5 text-sm font-bold tracking-tight text-primary-foreground shadow-[0_14px_36px_oklch(0.58_0.24_290/0.35)] transition-transform hover:-translate-y-0.5"
-              style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-              }}
-            >
-              Zarezerwuj turnus
-            </Link>
-          </div>
-        )}
+        {/* Karta turnusu usunięta na życzenie użytkownika — sekcja zostaje
+            plakatowa (logo, atrakcje, statystyki), a konkret o terminach
+            i cenach żyje na /obozy/ i na landingu turnusu. Ten wyśrodkowany
+            przycisk był już wcześniej wariantem „brak obozu w bazie"; teraz
+            jest jedynym, więc renderuje się bezwarunkowo. */}
+        <div className="mt-14 text-center">
+          <Link
+            href="/obozy"
+            className="inline-block rounded-2xl px-10 py-5 text-sm font-bold tracking-tight text-primary-foreground shadow-[0_14px_36px_oklch(0.58_0.24_290/0.35)] transition-transform hover:-translate-y-0.5"
+            style={{
+              background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+            }}
+          >
+            Zarezerwuj turnus
+          </Link>
+        </div>
       </div>
     </section>
   )

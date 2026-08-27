@@ -1,141 +1,209 @@
-import { getTrainers } from '@/lib/seo/queries'
+import Image from 'next/image'
+import Link from 'next/link'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { Sticker } from '@/components/ui/sticker'
-import { Instagram, User } from 'lucide-react'
-import Link from 'next/link'
+import { SectionHeader } from '@/components/home/section-header'
+import { TeamPhotoBackdrop } from '@/components/team/team-photo-backdrop'
+import { TEAM, TEAM_FEATURED, TEAM_REST } from '@/lib/content/team'
+import { TEAM_PHOTOS } from '@/lib/content/team-photos'
 
 export const metadata = {
   alternates: { canonical: '/trenerzy/' },
   title: 'Trenerzy',
   description:
-    'Poznaj zespół trenerów Air Squad. Doświadczeni instruktorzy akrobatyki, trickingu i tumblingu.',
+    'Poznaj kadrę Air Squad — instruktorów akrobatyki, trickingu i tumblingu. Magistrowie wychowania fizycznego, fizjoterapeuci i instruktorzy judo, którzy prowadzą zajęcia w sześciu miastach Podkarpacia.',
 }
 
-const TILE_GRADIENTS = [
-  'from-primary to-accent',
-  'from-accent to-cyan',
-  'from-cyan to-primary',
-  'from-primary via-cyan to-accent',
-  'from-accent via-primary to-cyan',
-]
+/** Inicjały jako zastępnik portretu — bez zdjęcia karta i tak ma trzymać rytm siatki. */
+function initials(name: string): string {
+  return name
+    .split(/[\s-]+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+}
 
-export default async function TrainersPage() {
-  const trainers = await getTrainers()
-
+export default function TrainersPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
+      {/* pt-24 = odstęp na przyklejony Header, jak na pozostałych podstronach */}
       <main className="flex-1 bg-background pt-24">
-        {/* Hero band */}
-        <section className="relative overflow-hidden border-b-2 border-foreground bg-gradient-to-br from-accent via-primary to-primary">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-32 -right-32 h-[500px] w-[500px] rounded-full bg-cyan/30 blur-3xl"
-          />
-          <div className="container relative mx-auto px-4 py-20 md:py-28">
-            <Sticker variant="cyan" rotate="right" size="sm" className="mb-6">
-              {trainers.length} · 12+ lat doświadczenia
-            </Sticker>
-            <h1 className="font-[family-name:var(--font-display)] text-6xl font-black uppercase leading-[0.9] tracking-tighter text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
-              trenerzy
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg font-medium text-primary-foreground/85 md:text-xl">
-              Pasjonaci akrobatyki, którzy pamiętają jak to jest być początkującym.
+        {/*
+          Hero: zdjęcia grupowe kadry przenikają pod nagłówkiem zamiast leżeć
+          w osobnej galerii na dole strony. Nagłówek dostaje wymuszony biały
+          kolor — SectionHeader używa `text-foreground`, który w jasnym motywie
+          jest ciemny i zniknąłby na przyciemnionym zdjęciu.
+          Sekcja ma min-height, żeby przy braku zdjęć (pusty katalog
+          public/images/kadra) nie zapadła się do samego tekstu.
+        */}
+        <section className="relative min-h-[26rem] overflow-hidden md:min-h-[32rem]">
+          <TeamPhotoBackdrop photos={TEAM_PHOTOS} />
+          <div className="container relative mx-auto px-4 pb-20 pt-12 md:pb-24 md:pt-16">
+            <div className="max-w-2xl [&_h1]:text-white">
+              <SectionHeader
+                as="h1"
+                className="mb-0 md:mb-0"
+                kicker={`Kadra · ${TEAM.length} osób · Est. 2003`}
+                kickerColorClass="text-cyan"
+                title="Trenerzy, którym"
+                gradientPart="ufają rodzice."
+                titleFontWeight={400}
+                gradientFontWeight={400}
+              />
+              <p className="mt-6 text-base leading-relaxed text-white/85 md:text-lg">
+                Pasjonaci akrobatyki, którzy pamiętają, jak to jest być początkującym — i dlatego
+                nikt u nas nie zaczyna od rzeczy, na którą nie jest gotowy. Pierwszy przewrót
+                ćwiczy się tak samo uważnie jak salto: na miękkich matach{' '}
+                <strong className="font-semibold text-white">AirTrack</strong>, w małej grupie,
+                we własnym tempie.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Dalszy ciąg opisu — poza zdjęciem, żeby dłuższy tekst czytało się
+            na spokojnym tle, a nie na fotografii. */}
+        <section className="container mx-auto px-4 py-12 md:py-14">
+          <div className="max-w-3xl space-y-4 text-base leading-relaxed text-muted-foreground md:text-lg">
+            <p>
+              Za tym stoją konkretne kwalifikacje: magistrowie wychowania fizycznego,
+              fizjoterapeuci, instruktorzy akrobatyki i judo, ratownik. Na zajęciach pracuje
+              dwóch trenerów, a grupy trzymamy w rygorze do dwunastu uczestników na trenera —
+              dzięki temu każde dziecko dostaje poprawkę wtedy, kiedy jej potrzebuje, a nie
+              pod koniec sezonu.
+            </p>
+            <p>
+              Uczymy w sześciu miastach na Podkarpaciu, prowadzimy obozy Air Camp i zawody
+              Air Meeting. Ten sam zespół, który stoi przy macie na treningu, jedzie potem
+              z dziećmi na turnus.
             </p>
           </div>
         </section>
 
-        <section className="container mx-auto px-4 py-16 md:py-20">
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {trainers.map((trainer, idx) => (
+        {/* Osoby prowadzące klub — duże portrety */}
+        <section className="container mx-auto px-4 py-12 md:py-16">
+          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-violet-soft">
+            Prowadzą klub
+          </p>
+          <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {TEAM_FEATURED.map((m) => (
               <article
-                key={trainer.id}
-                className="group overflow-hidden border-2 border-foreground bg-card shadow-sticker transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-sticker-lg"
+                key={m.name}
+                className="group overflow-hidden rounded-3xl border border-border bg-card"
               >
-                {/* Avatar block */}
-                <div className={`relative aspect-square overflow-hidden bg-gradient-to-br ${TILE_GRADIENTS[idx % TILE_GRADIENTS.length]}`}>
-                  {trainer.photo_url ? (
-                    <img
-                      src={trainer.photo_url || '/placeholder.svg'}
-                      alt={trainer.name}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                <div className="relative aspect-[3/4] overflow-hidden bg-muted">
+                  {m.photo && (
+                    <Image
+                      src={m.photo}
+                      alt={`${m.name} — ${m.role}`}
+                      fill
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                      sizes="(max-width: 1024px) 50vw, 25vw"
                     />
-                  ) : (
-                    <div className="flex h-full items-center justify-center">
-                      <User className="h-20 w-20 text-primary-foreground/40" aria-hidden />
-                    </div>
                   )}
-                </div>
-
-                {/* Info */}
-                <div className="border-t-2 border-foreground p-6">
-                  <h2 className="font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-foreground">
-                    {trainer.name}
-                  </h2>
-                  <p className="mt-1 text-xs font-black uppercase tracking-widest text-primary">
-                    {trainer.role || 'Trener'}
-                  </p>
-                  {trainer.bio && (
-                    <p className="mt-4 line-clamp-3 text-sm text-muted-foreground">
-                      {trainer.bio}
-                    </p>
-                  )}
-
-                  {trainer.specializations && trainer.specializations.length > 0 && (
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {trainer.specializations.slice(0, 4).map((spec: string) => (
-                        <span
-                          key={spec}
-                          className="border border-foreground bg-card px-2 py-1 text-[10px] font-black uppercase tracking-wider text-foreground"
-                        >
-                          {spec}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {trainer.instagram_url && (
-                    <a
-                      href={trainer.instagram_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-5 inline-flex items-center gap-2 border-2 border-foreground px-3 py-2 text-xs font-black uppercase tracking-wider text-foreground transition-all hover:bg-foreground hover:text-background"
+                  <div
+                    aria-hidden
+                    className="absolute inset-x-0 bottom-0 h-1/2"
+                    style={{
+                      background:
+                        'linear-gradient(to top, oklch(0.13 0.02 280 / 0.92), transparent)',
+                    }}
+                  />
+                  <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                    <h2
+                      className="display-bold text-lg leading-tight text-white md:text-xl"
+                      style={{ fontWeight: 400 }}
                     >
-                      <Instagram className="h-3.5 w-3.5" aria-hidden />
-                      Instagram
-                    </a>
-                  )}
+                      {m.name}
+                    </h2>
+                    <p className="mt-1.5 font-mono text-[10px] uppercase leading-relaxed tracking-[0.1em] text-white/70">
+                      {m.role}
+                    </p>
+                  </div>
                 </div>
               </article>
             ))}
           </div>
+        </section>
 
-          {!trainers.length && (
-            <div className="border-2 border-dashed border-foreground/30 bg-card p-12 text-center">
-              <User className="mx-auto h-12 w-12 text-muted-foreground/50" aria-hidden />
-              <h3 className="mt-4 font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-foreground">
-                Wkrótce
-              </h3>
-            </div>
-          )}
+        {/* Reszta kadry — na /trenerzy/ z rolami, w odróżnieniu od strony głównej,
+            gdzie ta grupa jest tylko plakietkami z nazwiskiem. */}
+        <section className="container mx-auto px-4 pb-4">
+          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-emerald">
+            Kadra trenerska
+          </p>
+          <div className="mt-5 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+            {TEAM_REST.map((m) => (
+              <article
+                key={m.name}
+                className="flex items-center gap-4 rounded-3xl border border-border bg-card p-4"
+              >
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-muted">
+                  {m.photo ? (
+                    <Image
+                      src={m.photo}
+                      alt={m.name}
+                      fill
+                      className="object-cover object-top"
+                      sizes="64px"
+                    />
+                  ) : (
+                    <span
+                      aria-hidden
+                      className="display-bold grid h-full w-full place-items-center text-lg text-foreground/45"
+                      style={{ fontWeight: 400 }}
+                    >
+                      {initials(m.name)}
+                    </span>
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <h2
+                    className="display-bold text-base leading-tight text-foreground"
+                    style={{ fontWeight: 400 }}
+                  >
+                    {m.name}
+                  </h2>
+                  <p className="mt-1 font-mono text-[10px] uppercase leading-relaxed tracking-[0.1em] text-violet-soft">
+                    {m.role}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
 
-          {/* Join CTA */}
-          <div className="mt-20 border-2 border-foreground bg-foreground p-12 text-center text-background shadow-sticker-xl md:p-16">
-            <p className="text-xs font-black uppercase tracking-widest text-cyan">
+        {/* Osobnej galerii zdjęć grupowych już nie ma — te same cztery kadry
+            przenikają w hero na górze strony (components/team/team-photo-backdrop.tsx).
+            Powtarzanie ich niżej byłoby dubletem tej samej treści. */}
+
+        {/* CTA */}
+        <section className="container mx-auto px-4 pb-20 pt-4">
+          <div
+            className="rounded-3xl p-10 text-center text-primary-foreground shadow-[0_14px_36px_oklch(0.58_0.24_290/0.35)] md:p-14"
+            style={{
+              background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+            }}
+          >
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-white/75">
               Dołącz do zespołu
             </p>
-            <h2 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-black uppercase leading-none tracking-tighter md:text-6xl">
-                Aplikuj na trenera
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-background/70">
-              Pasjonujesz się akrobatyką i chcesz dzielić się wiedzą? Napisz do nas.
+            <p
+              className="display-bold mt-3 text-3xl leading-tight md:text-4xl"
+              style={{ fontWeight: 400 }}
+            >
+              Szukamy trenerów.
+            </p>
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/80">
+              Masz doświadczenie w akrobatyce, trickingu albo gimnastyce i chcesz pracować
+              z dziećmi? Napisz — odpowiadamy na każde zgłoszenie.
             </p>
             <Link
               href="/kontakt"
-              className="mt-8 inline-block border-2 border-cyan bg-cyan px-10 py-4 font-black uppercase tracking-wider text-cyan-foreground transition-all hover:bg-background hover:text-foreground"
+              className="mt-8 inline-block rounded-full border border-white/35 bg-white/10 px-8 py-3.5 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-white/20"
             >
-              Aplikuj
+              Napisz do nas →
             </Link>
           </div>
         </section>

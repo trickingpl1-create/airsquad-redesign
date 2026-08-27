@@ -1,24 +1,14 @@
 import Image from 'next/image'
-import type { Trainer } from '@/lib/types/database'
+import { TEAM_FEATURED, TEAM_REST } from '@/lib/content/team'
 import { SectionHeader } from './section-header'
 
-interface TeamSectionProps {
-  trainers: Trainer[]
-}
-
-const cardGradients = [
-  'linear-gradient(135deg, var(--primary), var(--accent))',
-  'linear-gradient(135deg, var(--pink), var(--primary))',
-  'linear-gradient(135deg, var(--cyan), var(--accent))',
-  'linear-gradient(135deg, var(--violet-soft), var(--primary))',
-  'linear-gradient(135deg, var(--accent), var(--cyan))',
-  'linear-gradient(135deg, var(--primary), var(--pink))',
-  'linear-gradient(135deg, var(--cyan), var(--violet-soft))',
-  'linear-gradient(135deg, var(--amber), var(--pink))',
-] as const
-
-export function TeamSection({ trainers }: TeamSectionProps) {
-  if (trainers.length === 0) return null
+// Sekcja „Zespół" ma dwa poziomy, żeby nie powtórzyć błędu starej strony
+// („za dużo osób małą czcionką" — docs/_archive/CONTENT_MIGRATION_STRATEGY.md):
+//  1. cztery osoby prowadzące klub — duże zdjęcia portretowe,
+//  2. reszta kadry — plakietki z samym imieniem i nazwiskiem.
+// Skład i zdjęcia: lib/content/team.ts.
+export function TeamSection() {
+  if (TEAM_FEATURED.length === 0) return null
 
   return (
     <section
@@ -39,64 +29,71 @@ export function TeamSection({ trainers }: TeamSectionProps) {
           gradientFontWeight={400}
         />
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {trainers.map((t, i) => {
-            const gradient = cardGradients[i % cardGradients.length]
-            const number = String(i + 1).padStart(2, '0')
-
-            return (
-              <article
-                key={t.id}
-                className="overflow-hidden rounded-3xl border border-border bg-card"
-              >
-                <div
-                  className="relative aspect-[4/5] overflow-hidden"
-                  style={{
-                    backgroundImage: `repeating-linear-gradient(45deg, rgba(255,255,255,0.10), rgba(255,255,255,0.10) 1px, transparent 1px, transparent 10px), ${gradient}`,
-                  }}
-                >
-                  {t.photo_url && (
-                    <Image
-                      src={t.photo_url}
-                      alt={t.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    />
-                  )}
-                  <div
-                    aria-hidden
-                    className="halftone-overlay absolute inset-0 text-black opacity-10"
+        {/* Duże portrety. Zdjęcia są pionowe 768×1365, więc kadr 3:4 obcina je
+            od dołu — `object-top` trzyma twarz w kadrze niezależnie od wzrostu
+            osoby na zdjęciu. */}
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {TEAM_FEATURED.map((m) => (
+            <article
+              key={m.name}
+              className="group overflow-hidden rounded-3xl border border-border bg-card"
+            >
+              <div className="relative aspect-[3/4] overflow-hidden bg-muted">
+                {m.photo && (
+                  <Image
+                    src={m.photo}
+                    alt={`${m.name} — ${m.role}`}
+                    fill
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                    sizes="(max-width: 1024px) 50vw, 25vw"
                   />
-                  <div className="absolute left-3 top-3 font-mono text-[11px] font-extrabold text-foreground/85">
-                    #{number}
+                )}
+                {/* Gradient pod podpisem — bez niego jasne tło zdjęcia zjada tekst */}
+                <div
+                  aria-hidden
+                  className="absolute inset-x-0 bottom-0 h-1/2"
+                  style={{
+                    background:
+                      'linear-gradient(to top, oklch(0.13 0.02 280 / 0.92), transparent)',
+                  }}
+                />
+                <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                  <div
+                    className="display-bold text-lg leading-tight text-white md:text-xl"
+                    style={{ fontWeight: 400 }}
+                  >
+                    {m.name}
                   </div>
-                  {t.instagram_url && (
-                    <a
-                      href={t.instagram_url}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      aria-label={`Instagram ${t.name}`}
-                      className="absolute bottom-3 right-3 grid h-7 w-7 place-items-center rounded-full border border-white/30 bg-black/40 text-sm text-foreground transition-colors hover:bg-black/60"
-                    >
-                      ↗
-                    </a>
-                  )}
-                </div>
-                <div className="p-5">
-                  <div className="display-bold text-base text-foreground">
-                    {t.name}
+                  <div className="mt-1.5 font-mono text-[10px] uppercase leading-relaxed tracking-[0.1em] text-white/70">
+                    {m.role}
                   </div>
-                  {t.role && (
-                    <div className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-violet-soft">
-                      {t.role}
-                    </div>
-                  )}
                 </div>
-              </article>
-            )
-          })}
+              </div>
+            </article>
+          ))}
         </div>
+
+        {/* Plakietki — sama tożsamość, bez roli i bez zdjęcia. Rola żyje
+            w atrybucie title, więc nie ginie dla czytników ekranu. */}
+        {TEAM_REST.length > 0 && (
+          <div className="mt-8">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-violet-soft">
+              Pozostali trenerzy
+            </p>
+            <ul className="mt-4 flex flex-wrap gap-2.5">
+              {TEAM_REST.map((m) => (
+                <li key={m.name}>
+                  <span
+                    title={m.role}
+                    className="inline-block rounded-full border border-border bg-card px-4 py-2 font-mono text-[11px] tracking-[0.08em] text-foreground/75"
+                  >
+                    {m.name}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </section>
   )

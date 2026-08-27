@@ -1,6 +1,5 @@
 import { getPublicSupabaseClient } from '@/lib/supabase/public'
 import type { Metadata } from 'next'
-import { getCampLandingSlugs, getCamps, getTrainers } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { HeroSection } from '@/components/home/hero-section'
@@ -44,11 +43,12 @@ export default async function HomePage() {
       ]).then((results) => results.map((result) => result.data ?? []))
     : [[]]
 
-  const [trainers, camps, campLandingSlugs] = await Promise.all([
-    getTrainers(),
-    getCamps(),
-    getCampLandingSlugs(),
-  ])
+  // Sekcja „Zespół" czyta skład z lib/content/team.ts (tak samo jak /trenerzy/),
+  // a sekcja Air Camp nie pokazuje już karty turnusu — strona główna nie
+  // potrzebuje więc żadnego z getterów. getCamps()/getCampLandingSlugs() dalej
+  // obsługują /obozy/ i landingi turnusów. getTrainers() nie ma już natomiast
+  // ani jednego wywołania — zostaje jako część API zapytań, do usunięcia razem
+  // z FALLBACK_TRAINERS, jeśli tabela `trainers` ma zniknąć z modelu.
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -62,8 +62,8 @@ export default async function HomePage() {
         <TrainingTypesSection trainingTypes={trainingTypes} />
         <DisciplinesSection />
         <HowAudienceSection />
-        <CampsSection camps={camps} landingSlugs={campLandingSlugs} />
-        <TeamSection trainers={trainers} />
+        <CampsSection />
+        <TeamSection />
         <CTASection cities={ENROL_CITIES} />
       </main>
       <Footer />
