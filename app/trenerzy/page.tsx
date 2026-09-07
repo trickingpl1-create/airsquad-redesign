@@ -1,9 +1,9 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SectionHeader } from '@/components/home/section-header'
 import { TeamPhotoBackdrop } from '@/components/team/team-photo-backdrop'
+import { TeamPortraitCard, initials, photoVariant } from '@/components/team/team-portrait-card'
 import { TEAM, TEAM_FEATURED, TEAM_REST } from '@/lib/content/team'
 import { TEAM_PHOTOS } from '@/lib/content/team-photos'
 
@@ -11,16 +11,7 @@ export const metadata = {
   alternates: { canonical: '/trenerzy/' },
   title: 'Trenerzy',
   description:
-    'Poznaj kadrę Air Squad — instruktorów akrobatyki, trickingu i tumblingu. Magistrowie wychowania fizycznego, fizjoterapeuci i instruktorzy judo, którzy prowadzą zajęcia w sześciu miastach Podkarpacia.',
-}
-
-/** Inicjały jako zastępnik portretu — bez zdjęcia karta i tak ma trzymać rytm siatki. */
-function initials(name: string): string {
-  return name
-    .split(/[\s-]+/)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join('')
+    'Kadra Air Squad — instruktorzy akrobatyki, trickingu i tumblingu: magistrowie WF, fizjoterapeuci i instruktorzy judo. Zajęcia w sześciu miastach Podkarpacia.',
 }
 
 export default function TrainersPage() {
@@ -31,18 +22,20 @@ export default function TrainersPage() {
       <main className="flex-1 bg-background pt-24">
         {/*
           Hero: zdjęcia grupowe kadry przenikają pod nagłówkiem zamiast leżeć
-          w osobnej galerii na dole strony. Nagłówek dostaje wymuszony biały
-          kolor — SectionHeader używa `text-foreground`, który w jasnym motywie
-          jest ciemny i zniknąłby na przyciemnionym zdjęciu.
+          w osobnej galerii na dole strony. `tone="on-photo"` daje cały
+          nagłówek na biało (bez gradientu drugiego członu) — domyślny
+          `text-foreground` i `.gradient-text` nie trzymają kontrastu
+          na przyciemnionej fotografii.
           Sekcja ma min-height, żeby przy braku zdjęć (pusty katalog
           public/images/kadra) nie zapadła się do samego tekstu.
         */}
         <section className="relative min-h-[26rem] overflow-hidden md:min-h-[32rem]">
           <TeamPhotoBackdrop photos={TEAM_PHOTOS} />
           <div className="container relative mx-auto px-4 pb-20 pt-12 md:pb-24 md:pt-16">
-            <div className="max-w-2xl [&_h1]:text-white">
+            <div className="max-w-2xl">
               <SectionHeader
                 as="h1"
+                tone="on-photo"
                 className="mb-0 md:mb-0"
                 kicker={`Kadra · ${TEAM.length} osób · Est. 2003`}
                 kickerColorClass="text-cyan"
@@ -81,48 +74,15 @@ export default function TrainersPage() {
           </div>
         </section>
 
-        {/* Osoby prowadzące klub — duże portrety */}
+        {/* Osoby prowadzące klub — duże portrety, ten sam kafelek co na stronie
+            głównej (components/team/team-portrait-card.tsx). Tu nazwiska są h2. */}
         <section className="container mx-auto px-4 py-12 md:py-16">
           <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-violet-soft">
             Prowadzą klub
           </p>
           <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
             {TEAM_FEATURED.map((m) => (
-              <article
-                key={m.name}
-                className="group overflow-hidden rounded-3xl border border-border bg-card"
-              >
-                <div className="relative aspect-[3/4] overflow-hidden bg-muted">
-                  {m.photo && (
-                    <Image
-                      src={m.photo}
-                      alt={`${m.name} — ${m.role}`}
-                      fill
-                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-                      sizes="(max-width: 1024px) 50vw, 25vw"
-                    />
-                  )}
-                  <div
-                    aria-hidden
-                    className="absolute inset-x-0 bottom-0 h-1/2"
-                    style={{
-                      background:
-                        'linear-gradient(to top, oklch(0.13 0.02 280 / 0.92), transparent)',
-                    }}
-                  />
-                  <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
-                    <h2
-                      className="display-bold text-lg leading-tight text-white md:text-xl"
-                      style={{ fontWeight: 400 }}
-                    >
-                      {m.name}
-                    </h2>
-                    <p className="mt-1.5 font-mono text-[10px] uppercase leading-relaxed tracking-[0.1em] text-white/70">
-                      {m.role}
-                    </p>
-                  </div>
-                </div>
-              </article>
+              <TeamPortraitCard key={m.name} member={m} headingAs="h2" />
             ))}
           </div>
         </section>
@@ -141,12 +101,16 @@ export default function TrainersPage() {
               >
                 <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-muted">
                   {m.photo ? (
-                    <Image
-                      src={m.photo}
+                    // Awatar 64 px: wariant -w192 (8–12 kB) zamiast pełnego
+                    // portretu 768×1365 (~300 kB); 192 = 3× gęstość ekranu.
+                    <img
+                      src={photoVariant(m.photo, 192)}
                       alt={m.name}
-                      fill
-                      className="object-cover object-top"
-                      sizes="64px"
+                      width={64}
+                      height={64}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover object-top"
                     />
                   ) : (
                     <span

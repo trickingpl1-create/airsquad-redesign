@@ -1,5 +1,6 @@
-import Image from 'next/image'
+import Link from 'next/link'
 import { TEAM_FEATURED, TEAM_REST } from '@/lib/content/team'
+import { TeamPortraitCard } from '@/components/team/team-portrait-card'
 import { SectionHeader } from './section-header'
 
 // Sekcja „Zespół" ma dwa poziomy, żeby nie powtórzyć błędu starej strony
@@ -29,52 +30,21 @@ export function TeamSection() {
           gradientFontWeight={400}
         />
 
-        {/* Duże portrety. Zdjęcia są pionowe 768×1365, więc kadr 3:4 obcina je
-            od dołu — `object-top` trzyma twarz w kadrze niezależnie od wzrostu
-            osoby na zdjęciu. */}
+        {/* Duże portrety — wspólny kafelek z /trenerzy/. Nazwisko jako div:
+            nagłówkiem sekcji jest h2 z SectionHeader, kafelki nie budują
+            osobnego poziomu konspektu. */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {TEAM_FEATURED.map((m) => (
-            <article
-              key={m.name}
-              className="group overflow-hidden rounded-3xl border border-border bg-card"
-            >
-              <div className="relative aspect-[3/4] overflow-hidden bg-muted">
-                {m.photo && (
-                  <Image
-                    src={m.photo}
-                    alt={`${m.name} — ${m.role}`}
-                    fill
-                    className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-                    sizes="(max-width: 1024px) 50vw, 25vw"
-                  />
-                )}
-                {/* Gradient pod podpisem — bez niego jasne tło zdjęcia zjada tekst */}
-                <div
-                  aria-hidden
-                  className="absolute inset-x-0 bottom-0 h-1/2"
-                  style={{
-                    background:
-                      'linear-gradient(to top, oklch(0.13 0.02 280 / 0.92), transparent)',
-                  }}
-                />
-                <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
-                  <div
-                    className="display-bold text-lg leading-tight text-white md:text-xl"
-                    style={{ fontWeight: 400 }}
-                  >
-                    {m.name}
-                  </div>
-                  <div className="mt-1.5 font-mono text-[10px] uppercase leading-relaxed tracking-[0.1em] text-white/70">
-                    {m.role}
-                  </div>
-                </div>
-              </div>
-            </article>
+            <TeamPortraitCard key={m.name} member={m} headingAs="div" />
           ))}
         </div>
 
-        {/* Plakietki — sama tożsamość, bez roli i bez zdjęcia. Rola żyje
-            w atrybucie title, więc nie ginie dla czytników ekranu. */}
+        {/* Plakietki — wizualnie tylko imię i nazwisko (decyzja użytkownika).
+            Rola NIE jest tu wyświetlana; każda plakietka linkuje do /trenerzy/,
+            gdzie rola jest widoczna, a `aria-label` dokłada ją do nazwy
+            dostępnej linku. Nazwa dostępna zaczyna się od widocznego tekstu,
+            więc sterowanie głosem („kliknij Maja Bieniek") nadal działa
+            (WCAG 2.5.3). */}
         {TEAM_REST.length > 0 && (
           <div className="mt-8">
             <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-violet-soft">
@@ -83,12 +53,13 @@ export function TeamSection() {
             <ul className="mt-4 flex flex-wrap gap-2.5">
               {TEAM_REST.map((m) => (
                 <li key={m.name}>
-                  <span
-                    title={m.role}
-                    className="inline-block rounded-full border border-border bg-card px-4 py-2 font-mono text-[11px] tracking-[0.08em] text-foreground/75"
+                  <Link
+                    href="/trenerzy/"
+                    aria-label={`${m.name} — ${m.role}`}
+                    className="inline-flex min-h-6 items-center rounded-full border border-border bg-card px-4 py-2 font-mono text-[11px] tracking-[0.08em] text-foreground/75 transition-colors hover:border-foreground/30 hover:text-foreground"
                   >
                     {m.name}
-                  </span>
+                  </Link>
                 </li>
               ))}
             </ul>

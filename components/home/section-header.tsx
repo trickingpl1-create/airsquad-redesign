@@ -22,6 +22,14 @@ type SectionHeaderProps = {
    * (docs/02-plan-seo.md).
    */
   as?: 'h1' | 'h2'
+  /**
+   * 'on-photo' — nagłówek leży na przyciemnionym zdjęciu (hero /trenerzy/).
+   * Oba człony tytułu są wtedy jednolicie białe, bez `.gradient-text`:
+   * gradient (fiolet→cyjan przez background-clip) na ciemnej fotografii nie
+   * dociąga do kontrastu 3:1, a `color` z zewnątrz go nie nadpisuje.
+   * Kicker bez zmian — ma własną klasę koloru.
+   */
+  tone?: 'default' | 'on-photo'
 }
 
 export function SectionHeader({
@@ -34,7 +42,9 @@ export function SectionHeader({
   titleFontWeight,
   gradientFontWeight,
   as: Heading = 'h2',
+  tone = 'default',
 }: SectionHeaderProps) {
+  const onPhoto = tone === 'on-photo'
   return (
     <div
       className={cn(
@@ -51,9 +61,19 @@ export function SectionHeader({
         >
           {kicker}
         </p>
-        <Heading className="display-bold mt-3 text-balance text-4xl text-foreground md:text-5xl lg:text-6xl">
+        <Heading
+          className={cn(
+            'display-bold mt-3 text-balance text-4xl md:text-5xl lg:text-6xl',
+            onPhoto ? 'text-white' : 'text-foreground',
+          )}
+        >
           <span style={titleFontWeight ? { fontWeight: titleFontWeight } : undefined}>{title}</span>{' '}
-          <span className="gradient-text" style={gradientFontWeight ? { fontWeight: gradientFontWeight } : undefined}>{gradientPart}</span>
+          <span
+            className={onPhoto ? undefined : 'gradient-text'}
+            style={gradientFontWeight ? { fontWeight: gradientFontWeight } : undefined}
+          >
+            {gradientPart}
+          </span>
         </Heading>
       </div>
       {meta && (

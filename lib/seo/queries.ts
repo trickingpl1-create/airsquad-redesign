@@ -7,7 +7,6 @@ import type {
   Event,
   Location,
   StaticPage,
-  Trainer,
 } from '@/lib/types/database'
 import type { EnrolmentCity } from '@/components/akrobatyka/city-enrolment'
 import {
@@ -17,11 +16,7 @@ import {
 import { FALLBACK_EVENTS } from '@/lib/content/letni'
 import { FALLBACK_CITY_PAGES } from '@/lib/content/cities'
 import { isWithdrawnLocation } from '@/lib/content/withdrawn-locations'
-import {
-  FALLBACK_CAMPS,
-  FALLBACK_LOCATIONS,
-  FALLBACK_TRAINERS,
-} from '@/lib/content/hubs'
+import { FALLBACK_CAMPS, FALLBACK_LOCATIONS } from '@/lib/content/hubs'
 
 // Cookieless klient z guardem na placeholder (lib/supabase/public.ts):
 // bez skonfigurowanego Supabase zwraca null i wszystkie gettery od razu
@@ -231,19 +226,11 @@ export async function getLocations(): Promise<Location[]> {
   )
 }
 
-export async function getTrainers(): Promise<Trainer[]> {
-  const supabase = getSupabaseClient()
-  if (!supabase) return FALLBACK_TRAINERS
-
-  const { data, error } = await supabase
-    .from('trainers')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order')
-
-  if (error) console.error('Error fetching trainers:', error)
-  return data && data.length > 0 ? data : FALLBACK_TRAINERS
-}
+// Kadra nie ma tu gettera: /trenerzy/ i sekcja „Zespół" czytają
+// lib/content/team.ts bezpośrednio (skład z rolami, zdjęciami i flagą
+// `featured`). Tabela `trainers` istnieje w bazie, ale strona publiczna
+// jej nie czyta — dawny getTrainers() z fallbackiem wyprowadzanym z miast
+// nie miał już ani jednego wywołania i został usunięty.
 
 export async function getCamps(): Promise<Camp[]> {
   const supabase = getSupabaseClient()

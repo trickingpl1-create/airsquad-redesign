@@ -50,7 +50,7 @@ locations          → /rzeszow, /debica, ...
 disciplines        → /akrobatyka, /tricking-akademia, ...
 events             → /airmeeting, /letni, /gravityjam
 static_pages       → (pusta; /zapisy/, /obozy-sportowe/ i /aktualnosci/ to jawne trasy w app/)
-trainers           → karta trenera (osadzane w stronach miast)
+trainers           → (nieczytana przez stronę publiczną; kadra żyje w lib/content/team.ts)
 camps              → karta obozu (osadzane w event)
 products           → /sklep
 orders             → zamówienia ze sklepu (admin)
@@ -69,7 +69,8 @@ Pola SEO (`slug`, `meta_title`, `meta_description`, `h1_title`) są w każdej ta
 | `/airmeeting`, `/letni`, `/gravityjam` | `app/[slug]/page.tsx` | tabela `events` |
 | `/zapisy/`, `/obozy-sportowe/`, `/aktualnosci/` | jawne trasy w `app/` | treść w kodzie — `static_pages` zostaje pusta |
 | `/sklep` | `app/sklep/page.tsx` | tabela `products` (fetch w przeglądarce) |
-| `/lokalizacje`, `/trenerzy`, `/obozy` | huby w `app/` | `getLocations()` / `getTrainers()` / `getCamps()` z fallbackiem `lib/content/hubs.ts` |
+| `/lokalizacje`, `/obozy` | huby w `app/` | `getLocations()` / `getCamps()` z fallbackiem `lib/content/hubs.ts` |
+| `/trenerzy` (i sekcja „Zespół" na `/`) | `app/trenerzy/page.tsx`, `components/home/team-section.tsx` | **wyłącznie kod**: `lib/content/team.ts` (kanoniczny skład z rolami i flagą `featured`) + `lib/content/team-photos.ts` (zdjęcia grupowe filtrowane `existsSync` w build time). Tabela `trainers` nie jest czytana; kafelek „KADRA" w hero liczy `TEAM.length` |
 | `/admin/*` | `admin-app/app/admin/...` | wszystkie tabele (osobna aplikacja, osobny host) |
 | `/sitemap.xml` | `app/sitemap.ts` | wszystkie tabele z `is_published=true`, zapiekane w buildzie |
 | `/robots.txt` | `app/robots.ts` | zapiekany w buildzie |
@@ -130,7 +131,7 @@ To miejsce na wątpliwości, nie deklaracje. Jeżeli któraś z tych decyzji bol
 ## Wydajność
 
 - **Statyczny HTML** dla całej treści wizerunkowej — zero renderu na żądanie (ISR odpadł razem z serwerem).
-- **`next/image` bez optymalizacji** (`images.unoptimized: true`) — eksport statyczny nie ma loadera; zdjęcia trzeba przygotować w docelowym rozmiarze.
+- **`next/image` bez optymalizacji** (`images.unoptimized: true`) — eksport statyczny nie ma loadera; `<Image>` nie generuje `srcset`, a prop `sizes` jest wtedy martwy. Zdjęcia trzeba przygotować w docelowych rozmiarach samemu: `node scripts/make-image-variants.mjs` (sharp, jest w `node_modules` jako zależność Next) tworzy obok oryginału warianty `<nazwa>-w<szerokość>.jpg` (kadra: w900/w1600, portrety: w192/w480), a kod używa zwykłego `<img srcSet sizes>` z tymi wariantami (`components/team/*`). Litera „w" w sufiksie jest celowa — samo `-1600` kolidowało z rokiem w nazwach typu `kadra-air-meeting-2025.jpg`.
 - **Generic catch-all** rozwiązany w jednym `generateStaticParams`, który zbiera wszystkie publiczne slugi przy buildzie.
 - **Client-side fetch tylko tam, gdzie treść musi być świeża** bez rebuildu (`/sklep`, `/media`) — reszta w RSC, zapieczona.
 

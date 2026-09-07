@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { LETNI_EVENT } from '@/lib/content/letni'
 
 // Ta sama zajawka co na /letni/ (lib/content/letni.ts → LETNI_EVENT.youtubeId)
 const AIRCAMP_YOUTUBE_ID = '-P1J3YntBpY'
@@ -11,12 +12,28 @@ const attractions = [
   { label: 'Akro · Tricking', accent: 'var(--accent)' },
 ] as const
 
-const stats = [
-  ['9', 'dni'],
-  ['20', 'kadra'],
-  ['20+', 'aktywności'],
-  ['2500', 'od zł / turnus'],
-] as const
+// Statystyki WYPROWADZONE z landingu /letni/ (LETNI_EVENT), nie wpisane
+// na sztywno: wcześniej kafelek mówił „od 2500 zł", a landing 2600 zł —
+// dwie ceny tego samego obozu na jednej stronie. Jedno źródło prawdy:
+// liczby dni/kadry/aktywności z `stats`, cena „od" = najniższy turnus z `pricing`.
+const statObozu = (fragmentEtykiety: string): string =>
+  LETNI_EVENT.stats?.find((s) => s.label.includes(fragmentEtykiety))?.value ?? '—'
+
+// `pricing[].price` to '2 600' (spacja jako separator tysięcy) — zdejmujemy
+// wszystko poza cyframi. Brak/niepoprawne ceny nie mogą dać „NaN zł" w HTML,
+// więc wiersz z ceną znika, gdy nie ma z czego jej policzyć.
+const cenaOd = Math.min(
+  ...LETNI_EVENT.pricing
+    .map((p) => Number(String(p.price ?? '').replace(/\D/g, '')))
+    .filter((n) => Number.isFinite(n) && n > 0),
+)
+
+const stats: ReadonlyArray<readonly [string, string]> = [
+  [statObozu('dni'), 'dni'],
+  [statObozu('kadra'), 'kadra'],
+  [statObozu('aktywno'), 'aktywności'],
+  ...(Number.isFinite(cenaOd) ? [[String(cenaOd), 'od zł / turnus'] as const] : []),
+]
 
 export function CampsSection() {
   return (

@@ -1,8 +1,21 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Instagram } from 'lucide-react'
+import { TEAM } from '@/lib/content/team'
 
 const YOUTUBE_ID = 'uFobcH0aQ7g'
+
+// Kafelek „KADRA" liczy ten sam skład, który renderują /trenerzy/ i sekcja
+// „Zespół" (lib/content/team.ts). Wcześniej stała „15" w JSX rozjeżdżała się
+// z „9 osób" na /trenerzy/ — jedna liczba, jedno źródło.
+// Odmiana: 1 trener · 2–4 trenerzy · 5–21 trenerów · 22–24 trenerzy · …
+function odmianaTrener(n: number): string {
+  if (n === 1) return 'trener'
+  const dziesiatki = n % 100
+  const jednosci = n % 10
+  if (jednosci >= 2 && jednosci <= 4 && !(dziesiatki >= 12 && dziesiatki <= 14)) return 'trenerzy'
+  return 'trenerów'
+}
 
 export function HeroSection() {
   return (
@@ -121,7 +134,7 @@ export function HeroSection() {
             <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground md:text-lg">
               Akrobatyka, tricking, longboard i tumbling — dla dzieci od 7 lat,
               młodzieży i dorosłych. Małe grupy, dwóch trenerów, profesjonalne
-              maty AirTrack. Siedem miast na Podkarpaciu.
+              maty AirTrack. Sześć miast na Podkarpaciu.
             </p>
 
             {/* CTA buttons */}
@@ -209,10 +222,10 @@ export function HeroSection() {
                     KADRA
                   </div>
                   <div className="mt-2 font-[family-name:var(--font-display)] text-6xl font-black text-white" style={{ fontWeight: 400 }}>
-                    15
+                    {TEAM.length}
                   </div>
                   <div className="mt-1 text-xs text-white/75">
-                    trenerów
+                    {odmianaTrener(TEAM.length)}
                   </div>
                 </div>
               </div>
