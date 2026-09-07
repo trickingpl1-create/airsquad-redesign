@@ -54,6 +54,14 @@ echo "→ Składam .htaccess dla: $TARGET"
   echo "# własny index.html, więc wystarczy domyślne zachowanie Apache."
   echo "DirectoryIndex index.html"
   echo ""
+  echo "# Obraz Open Graph generuje Next jako plik BEZ rozszerzenia (app/opengraph-image.tsx"
+  echo "# → out/opengraph-image). LiteSpeed nie zna takiego pliku i serwował go bez"
+  echo "# Content-Type (sprawdzone na stagingu 2026-09-06) — scrapery Facebooka/WhatsAppa"
+  echo "# odrzucają obraz bez typu MIME. ForceType przypina mu image/png."
+  echo '<Files "opengraph-image">'
+  echo '  ForceType image/png'
+  echo '</Files>'
+  echo ""
   if [ "$TARGET" = "staging" ]; then
     echo "# WERSJA TESTOWA — nie może trafić do wyszukiwarki obok produkcji."
     echo '<IfModule mod_headers.c>'
@@ -88,6 +96,26 @@ node -e '
   }
   if (bad) process.exit(1)
   console.log("   ✓ " + list.length + " wycofanych, każda z działającym celem 301")
+
+  // Stare adresy WordPressa (lib/content/legacy-redirects.json): cel 301 musi
+  // istnieć w buildzie, a źródło nie może mieć własnej strony — inaczej
+  // Redirect w .htaccess przykryłby realny plik.
+  const legacy = JSON.parse(fs.readFileSync("lib/content/legacy-redirects.json", "utf8"))
+  let badLegacy = 0
+  for (const rule of legacy) {
+    const fromDir = rule.from.replace(/^\/|\/$/g, "")
+    const toDir = rule.to.replace(/^\/|\/$/g, "")
+    if (fs.existsSync("out/" + fromDir + "/index.html")) {
+      console.error("   ✗ " + rule.from + " ma 301 w legacy-redirects.json, ale istnieje out/" + fromDir + "/index.html.")
+      badLegacy++
+    }
+    if (!fs.existsSync("out/" + toDir + "/index.html")) {
+      console.error("   ✗ " + rule.from + ": cel 301 " + rule.to + " nie istnieje w buildzie.")
+      badLegacy++
+    }
+  }
+  if (badLegacy) process.exit(1)
+  console.log("   ✓ " + legacy.length + " starych adresów WordPressa z działającym celem 301")
 '
 
 echo "→ Pakuję (zip zawiera .htaccess, bo -y i kropkowe pliki są uwzględnione)…"

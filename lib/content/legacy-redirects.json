@@ -1,0 +1,62 @@
+[
+  {
+    "from": "/aircamp24/",
+    "to": "/letni/",
+    "reason": "Archiwalny landing Air Camp 2024 — najbliższy temat to aktualny Air Camp.",
+    "status": "propozycja"
+  },
+  {
+    "from": "/zimowy/",
+    "to": "/obozy-sportowe/",
+    "reason": "Diamond Camp (obóz zimowy) — hub obozów; jedyna stara strona z własnym meta description.",
+    "status": "propozycja"
+  },
+  {
+    "from": "/diamond-camp-2021/",
+    "to": "/obozy-sportowe/",
+    "reason": "Archiwalna edycja obozu zimowego.",
+    "status": "propozycja"
+  },
+  {
+    "from": "/diamond-camp-2022/",
+    "to": "/obozy-sportowe/",
+    "reason": "Archiwalna edycja obozu zimowego.",
+    "status": "propozycja"
+  },
+  {
+    "from": "/stickit/",
+    "to": "/wydarzenia/",
+    "reason": "Archiwalne wydarzenie klubowe.",
+    "status": "propozycja"
+  },
+  {
+    "from": "/spotkanie/",
+    "to": "/wydarzenia/",
+    "reason": "Archiwalne spotkanie klubowe.",
+    "status": "propozycja"
+  },
+  {
+    "from": "/portfolio/",
+    "to": "/media/",
+    "reason": "Galeria zdjęć i wideo — odpowiednik to /media/.",
+    "status": "propozycja"
+  },
+  {
+    "from": "/airspace/",
+    "to": "/rzeszow/",
+    "reason": "AirSpace to sala w Rzeszowie — jej opis, adres i zapisy są na landingu miasta.",
+    "status": "propozycja"
+  },
+  {
+    "from": "/zapisyairspace/",
+    "to": "/rzeszow/",
+    "reason": "Zapisy do sali AirSpace — formularz AIPAX Rzeszowa jest na landingu miasta.",
+    "status": "propozycja"
+  },
+  {
+    "from": "/szarfy/",
+    "to": "/sklep/",
+    "reason": "Sprzedaż szarf klubowych — odpowiednik to sklep.",
+    "status": "propozycja"
+  }
+]

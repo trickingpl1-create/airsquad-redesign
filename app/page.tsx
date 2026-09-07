@@ -14,6 +14,36 @@ import { CampsSection } from '@/components/home/camps-section'
 import { TeamSection } from '@/components/home/team-section'
 import { CTASection } from '@/components/home/cta-section'
 import { PromoSection } from '@/components/home/promo-section'
+import { StructuredData } from '@/lib/seo/metadata'
+import { SITE_URL } from '@/lib/seo/site'
+import { CLUB_CONTACT } from '@/lib/content/cities'
+
+// Dane organizacji do JSON-LD (Organization + WebSite) — checklista publikacji
+// wymaga ich na stronie głównej. Adres = siedziba stowarzyszenia ze stopki;
+// telefon/e-mail z CLUB_CONTACT (te same, które widzi użytkownik — NAP musi
+// się zgadzać z tym, co jest w treści). Sale treningowe mają własne
+// SportsActivityLocation na landingach miast, więc tu nie dublujemy adresów sal.
+const ORGANIZATION_JSONLD = {
+  '@id': `${SITE_URL}/#organization`,
+  name: 'Air Squad',
+  legalName: 'Stowarzyszenie Air Squad',
+  url: `${SITE_URL}/`,
+  logo: `${SITE_URL}/images/airsquad-logo.png`,
+  image: `${SITE_URL}/opengraph-image`,
+  telephone: CLUB_CONTACT.phoneSchema,
+  email: CLUB_CONTACT.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'ul. Wojtyły 227b/6',
+    postalCode: '35-304',
+    addressLocality: 'Rzeszów',
+    addressRegion: 'Podkarpackie',
+    addressCountry: 'PL',
+  },
+  areaServed: ['Rzeszów', 'Dębica', 'Jasło', 'Biecz', 'Brzostek', 'Pilzno'],
+  sameAs: ['https://www.instagram.com/airsquad_akrobatyka/'],
+  sport: ['Akrobatyka', 'Tricking', 'Tumbling', 'Longboard'],
+}
 
 // Tytuł i opis dziedziczone z app/layout.tsx — tu tylko canonical strony głównej
 // (każda indeksowana strona musi wskazywać swój adres kanoniczny, docs/02-plan-seo.md).
@@ -44,14 +74,24 @@ export default async function HomePage() {
     : [[]]
 
   // Sekcja „Zespół" czyta skład z lib/content/team.ts (tak samo jak /trenerzy/),
-  // a sekcja Air Camp nie pokazuje już karty turnusu — strona główna nie
-  // potrzebuje więc żadnego z getterów. getCamps()/getCampLandingSlugs() dalej
-  // obsługują /obozy/ i landingi turnusów. getTrainers() nie ma już natomiast
-  // ani jednego wywołania — zostaje jako część API zapytań, do usunięcia razem
-  // z FALLBACK_TRAINERS, jeśli tabela `trainers` ma zniknąć z modelu.
+  // kafelek „KADRA" w hero liczy TEAM.length, a sekcja Air Camp wyprowadza
+  // statystyki z LETNI_EVENT — strona główna nie potrzebuje więc żadnego
+  // z getterów lib/seo/queries.ts. getCamps()/getCampLandingSlugs() dalej
+  // obsługują /obozy/ i landingi turnusów; gettera trenerów już nie ma.
 
   return (
     <div className="flex min-h-screen flex-col">
+      <StructuredData type="SportsOrganization" data={ORGANIZATION_JSONLD} />
+      <StructuredData
+        type="WebSite"
+        data={{
+          '@id': `${SITE_URL}/#website`,
+          url: `${SITE_URL}/`,
+          name: 'Air Squad',
+          inLanguage: 'pl-PL',
+          publisher: { '@id': `${SITE_URL}/#organization` },
+        }}
+      />
       <Header />
       <main className="flex-1">
         <HeroSection />

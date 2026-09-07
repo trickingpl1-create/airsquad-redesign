@@ -5,6 +5,8 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SectionHeader } from '@/components/home/section-header'
 import { CLUB_CONTACT } from '@/lib/content/cities'
+import { StructuredData } from '@/lib/seo/metadata'
+import { SITE_URL } from '@/lib/seo/site'
 import { MapPin, Phone, Mail, Instagram } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -41,6 +43,27 @@ const SOCIALS = [
 export default function ContactPage() {
   return (
     <div className="flex min-h-screen flex-col">
+      {/* ContactPage + ContactPoint: /kontakt/ nie miało żadnej schemy (audyt SEO
+          2026-09-06). Organizacja jest zdefiniowana raz, na stronie głównej
+          (app/page.tsx, @id #organization) — tu tylko do niej odsyłamy. */}
+      <StructuredData
+        type="ContactPage"
+        data={{
+          '@id': `${SITE_URL}/kontakt/#contactpage`,
+          url: `${SITE_URL}/kontakt/`,
+          name: 'Kontakt — Air Squad',
+          inLanguage: 'pl-PL',
+          about: { '@id': `${SITE_URL}/#organization` },
+          mainEntity: {
+            '@type': 'ContactPoint',
+            contactType: 'customer service',
+            telephone: CLUB_CONTACT.phoneSchema,
+            email: CLUB_CONTACT.email,
+            availableLanguage: 'pl',
+            areaServed: 'PL',
+          },
+        }}
+      />
       <Header />
       <main className="flex-1 bg-background pt-24">
         <section className="container mx-auto px-4 pb-20 pt-12">

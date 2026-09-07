@@ -50,12 +50,14 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 ## Co musi się zdarzyć przed launchem
 
 Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
+**Lista robocza na dzień podmiany i pełny audyt SEO (2026-09-06): `zamiana_strony.md`.**
 
 ### Blokery launchu
 - [ ] **Założyć konto administratora w Supabase** — `klub.airsquad@gmail.com`, Authentication → Users → Add user, z „Auto Confirm User". Panel dokleja `@airsquad.pl` tylko do loginu bez małpy, więc pełny adres wpisuje się w całości (`admin-app/lib/auth-login.ts`)
 - [ ] **Wyłączyć rejestrację własną** (Authentication → Providers → Email → „Enable signup") — panel nie sprawdza roli, więc **każde** konto założone w tym projekcie Supabase dostaje pełny dostęp do `/admin/*`. Przy publicznym adresie panelu to jedyna rzecz z tej listy, która jest realnym problemem bezpieczeństwa, a nie wygody
 - [ ] Podmienić placeholderowy form-id AIPAX w `components/aipax-widget.tsx` (`5f7b99af-…`, ten sam oznaczony jako zaślepka w `lib/content/akrobatyka.ts`). Podstrony miast mają już realne, per-miasto ID w `cities.ts` — brakuje tylko formularza ogólnego
-- [ ] Wgrać realne zdjęcia trenerów (min. 3) i lokalizacji (wszystkie 6) do Supabase Storage
+- [x] ~~Wgrać realne zdjęcia trenerów~~ — 7 portretów w `public/images/trenerzy/` i 4 zdjęcia grupowe kadry w `public/images/kadra/` (hero `/trenerzy/`), z wariantami rozmiarowymi z `scripts/make-image-variants.mjs`. Świadomie **nie** w Supabase Storage: strona jest statyczna i pliki jadą z FTP razem z `out/`; skład i role w `lib/content/team.ts`
+- [ ] Wgrać realne zdjęcia lokalizacji (wszystkie 6 sal) — dziś podstrony miast używają zdjęć ze starej strony (`public/images/old-site/`, `public/images/miasta/`)
 - [x] ~~Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200~~ — komplet obecny w `out/`; skrypt porównujący w `04-architektura.md`. Wyjątki świadome: `/tyczyn/` wycofany z 301 na `/rzeszow/`, `/zajecia/` to proponowany hub, który nigdy nie istniał
 - [x] ~~Wpisać produkcyjne `NEXT_PUBLIC_SUPABASE_*`~~ — projekt podłączony, canonicale i sitemapa budują się na `https://airsquad.pl`
 - [x] ~~**Uruchomić SQL w kolejności `001` → `002` → `003a` → `004`.**~~ — wykonane; 13 tabel odpowiada, `products` ma 6 wierszy, reszta pusta (treść z fallbacków), RLS zweryfikowane (odczyt `orders` przez `anon` zablokowany, zapis przechodzi).
@@ -63,8 +65,9 @@ Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
 - [x] ~~Utworzyć projekt Vercel dla panelu~~ — projekt `airsquad-admin` założony, zmienne Supabase ustawione; panel uniezależniony od katalogu nadrzędnego i wdrażany z CLI (`cd admin-app && vercel --prod`). Zostało samo wywołanie deployu.
 - [x] ~~**Wpisać realne `NEXT_PUBLIC_SUPABASE_*` w Production projektu `airsquad-web`**~~ — poprawione we wszystkich trzech środowiskach (Production, Preview `static-export`, Development). Były tam **puste stringi**, nie placeholdery; przy pustych sklep i feed IG są martwe, bo czyta je przeglądarka. Wartości Production i Preview są oznaczone jako sensitive, więc `vercel env pull` zwraca dla nich pustkę — to nie znaczy, że są puste
 - [x] ~~Podpiąć serwer docelowy~~ — wdrożenie przez FTPS na cyber-folks (`scripts/deploy-ftp.sh`). Port 22 zamknięty, więc `deploy.sh` na rsync odpada. Wersja testowa stoi na **new.airsquad.pl**
-- [ ] **Włączyć Let's Encrypt dla `new.airsquad.pl`** — DirectAdmin → SSL Certificates → zaznaczyć subdomenę. Dziś serwer podaje certyfikat wystawiony na `airsquad.pl`, więc przeglądarka ostrzega przed niezabezpieczonym połączeniem
-- [ ] **Wdrożyć panel**: `cd admin-app && vercel --prod`
+- [x] ~~Włączyć Let's Encrypt dla `new.airsquad.pl`~~ — certyfikat dodany w DirectAdmin, `https://new.airsquad.pl/` przechodzi pełną weryfikację
+- [x] ~~Wdrożyć panel~~ — `cd admin-app && vercel --prod` wykonane; panel odpowiada pod `https://airsquad-admin.vercel.app/admin/login`
+- [ ] **Konto FTP z dostępem do `domains/airsquad.pl/public_html`** — obecne konto `strona@airsquad.online` jest zamknięte w katalogu domeny `airsquad.online` (dlatego staging leży w `public_html/new` tej domeny), więc `REMOTE_PRODUCTION` w `.deploy-target` jest puste i `./scripts/deploy-ftp.sh production` nie ma dokąd wysłać. Bez tego **nie da się podmienić starej strony**: potrzebne osobne konto FTP założone w DirectAdmin na domenie `airsquad.pl`, login+hasło do `~/.netrc`, ścieżka do `.deploy-target`
 - [ ] Usunąć testowe zamówienie `TEST-RLS-PROBE` z tabeli `orders`
 - [ ] Poprawić opisy produktów w panelu — dane z seeda są bez polskich znaków („bawelna", „Ciepla", „cwiczen")
 

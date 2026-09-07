@@ -48,6 +48,13 @@ interface StructuredDataProps {
     | 'BreadcrumbList'
     | 'SportsActivityLocation'
     | 'FAQPage'
+    // Organization + WebSite na stronie głównej i ContactPage na /kontakt/ —
+    // wymagane przez checklistę publikacji (_referencje/analizy-seo/14) i plan
+    // SEO; do audytu 2026-09-06 strona główna nie miała żadnego JSON-LD.
+    | 'Organization'
+    | 'SportsOrganization'
+    | 'WebSite'
+    | 'ContactPage'
   data: Record<string, any>
 }
 

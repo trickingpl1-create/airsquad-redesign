@@ -13,7 +13,7 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
   // (ta sama konwencja co w lib/content/cities.ts; wiersze w DB też jej wymagają)
   meta_title: 'Akrobatyka dla dzieci i dorosłych — Rzeszów i Podkarpacie',
   meta_description:
-    'Zajęcia akrobatyki od 4 lat w 7 miastach na Podkarpaciu. Małe grupy, dwóch trenerów, ścieżki AirTrack. Pierwszy trening za 40 zł. Zapisz się!',
+    'Zajęcia akrobatyki od 4 lat w 6 miastach na Podkarpaciu. Małe grupy, dwóch trenerów, ścieżki AirTrack. Pierwszy trening za 40 zł. Zapisz się!',
   h1_title: 'Akrobatyka',
   hero_tagline: 'od pierwszego przewrotu do salta.',
   hero_image_url: '/images/akrobatyka/hero-salto.jpg',
@@ -156,7 +156,10 @@ export const TRICKING_DISCIPLINE: Discipline = {
   id: 'fallback-tricking',
   slug: 'tricking-akademia',
   name: 'Tricking',
-  meta_title: 'Tricking — akrobatyka, sztuki walki i breakdance',
+  // „Tricking Akademia" w tytule celowo: to fraza z tytułu starej strony
+  // (TRICKING AKADEMIA - Air Squad) i slug /tricking-akademia/ — audyt SEO
+  // 2026-09-06 wykazał, że nowy tytuł ją zgubił.
+  meta_title: 'Tricking Akademia — akrobatyka, sztuki walki i breakdance',
   meta_description:
     'Tricking w Air Squad: salta, kopnięcia i kombinacje na matach AirTrack. Grupy naborowe od 9 lat oraz grupa zaawansowana. Rzeszów i Podkarpacie.',
   h1_title: 'Tricking Akademia',

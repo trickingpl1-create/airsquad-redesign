@@ -100,7 +100,13 @@ fi
 # --perms przenosi uprawnienia na serwer. Bez tego pliki wgrane wcześniej
 # z uprawnieniami 600 zostawałyby nieczytelne dla Apache (403), bo mirror
 # pomija pliki o niezmienionej treści i nigdy by ich nie poprawił.
-MIRROR="--reverse --delete --perms --verbose --parallel=4 --exclude-glob .DS_Store --exclude-glob cgi-bin/"
+# wp-content/uploads/ zostaje na serwerze także po podmianie produkcji: nowa strona
+# ładuje stamtąd 103 pliki (filmy „Nasze zajawki" i galerie na landingach miast
+# i /letni/ — lib/content/cities.ts, letni.ts). Bez tego wykluczenia `--delete`
+# skasowałoby je razem z WordPressem w dniu podmiany. Wykluczony wzorzec nie jest
+# ani wysyłany, ani kasowany. Docelowo pliki mają trafić do public/media/ albo
+# Supabase Storage (docs/zamiana_strony.md, sekcja 1 pkt 8).
+MIRROR="--reverse --delete --perms --verbose --parallel=4 --exclude-glob .DS_Store --exclude-glob cgi-bin/ --exclude-glob wp-content/uploads/"
 [ "$DRY" = "--dry-run" ] && MIRROR="$MIRROR --dry-run"
 
 CMDFILE="$(mktemp)"; chmod 600 "$CMDFILE"

@@ -10,9 +10,11 @@ import { generateSEOMetadata } from '@/lib/seo/metadata'
 // zakresu przetwarzania (analityka, piksele, nowy system zapisów) zaktualizuj
 // odpowiednią sekcję.
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'Polityka prywatności | Air Squad',
+  // Bez „| Air Squad" — szablon title w app/layout.tsx dokleja sufiks sam;
+  // z nim strona miała w <title> „… | Air Squad | Air Squad" (audyt 2026-09-06).
+  title: 'Polityka prywatności',
   description:
-    'Polityka prywatności serwisu airsquad.pl — kto jest administratorem danych, w jakim celu przetwarzamy dane z zapisów i kontaktu oraz jakie prawa przysługują Ci na gruncie RODO.',
+    'Polityka prywatności airsquad.pl — administrator danych, cele przetwarzania danych z zapisów i kontaktu oraz prawa użytkownika wynikające z RODO.',
   canonical: '/polityka-prywatnosci/',
 })
 

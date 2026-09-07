@@ -124,6 +124,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+    {
+      // Galeria wideo/IG — ma self-canonical i jest linkowana ze stopki, więc
+      // albo jest w sitemapie, albo dostaje noindex; bez wpisu Google widział
+      // sprzeczny sygnał (kanoniczna strona poza mapą). Audyt SEO 2026-09-06.
+      url: `${SITE_URL}/media/`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.5,
+    },
   ]
 
   // Historyczne slugi root-level — miasta mają najwyższy priorytet (lokalne SEO)

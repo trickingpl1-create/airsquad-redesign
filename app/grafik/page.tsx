@@ -7,7 +7,7 @@ import { SectionHeader } from '@/components/home/section-header'
 export const metadata = {
   alternates: { canonical: '/grafik/' },
   title: 'Grafik zajęć',
-  description: 'Sprawdź grafik zajęć Air Squad. Akrobatyka, tricking, skoki na ścieżce w 7 lokalizacjach.',
+  description: 'Sprawdź grafik zajęć Air Squad. Akrobatyka, tricking, skoki na ścieżce w 6 lokalizacjach na Podkarpaciu.',
 }
 
 // Kafelki miast — szczegółowy grafik grup każdego miasta żyje na jego

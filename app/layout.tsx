@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: '%s | Air Squad',
   },
   description:
-    'Klub akrobatyczny Air Squad — akrobatyka, tricking, tumbling, longboard i obozy dla dzieci od 4 lat, młodzieży i dorosłych. 8 lokalizacji na Podkarpaciu.',
+    'Klub akrobatyczny Air Squad — akrobatyka, tricking, tumbling, longboard i obozy dla dzieci od 4 lat, młodzieży i dorosłych. 6 lokalizacji na Podkarpaciu.',
   keywords: [
     'akrobatyka',
     'tricking',
@@ -44,9 +44,15 @@ export const metadata: Metadata = {
     siteName: 'Air Squad',
     locale: 'pl_PL',
     type: 'website',
+    // /opengraph-image to prawdziwy PNG 1200×630 generowany z app/opengraph-image.tsx
+    // (w eksporcie statycznym ląduje jako out/opengraph-image). Wcześniej stało tu
+    // logo 592×355 z fałszywie zadeklarowanym 1200×630 — i przykrywało wygenerowany
+    // obraz na każdej podstronie, która dziedziczy openGraph z layoutu.
+    // Serwer musi mu nadać Content-Type: scripts/make-deploy-zip.sh dopisuje
+    // ForceType image/png do .htaccess (plik nie ma rozszerzenia).
     images: [
       {
-        url: '/images/airsquad-logo.png',
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'Air Squad — Akrobatyka, Tricking, Longboard',
@@ -57,7 +63,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Air Squad — Akrobatyka, Tricking, Longboard',
     description: 'Dołącz do najlepszego klubu akrobatycznego w regionie. Pierwszy trening za 40 zł.',
-    images: ['/images/airsquad-logo.png'],
+    images: ['/opengraph-image'],
   },
 }
 

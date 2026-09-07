@@ -17,7 +17,7 @@ import { CLUB_CONTACT } from '@/lib/content/cities'
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Zapisy na zajęcia — akrobatyka i tricking',
   description:
-    'Zapisz dziecko na akrobatykę, tricking lub tumbling w Air Squad. Siedem miast na Podkarpaciu, małe grupy, dwóch trenerów. Wybierz swoje miasto i sprawdź wolne terminy.',
+    'Zapisz dziecko na akrobatykę, tricking lub tumbling w Air Squad. Sześć miast na Podkarpaciu, małe grupy, dwóch trenerów. Wybierz miasto i sprawdź wolne terminy.',
   canonical: '/zapisy/',
   keywords: 'zapisy akrobatyka, zapisy tricking, Air Squad zapisy, Podkarpacie',
 })

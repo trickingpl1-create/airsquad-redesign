@@ -39,7 +39,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     // Bez sufiksu "| Air Squad" — dokleja go szablon title z app/layout.tsx
     meta_title: 'Akrobatyka Rzeszów — zajęcia dla dzieci i dorosłych',
     meta_description:
-      'Zajęcia akrobatyki w Rzeszowie dla dzieci od 4 lat, młodzieży i dorosłych. Małe grupy, doświadczeni trenerzy, profesjonalne maty AirTrack. Zapisz się na zajęcia próbne.',
+      'Zajęcia akrobatyki w Rzeszowie dla dzieci od 4 lat, młodzieży i dorosłych. Małe grupy, doświadczeni trenerzy, maty AirTrack. Zapisz się na zajęcia próbne.',
     h1_title: 'Akrobatyka Rzeszów',
     hero_tagline: null,
     hero_content:
