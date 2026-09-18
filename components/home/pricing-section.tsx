@@ -30,7 +30,7 @@ const plans = [
   },
   {
     name: 'Premium',
-    price: '290',
+    price: '280',
     period: '/mies.',
     desc: 'Dla pełnego zaangażowania',
     features: [

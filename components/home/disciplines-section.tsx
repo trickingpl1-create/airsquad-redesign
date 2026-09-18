@@ -1,20 +1,5 @@
-import Link from 'next/link'
 import { SectionHeader } from './section-header'
-
-type Discipline = {
-  num: string
-  slug: string
-  name: string
-  age: string
-  desc: string
-  gradient: string
-  photo: string
-  /** Nadpisany cel linku, gdy dyscyplina nie ma własnej strony /dyscypliny/[slug] */
-  href?: string
-  /** Opcjonalny zoom/kadr zdjęcia w tle (np. gdy domyślny bg-cover ucina istotny fragment) */
-  photoPosition?: string
-  photoSize?: string
-}
+import { DisciplinesReveal, type Discipline } from './disciplines-reveal'
 
 /**
  * DISCIPLINES DATA — Edytowalne URL'e obrazów
@@ -112,55 +97,10 @@ export function DisciplinesSection() {
           gradientPart="dyscypliny."
           titleFontWeight={400}
           gradientFontWeight={400}
+          className="mb-8 md:mb-10"
         />
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {DISCIPLINES.map((d) => (
-            <Link
-              key={d.num}
-              href={d.href ?? `/dyscypliny/${d.slug}/`}
-              className="group relative flex min-h-52 flex-col justify-end overflow-hidden rounded-3xl p-5 text-foreground opacity-65 transition-all duration-300 hover:-translate-y-1 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
-              style={{ background: d.gradient }}
-            >
-              {/* Semitransparent photo behind gradient */}
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-cover opacity-50 transition-opacity duration-500 group-hover:opacity-65"
-                style={{
-                  backgroundImage: `url('${d.photo}')`,
-                  backgroundPosition: d.photoPosition ?? 'center',
-                  backgroundSize: d.photoSize ?? 'cover',
-                }}
-              />
-              <div
-                aria-hidden
-                className="halftone-overlay absolute inset-0 text-black opacity-[0.08]"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0"
-                style={{
-                  background:
-                    'linear-gradient(to top, rgba(0,0,0,0.65), transparent 55%)',
-                }}
-              />
-              <span className="stat-number absolute right-5 top-3 text-5xl text-white/20 md:text-6xl">
-                {d.num}
-              </span>
-              <span className="absolute left-5 top-5 rounded-full border border-white/30 bg-black/30 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-foreground backdrop-blur-sm">
-                {d.age}
-              </span>
-              <div className="relative">
-                <h3 className="display-bold m-0 text-2xl md:text-3xl" style={{ fontWeight: 400 }}>
-                  {d.name}
-                </h3>
-                <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-white/85">
-                  {d.desc}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <DisciplinesReveal disciplines={DISCIPLINES} />
       </div>
     </section>
   )

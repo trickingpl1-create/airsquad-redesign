@@ -8,20 +8,22 @@ const AIR_SPACE_HALLS = [
   {
     city: 'Rzeszów',
     slug: '/rzeszow/',
-    detail: 'ul. Boya-Żeleńskiego 15 · AirTrack',
+    detail: 'ul. Boya-Żeleńskiego 15 / Sala klubowa',
   },
   {
     city: 'Dębica',
+    // Dębica trenuje w dwóch salach szkół podstawowych obok sali klubowej —
+    // źródło: lib/content/cities.ts (grupy SP4/SP10, hall.locations, FAQ).
     slug: '/debica/',
-    detail: 'Sala klubowa Air Squad',
+    detail: 'ul. Lwowska 51 · Sala klubowa · SP nr 4 i nr 10',
   },
 ] as const
 
 const CITIES = [
-  { city: 'Jasło', slug: '/jaslo/' },
-  { city: 'Biecz', slug: '/biecz/' },
-  { city: 'Brzostek', slug: '/brzostek/' },
-  { city: 'Pilzno', slug: '/pilzno/' },
+  { city: 'Jasło', slug: '/jaslo/', venue: 'Podkarpackie Centrum Sportów Walki' },
+  { city: 'Biecz', slug: '/biecz/', venue: 'Hala Sportowa ZSZ · ul. Tysiąclecia' },
+  { city: 'Brzostek', slug: '/brzostek/', venue: 'Hala Widowiskowo-Sportowa' },
+  { city: 'Pilzno', slug: '/pilzno/', venue: 'Szkoła Podstawowa · Strzegocice 54' },
 ] as const
 
 // Tyczyn (7. lokalizacja, strona /tyczyn/ dalej istnieje i działa) nie ma
@@ -100,7 +102,10 @@ export function CitiesSection() {
                 <div className="display-bold mt-3 text-xl text-foreground md:text-2xl">
                   {c.city}
                 </div>
-                <div className="mt-1 font-mono text-[11px] text-cyan/80">
+                <div className="mt-2 font-mono text-[10px] leading-snug text-muted-foreground">
+                  ↳ {c.venue}
+                </div>
+                <div className="mt-2 font-mono text-[11px] text-cyan/80">
                   {c.slug}
                 </div>
               </Link>

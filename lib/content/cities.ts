@@ -96,6 +96,9 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     city_name: 'Rzeszów',
     city_locative: 'w Rzeszowie',
     hero_image_url: '/images/miasta/rzeszow-hero.jpg',
+    // Rolka z YT (youtube.com/shorts/yrYqJvyhZLA) jako tło hero — ten sam
+    // wzorzec co Dębica/Jasło. hero_image_url zostaje jako poster pod iframe'em.
+    hero_youtube_id: 'yrYqJvyhZLA',
     hero_image_position: 'right 78%',
     training_days_label: 'od poniedziałku do piątku',
     hall: {

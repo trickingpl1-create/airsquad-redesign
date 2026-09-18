@@ -85,6 +85,110 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
     .filter((f) => f.question && f.answer)
   const trainingDays = city.training_days_label ?? [...new Set(groups.map((g) => g.days).filter(Boolean))].join(', ')
 
+  // Treść hero wyniesiona, bo używają jej dwa układy: pełne tło (miasta z
+  // wideo YT — jak hero na stronie głównej) oraz obramowany kafelek (reszta).
+  const heroBody = (
+    <div className="relative z-10 max-w-2xl px-8 py-14 md:px-14 md:py-16">
+      {/* whitespace-nowrap + mniejszy font na mobile: długie nazwy sal
+          (np. "Podkarpackie Centrum Sportów Walki") mieszczą się w jednej linii */}
+      <span className="inline-block whitespace-nowrap rounded-full bg-primary px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.06em] text-primary-foreground md:px-4 md:text-[11px] md:tracking-[0.1em]">
+        {city.hall?.name ?? `Air Squad · ${cityName}`}
+      </span>
+      <h1 className="display-bold mt-6 text-5xl text-foreground md:text-7xl" style={{ fontWeight: 400 }}>
+        {city.h1_title}
+      </h1>
+      {city.hero_content && (
+        <div
+          className="mt-4 max-w-xl text-base leading-relaxed text-foreground/80 md:text-lg [&_strong]:text-foreground"
+          dangerouslySetInnerHTML={{ __html: city.hero_content }}
+        />
+      )}
+      <div className="mt-7 flex flex-wrap gap-3">
+        <a
+          href="#zapisy"
+          className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white transition-transform hover:-translate-y-0.5"
+          style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)' }}
+        >
+          Zapisz dziecko {cityLocative} <span aria-hidden>→</span>
+        </a>
+        <Link
+          href="/grafik/"
+          className="inline-flex items-center gap-2 rounded-full border border-foreground/35 px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-foreground transition-colors hover:border-cyan hover:text-cyan"
+        >
+          Sprawdź grafik
+        </Link>
+      </div>
+      <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.12em] text-foreground/65">
+        {city.hall && <span>◆ {city.hall.address}</span>}
+        <span>◆ profesjonalna sala</span>
+        <span>◆ 2 trenerów na grupie</span>
+      </div>
+    </div>
+  )
+
+  // Pasek info też wyniesiony: w miastach z wideo YT renderuje się WEWNĄTRZ
+  // hero (wideo jest tłem także pod kafelkami — jak na stronie głównej),
+  // w pozostałych jako osobna sekcja pod kafelkiem hero.
+  const infoBar = (
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Ikona w barwionym chipie 40×40, całość centrowana w pionie —
+          wariant A z makiety, akceptacja użytkownika 2026-08-27. Chip
+          daje ikonie stałą oś, więc karty o różnej liczbie linii tekstu
+          (3-linijkowa nazwa sali w Bieczu obok 1-linijkowych sąsiadów)
+          nie rozjeżdżają wiersza. `min-h` wyrównuje karty także między
+          wierszami siatki 2×2. `min-w-0` + `break-words` pozwalają
+          łamać adres i e-mail zamiast rozpychać kartę.
+          Na mobile jedna kolumna: przy dwóch kartach zostaje ~90 px na
+          tekst obok ikony i nazwy sal łamią się na trzy linie. */}
+      {city.hall && (
+        <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan/15">
+            <MapPin className="h-5 w-5 text-cyan" aria-hidden />
+          </span>
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-foreground">{city.hall.name}</p>
+            <p className="break-words font-mono text-[11px] text-muted-foreground">{city.hall.address}</p>
+          </div>
+        </div>
+      )}
+      {trainingDays && (
+        <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber/15">
+            <Calendar className="h-5 w-5 text-amber" aria-hidden />
+          </span>
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-foreground">Dni treningów</p>
+            <p className="font-mono text-[11px] text-muted-foreground">{trainingDays}</p>
+          </div>
+        </div>
+      )}
+      <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pink/15">
+          <Users className="h-5 w-5 text-pink" aria-hidden />
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-foreground">Małe grupy</p>
+          <p className="font-mono text-[11px] text-muted-foreground">
+            {city.group_ratio_label ?? 'dzieci · młodzież · dorośli'}
+          </p>
+        </div>
+      </div>
+      <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald/15">
+          <Phone className="h-5 w-5 text-emerald" aria-hidden />
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-foreground">
+            <a href={`tel:+48${CLUB_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-emerald">
+              {CLUB_CONTACT.phone}
+            </a>
+          </p>
+          <p className="break-words font-mono text-[11px] text-muted-foreground">{CLUB_CONTACT.email}</p>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -131,16 +235,19 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           <Breadcrumb items={breadcrumbs} />
         </div>
 
-        {/* Hero */}
-        <section className="container mx-auto px-4">
-          <div className="relative overflow-hidden rounded-3xl border border-primary/40">
+        {/* Hero — z wideo YT renderuje się jak na stronie głównej: wideo jako
+            pełne tło na całą szerokość viewportu, bez obramowanej karty, treść
+            w kontenerze na wierzchu. Pozostałe miasta: kafelek jak dotąd. */}
+        <section className={city.hero_youtube_id ? 'relative overflow-hidden bg-background' : 'container mx-auto px-4'}>
+          <div className={city.hero_youtube_id ? 'relative' : 'relative overflow-hidden rounded-3xl border border-primary/40'}>
             {city.hero_youtube_id ? (
               <>
-                <div aria-hidden className="absolute inset-0" style={{ backgroundColor: 'var(--hero-scrim)' }} />
-                <div
-                  aria-hidden
-                  className="hero-media-fade absolute inset-y-0 right-0 h-full w-full overflow-hidden md:w-3/4"
-                >
+                {/* Wideo wypełnia CAŁY baner (jak hero na stronie głównej),
+                    a nie tylko prawe 3/4. Czytelność treści po lewej daje
+                    kierunkowy gradient z --hero-scrim (granat w dark / biel
+                    w light), więc działa w obu motywach — analogicznie do
+                    dwuwarstwowego gradientu w components/home/hero-section.tsx. */}
+                <div aria-hidden className="absolute inset-0 overflow-hidden">
                   {/* Poster pod iframe'em na czas ładowania playera */}
                   {city.hero_image_url && (
                     <div
@@ -159,6 +266,14 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                     style={{ width: '330%', aspectRatio: '16 / 9' }}
                   />
                 </div>
+                <div
+                  aria-hidden
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'linear-gradient(90deg, var(--hero-scrim) 0%, color-mix(in oklch, var(--hero-scrim) 82%, transparent) 44%, color-mix(in oklch, var(--hero-scrim) 14%, transparent) 100%), linear-gradient(180deg, transparent 58%, color-mix(in oklch, var(--hero-scrim) 55%, transparent) 100%)',
+                  }}
+                />
               </>
             ) : city.hero_video_url ? (
               <>
@@ -190,110 +305,24 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                 </>
               )
             )}
-            <div className="relative max-w-2xl px-8 py-14 md:px-14 md:py-16">
-              {/* whitespace-nowrap + mniejszy font na mobile: długie nazwy sal
-                  (np. "Podkarpackie Centrum Sportów Walki") mieszczą się w jednej linii */}
-              <span className="inline-block whitespace-nowrap rounded-full bg-primary px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.06em] text-primary-foreground md:px-4 md:text-[11px] md:tracking-[0.1em]">
-                {city.hall?.name ?? `Air Squad · ${cityName}`}
-              </span>
-              <h1 className="display-bold mt-6 text-5xl text-foreground md:text-7xl" style={{ fontWeight: 400 }}>
-                {city.h1_title}
-              </h1>
-              {city.hero_content && (
-                <div
-                  className="mt-4 max-w-xl text-base leading-relaxed text-foreground/80 md:text-lg [&_strong]:text-foreground"
-                  dangerouslySetInnerHTML={{ __html: city.hero_content }}
-                />
-              )}
-              <div className="mt-7 flex flex-wrap gap-3">
-                <a
-                  href="#zapisy"
-                  className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white transition-transform hover:-translate-y-0.5"
-                  style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)' }}
-                >
-                  Zapisz dziecko {cityLocative} <span aria-hidden>→</span>
-                </a>
-                <Link
-                  href="/grafik/"
-                  className="inline-flex items-center gap-2 rounded-full border border-foreground/35 px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-foreground transition-colors hover:border-cyan hover:text-cyan"
-                >
-                  Sprawdź grafik
-                </Link>
+            {city.hero_youtube_id ? (
+              <div className="container relative z-10 mx-auto px-4">
+                {heroBody}
+                {/* Kafelki info nad wideo — film jest tłem od góry hero aż
+                    pod ten pasek, jak na stronie głównej. */}
+                <div className="pb-12">{infoBar}</div>
               </div>
-              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.12em] text-foreground/65">
-                {city.hall && <span>◆ {city.hall.address}</span>}
-                <span>◆ maty AirTrack</span>
-                <span>◆ 2 trenerów na grupie</span>
-              </div>
-            </div>
+            ) : (
+              heroBody
+            )}
           </div>
         </section>
 
-        {/* Pasek info */}
-        <section className="container mx-auto px-4 pt-4">
-          {/* Na telefonie jedna kolumna, nie dwie: przy dwóch kartach zostaje
-              ~90 px na tekst obok ikony, więc „Sala AIR SPACE Rzeszów" łamie się
-              na trzy linie. Pełna szerokość mieści każdy wiersz w jednej linii —
-              pasek jest o ~80 px wyższy niż siatka 2×2, ale czytelny.
-              Cztery kolumny dopiero od `lg`: przy `md` (768 px) karta ma 172 px,
-              czyli ~100 px na tekst — nazwa sali i e-mail łamały się na trzy
-              linie. */}
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {/* Ikona w barwionym chipie 40×40, całość centrowana w pionie —
-                wariant A z makiety, akceptacja użytkownika 2026-08-27. Chip
-                daje ikonie stałą oś, więc karty o różnej liczbie linii tekstu
-                (3-linijkowa nazwa sali w Bieczu obok 1-linijkowych sąsiadów)
-                nie rozjeżdżają wiersza. `min-h` wyrównuje karty także między
-                wierszami siatki 2×2. `min-w-0` + `break-words` pozwalają
-                łamać adres i e-mail zamiast rozpychać kartę. */}
-            {city.hall && (
-              <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan/15">
-                  <MapPin className="h-5 w-5 text-cyan" aria-hidden />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-foreground">{city.hall.name}</p>
-                  <p className="break-words font-mono text-[11px] text-muted-foreground">{city.hall.address}</p>
-                </div>
-              </div>
-            )}
-            {trainingDays && (
-              <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber/15">
-                  <Calendar className="h-5 w-5 text-amber" aria-hidden />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-foreground">Dni treningów</p>
-                  <p className="font-mono text-[11px] text-muted-foreground">{trainingDays}</p>
-                </div>
-              </div>
-            )}
-            <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pink/15">
-                <Users className="h-5 w-5 text-pink" aria-hidden />
-              </span>
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-foreground">Małe grupy</p>
-                <p className="font-mono text-[11px] text-muted-foreground">
-                  {city.group_ratio_label ?? 'dzieci · młodzież · dorośli'}
-                </p>
-              </div>
-            </div>
-            <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald/15">
-                <Phone className="h-5 w-5 text-emerald" aria-hidden />
-              </span>
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-foreground">
-                  <a href={`tel:+48${CLUB_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-emerald">
-                    {CLUB_CONTACT.phone}
-                  </a>
-                </p>
-                <p className="break-words font-mono text-[11px] text-muted-foreground">{CLUB_CONTACT.email}</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Pasek info — tylko dla miast bez wideo YT; z wideo renderuje się
+            wewnątrz hero (patrz `infoBar` wyżej). */}
+        {!city.hero_youtube_id && (
+          <section className="container mx-auto px-4 pt-4">{infoBar}</section>
+        )}
 
         {/* Grupy treningowe */}
         {groups.length > 0 && (
@@ -305,7 +334,6 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
               gradientPart="wybrać?"
               titleFontWeight={400}
               gradientFontWeight={400}
-              meta={`[Grupy] // ${groups.length} ${groups.length === 1 ? 'grupa' : 'grup'}. Grafik może ulec zmianie — potwierdź w AIPAX.`}
               className="mb-8 md:mb-10"
             />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -358,7 +386,11 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                 )
               })}
             </div>
-            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+            {/* text-accent zamiast text-muted-foreground — notka ginęła.
+                Spośród akcentów tylko `accent` (królewski błękit) trzyma
+                kontrast WCAG AA w obu motywach (≈6.4:1 ciemny, ≈4.9:1 jasny);
+                cyan/pink/emerald padają w jasnym, primary w ciemnym. */}
+            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-accent">
               ↳ O przydziale do grupy ostatecznie decyduje trener · tel. {CLUB_CONTACT.phoneTrainer}
             </p>
           </section>
@@ -533,26 +565,6 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           )}
         </section>
 
-        {/* Galeria */}
-        {city.gallery && city.gallery.length > 0 && (
-          <section className="container mx-auto px-4 pt-12">
-            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-violet-soft">
-              Galeria z treningów
-            </p>
-            <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
-              {city.gallery.map((photo) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={photo.url}
-                  src={photo.url}
-                  alt={photo.caption ? `${photo.caption} — akrobatyka ${cityName}` : `Akrobatyka ${cityName} — trening Air Squad`}
-                  loading="lazy"
-                  className="h-44 w-full rounded-2xl border border-border object-cover"
-                />
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* Cennik */}
         <PricingSection

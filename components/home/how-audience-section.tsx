@@ -22,7 +22,15 @@ const audience = [
   },
 ] as const
 
+// Skos cięcia między kadrami (px) — tylko na desktopie; ten sam język wizualny
+// co pas dyscyplin (components/home/disciplines-reveal.tsx). Na mobilce slice'y
+// układają się w pion, bez skosu, z opisem zawsze widocznym.
+const SKEW = 34
+const CLIP_RIGHT = `polygon(0 0, 100% 0, calc(100% - ${SKEW}px) 100%, 0 100%)`
+const CLIP_LEFT = `polygon(${SKEW}px 0, 100% 0, 100% 100%, 0 100%)`
+
 export function HowAudienceSection() {
+  const last = audience.length - 1
   return (
     <section
       id="dla-kogo"
@@ -39,61 +47,52 @@ export function HowAudienceSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-3.5 md:grid-cols-3">
-          {audience.map((a) => (
+        {/* Pas grup wiekowych — nazwa i wiek widoczne zawsze, opis po najechaniu.
+            Opis zostaje w DOM (opacity, nie display:none). Na mobilce w pionie. */}
+        <div className="flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-black md:h-[18rem] md:flex-row">
+          {audience.map((a, i) => (
             <div
               key={a.title}
-              className="group relative flex min-h-44 flex-col justify-end overflow-hidden rounded-3xl border bg-card p-6"
-              style={{
-                borderColor: `color-mix(in oklch, ${a.accent} 30%, transparent)`,
-              }}
+              className={`group/slice relative flex min-h-40 w-full flex-col justify-end overflow-hidden p-6 text-white md:min-h-0 md:w-auto md:grow md:basis-0 md:p-7 md:transition-[flex-grow,filter] md:duration-500 md:ease-out md:hover:z-10 md:hover:grow-[2.6] md:[filter:saturate(0.92)_brightness(0.76)] md:hover:[filter:none] md:[clip-path:var(--clip)] motion-reduce:md:transition-none ${
+                i === 0 ? '' : 'md:-ml-[34px]'
+              }`}
+              style={{ ['--clip' as string]: i === last ? CLIP_LEFT : CLIP_RIGHT }}
             >
-              {/* Semitransparent photo */}
-              <div
+              <span
                 aria-hidden
-                className="absolute inset-0 bg-cover bg-center opacity-[0.20] transition-opacity duration-500 group-hover:opacity-[0.32]"
+                className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url('${a.photo}')` }}
               />
-              <div
+              <span
                 aria-hidden
                 className="absolute inset-0"
                 style={{
-                  background: `radial-gradient(circle at 70% 20%, color-mix(in oklch, ${a.accent} 20%, transparent), transparent 60%)`,
+                  background: `linear-gradient(to top, rgba(8,4,20,0.94), rgba(8,4,20,0.45) 52%, rgba(8,4,20,0.2) 100%), radial-gradient(circle at 75% 18%, color-mix(in oklch, ${a.accent} 34%, transparent), transparent 58%)`,
                 }}
               />
-              <div
+              <span
                 aria-hidden
                 className="halftone-overlay absolute inset-0 opacity-[0.06]"
                 style={{ color: a.accent }}
               />
               <span
                 aria-hidden
-                className="stat-number absolute right-6 top-5 text-4xl opacity-85 md:text-5xl"
+                className="stat-number absolute right-6 top-5 text-4xl [text-shadow:0_2px_12px_rgba(0,0,0,0.8)] md:text-5xl"
                 style={{ color: a.accent, fontWeight: 400 }}
               >
                 {a.num}
               </span>
-              <div className="relative">
-                <div
-                  className="mb-3.5 grid h-9 w-9 place-items-center rounded-xl border bg-white/5"
-                  style={{
-                    borderColor: `color-mix(in oklch, ${a.accent} 35%, transparent)`,
-                  }}
+              <span className="relative">
+                <span
+                  className="display-bold block text-xl leading-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] md:text-2xl"
+                  style={{ fontWeight: 400 }}
                 >
-                  <div
-                    className="h-3 w-3 rounded-full"
-                    style={{ backgroundColor: a.accent }}
-                  />
-                </div>
-                <h3 className="display-bold m-0 text-xl text-foreground md:text-2xl">
                   {a.title}
-                </h3>
-                {a.desc && (
-                  <p className="mt-2 text-[13px] font-medium leading-relaxed text-muted-foreground">
-                    {a.desc}
-                  </p>
-                )}
-              </div>
+                </span>
+                <span className="mt-2 block max-w-[24rem] text-[13px] leading-relaxed text-white/95 [text-shadow:0_1px_6px_rgba(0,0,0,0.85)] transition-opacity duration-300 md:opacity-0 md:group-hover/slice:opacity-100 motion-reduce:transition-none">
+                  {a.desc}
+                </span>
+              </span>
             </div>
           ))}
         </div>

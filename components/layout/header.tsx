@@ -97,37 +97,10 @@ export function Header() {
 
   return (
     <>
-      {/* Top status bar */}
-      <div className="fixed top-0 z-50 w-full border-b border-white/5 bg-background/85 backdrop-blur-md">
-        <div className="container mx-auto flex h-7 items-center justify-between px-4 font-mono text-[10px] tracking-[0.2em]">
-          {/* Left — live indicator */}
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-1.5 w-1.5 shrink-0">
-              <span className="animate-pulse-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan" />
-            </span>
-            <span className="font-bold uppercase text-cyan">Live</span>
-            <span className="text-foreground/30">·</span>
-            <span className="uppercase text-foreground/55">Zapisy 2025/26 trwają</span>
-          </div>
-          {/* Right — phone + region */}
-          <div className="hidden items-center gap-3 md:flex">
-            <a
-              href="tel:+48728559101"
-              className="text-foreground/55 transition-colors hover:text-foreground"
-            >
-              728 559 101
-            </a>
-            <span className="text-foreground/25">·</span>
-            <span className="text-foreground/45">/ Lokalizacji w regionie</span>
-          </div>
-        </div>
-      </div>
-
       {/* Main header */}
       <header
         className={cn(
-          'fixed top-7 z-40 w-full transition-all duration-300',
+          'fixed top-0 z-40 w-full transition-all duration-300',
           scrolled
             ? 'border-b border-white/8 bg-background/80 backdrop-blur-xl'
             : 'border-b border-transparent bg-transparent',
@@ -146,7 +119,7 @@ export function Header() {
               priority
             />
             <span className="hidden font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/40 xl:inline">
-              // Est. 2003 · Podkarpacie
+              // Est. 2003
             </span>
           </Link>
 
@@ -196,13 +169,6 @@ export function Header() {
           <div className="hidden items-center gap-2 lg:flex">
             <ThemeToggleButton />
             <Link
-              href="/sklep"
-              aria-label="Sklep"
-              className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 text-foreground/70 transition-colors hover:border-white/20 hover:text-foreground"
-            >
-              <ShoppingBag className="h-[15px] w-[15px]" />
-            </Link>
-            <Link
               href="/kontakt"
               className="flex items-center gap-1.5 rounded-full px-5 py-2 font-mono text-[10.5px] font-bold uppercase tracking-[0.12em] text-white transition-all hover:opacity-90"
               style={{
@@ -240,14 +206,14 @@ export function Header() {
         {/*
           Wysokość ograniczona + własny scroll: pełna lista (6 miast + 3 wydarzenia)
           przy czytelnym stopniu pisma przerasta ekran telefonu i dolne pozycje
-          byłyby nieklikalne. Drawer zaczyna się 86px od góry viewportu
-          (28px paska statusu `top-7` + 58px headera), stąd taki odjemnik.
+          byłyby nieklikalne. Drawer zaczyna się 58px od góry viewportu
+          (wysokość headera, teraz `top-0`), stąd taki odjemnik.
           overscroll-contain trzyma przewijanie w menu, zamiast przenosić je
           na stronę pod spodem po dojechaniu do końca listy.
         */}
         <div
           className={cn(
-            'absolute inset-x-0 top-[58px] max-h-[calc(100dvh-86px)] overflow-y-auto overscroll-contain border-b border-white/8 bg-background/98 backdrop-blur-xl lg:hidden',
+            'absolute inset-x-0 top-[58px] max-h-[calc(100dvh-58px)] overflow-y-auto overscroll-contain border-b border-white/8 bg-background/98 backdrop-blur-xl lg:hidden',
             mobileMenuOpen ? 'block' : 'hidden',
           )}
         >

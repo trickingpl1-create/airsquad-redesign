@@ -79,16 +79,16 @@ export function TeamPortraitCard({
           className="absolute inset-x-0 bottom-0 p-4 pt-16 md:p-5 md:pt-20"
           style={{
             background:
-              'linear-gradient(to top, oklch(0.13 0.02 280 / 0.92) 0%, oklch(0.13 0.02 280 / 0.85) calc(100% - 4rem), transparent 100%)',
+              'linear-gradient(to top, oklch(0.13 0.02 280 / 0.96) 0%, oklch(0.13 0.02 280 / 0.92) calc(100% - 4rem), oklch(0.13 0.02 280 / 0.5) calc(100% - 2rem), transparent 100%)',
           }}
         >
           <Heading
-            className="display-bold text-lg leading-tight text-white md:text-xl"
+            className="display-bold text-lg leading-tight text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.55)] md:text-xl"
             style={{ fontWeight: 400 }}
           >
             {member.name}
           </Heading>
-          <p className="mt-1.5 font-mono text-[10px] uppercase leading-relaxed tracking-[0.1em] text-white/70">
+          <p className="mt-1.5 font-mono text-[11px] uppercase leading-relaxed tracking-[0.1em] text-white/85 [text-shadow:0_1px_6px_rgba(0,0,0,0.55)]">
             {member.role}
           </p>
         </div>
