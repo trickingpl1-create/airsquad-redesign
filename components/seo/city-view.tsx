@@ -231,7 +231,9 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           />
         )}
 
-        <div className="container mx-auto px-4 pt-6">
+        {/* relative z-10: przy przypiętym wideo (miasta z YT) okruszki muszą
+            malować się NAD filmem — statyczny element wpadłby pod fixed z-0. */}
+        <div className="container relative z-10 mx-auto px-4 pt-6">
           <Breadcrumb items={breadcrumbs} />
         </div>
 
@@ -242,12 +244,16 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           <div className={city.hero_youtube_id ? 'relative' : 'relative overflow-hidden rounded-3xl border border-primary/40'}>
             {city.hero_youtube_id ? (
               <>
-                {/* Wideo wypełnia CAŁY baner (jak hero na stronie głównej),
-                    a nie tylko prawe 3/4. Czytelność treści po lewej daje
-                    kierunkowy gradient z --hero-scrim (granat w dark / biel
-                    w light), więc działa w obu motywach — analogicznie do
-                    dwuwarstwowego gradientu w components/home/hero-section.tsx. */}
-                <div aria-hidden className="absolute inset-0 overflow-hidden">
+                {/* Wideo jak na stronie głównej: FIXED do viewportu (paralaksa).
+                    Podczas przewijania film stoi w miejscu i prześwituje za
+                    przezroczystymi sekcjami (pasek info, grupy), aż zakryje go
+                    wrapper bg-background zaczynający się od „Gdzie trenujemy".
+                    Rozmiar w jednostkach viewportu: 330vw → środkowa pionowa
+                    rolka (9:16) playera 16:9 kryje szerokość ekranu, 178vh →
+                    wysokość na wąskich/wysokich ekranach (playerW·9/16 ≥ 100vh).
+                    Kierunkowy gradient z --hero-scrim daje czytelność treści
+                    w obu motywach. */}
+                <div aria-hidden className="fixed inset-0 z-0 overflow-hidden">
                   {/* Poster pod iframe'em na czas ładowania playera */}
                   {city.hero_image_url && (
                     <div
@@ -255,25 +261,22 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                       style={{ backgroundImage: `url(${city.hero_image_url})` }}
                     />
                   )}
-                  {/* Player 16:9 przeskalowany tak, by pionowa rolka (9:16) w jego
-                      środku pokryła cały banner (odpowiednik object-cover) */}
                   <iframe
                     src={`https://www.youtube-nocookie.com/embed/${city.hero_youtube_id}?autoplay=1&mute=1&loop=1&playlist=${city.hero_youtube_id}&controls=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1`}
                     allow="autoplay; encrypted-media"
                     title=""
                     tabIndex={-1}
                     className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-0"
-                    style={{ width: '330%', aspectRatio: '16 / 9' }}
+                    style={{ width: 'max(330vw, 178vh)', aspectRatio: '16 / 9' }}
+                  />
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        'linear-gradient(90deg, var(--hero-scrim) 0%, color-mix(in oklch, var(--hero-scrim) 82%, transparent) 44%, color-mix(in oklch, var(--hero-scrim) 14%, transparent) 100%), linear-gradient(180deg, transparent 58%, color-mix(in oklch, var(--hero-scrim) 55%, transparent) 100%)',
+                    }}
                   />
                 </div>
-                <div
-                  aria-hidden
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      'linear-gradient(90deg, var(--hero-scrim) 0%, color-mix(in oklch, var(--hero-scrim) 82%, transparent) 44%, color-mix(in oklch, var(--hero-scrim) 14%, transparent) 100%), linear-gradient(180deg, transparent 58%, color-mix(in oklch, var(--hero-scrim) 55%, transparent) 100%)',
-                  }}
-                />
               </>
             ) : city.hero_video_url ? (
               <>
@@ -324,9 +327,11 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           <section className="container mx-auto px-4 pt-4">{infoBar}</section>
         )}
 
-        {/* Grupy treningowe */}
+        {/* Grupy treningowe — `relative`: sekcja jest przezroczysta (film
+            prześwituje pod kartami), ale jej treść musi malować się nad
+            fixed z-0 — jak CitiesSection na stronie głównej. */}
         {groups.length > 0 && (
-          <section className="container mx-auto px-4 pt-16">
+          <section className="container relative mx-auto px-4 pt-16">
             <SectionHeader
               kicker={`Grafik zajęć · ${cityName}`}
               kickerColorClass="text-cyan"
@@ -396,6 +401,10 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           </section>
         )}
 
+        {/* Od tej sekcji w dół pełne, kryjące tło: w miastach z wideo YT
+            zasłania ono przypięty (fixed) film z hero — dokładnie tu kończy
+            się paralaksa, jak na stronie głównej. */}
+        <div className={city.hero_youtube_id ? 'relative bg-background' : undefined}>
         {/* Sala + trenerzy */}
         {(city.hall || city.trainers?.length) && (
           <section className="container mx-auto grid gap-4 px-4 pt-14 md:grid-cols-2">
@@ -615,6 +624,7 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
               <CityAipaxCalendar
                 formId={city.aipax_form_id_continuation}
                 cityName={`${cityName} — kontynuacja`}
+                view={city.aipax_embed_view}
               />
             </div>
           </section>
@@ -637,6 +647,7 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
             ))}
           </div>
         </section>
+        </div>
       </main>
       <Footer />
     </div>
