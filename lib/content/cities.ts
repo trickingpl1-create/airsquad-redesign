@@ -153,7 +153,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     h1_title: 'Akrobatyka Dębica',
     hero_tagline: null,
     hero_content:
-      '<p>Prowadzimy zapisy do nowych grup na nowo powstałej sali akrobatycznej <strong>AIR SPACE Dębica</strong>. Małe grupy (max 20 osób), sprzęt AirTrack i doświadczeni trenerzy.</p>',
+      '<p>Prowadzimy zapisy do nowych grup na nowo powstałej sali akrobatycznej <strong>AIR SPACE Dębica</strong>. Grupy ok. 20-osobowe (12 osób na 1 trenera), sprzęt AirTrack i doświadczeni trenerzy.</p>',
     main_content:
       '<p>Treningi akrobatyki dla dzieci od 7. roku życia prowadzimy w salach Szkoły Podstawowej nr 4 i nr 10 w Dębicy. Zajęcia rozwijają koordynację, siłę i pewność ruchu — od pierwszych przewrotów po salta na matach AirTrack.</p>',
     schedule_content: null,
