@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 
-// Wyciąga ID filmu z linku YouTube (youtube.com/watch?v=, youtu.be/, youtube.com/embed/).
+// Wyciąga ID filmu z linku YouTube (watch?v=, youtu.be/, embed/, shorts/).
+// shorts/ dodane, bo rolki z telefonu kopiuje się właśnie w tym formacie.
 function getYouTubeId(url: string): string | null {
   const match = url.match(
-    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/,
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/,
   )
   return match ? match[1] : null
 }
