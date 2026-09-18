@@ -44,7 +44,6 @@ const plans = [
 
 const dropIn: ReadonlyArray<readonly [string, string, string]> = [
   ['Pojedynczy trening', '40 zł', '60 min zajęć'],
-  ['Open Training', '40 zł', '90 min sesja'],
   ['Trening w małej grupie', '300 zł', '60 min · 2–3 osoby'],
   ['Pakiet 4 treningi', '270 zł', 'bez umowy'],
   ['Trial — pierwsze zajęcia', '40 zł', 'jednorazowo'],
@@ -53,7 +52,7 @@ const dropIn: ReadonlyArray<readonly [string, string, string]> = [
 interface PricingSectionProps {
   /** Ukrywa wskazane plany (dopasowanie po `name`, np. ['Premium']) — domyślnie widoczne wszystkie */
   hidePlans?: string[]
-  /** Ukrywa wskazane wejścia jednorazowe (dopasowanie po nazwie, np. ['Open Training']) */
+  /** Ukrywa wskazane wejścia jednorazowe (dopasowanie po nazwie, np. ['Pojedynczy trening']) */
   hideDropIns?: string[]
 }
 
