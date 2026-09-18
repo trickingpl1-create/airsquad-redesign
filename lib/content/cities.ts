@@ -16,7 +16,7 @@ import type { CityPage } from '@/lib/types/database'
 /** Wspólne dane kontaktowe klubu (NAP) — widok + schema.org */
 export const CLUB_CONTACT = {
   phone: '728 559 101',
-  phoneTrainer: '722 248 546', // trener Gabriel
+  phoneTrainer: '728 559 101', // trener Gabriel
   phoneSchema: '+48728559101',
   email: 'klub.airsquad@gmail.com',
 } as const
@@ -75,7 +75,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       {
         question: 'Jak zapisać dziecko na zajęcia?',
         answer:
-          'Zapisy prowadzimy online przez system AIPAX — wybierz grupę w kalendarzu i wypełnij formularz. O ostatecznym przydziale do grupy decyduje trener (tel. 722 248 546).',
+          'Zapisy prowadzimy online przez system AIPAX — wybierz grupę w kalendarzu i wypełnij formularz. O ostatecznym przydziale do grupy decyduje trener (tel. 728 559 101).',
       },
       {
         question: 'Ile kosztują zajęcia i jak płacić?',
@@ -90,6 +90,9 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     ],
     aipax_form_id: 'ce4c6cf2-3bbf-42b9-8433-9dd0a99cd9c4',
     aipax_form_id_continuation: 'cb0ef3b1-03c8-4c96-92be-b61302e7a25f',
+    // Zapisy jako pełny kalendarz zajęć (mode=calendar), nie zwarty launcher.
+    // Na mobile komponent i tak wymusza launcher — kalendarz się tam nie mieści.
+    aipax_embed_view: 'calendar',
     is_published: true,
     created_at: '',
     updated_at: '',
@@ -129,7 +132,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     ],
     videos: [
       {
-        url: `${WP_UPLOADS}/2023/09/VID_24881213_090738_541.mp4`,
+        url: 'https://youtube.com/shorts/yrYqJvyhZLA',
         poster: '/images/miasta/rzeszow-zajawka.jpg',
         label: 'Skoki na ścieżce / Tumbling',
       },
@@ -177,7 +180,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       },
       {
         question: 'Jak zapisać dziecko na zajęcia w Dębicy?',
-        answer: 'Nabór oraz kontynuacja — przez formularz online AIPAX. O przydziale do grupy decyduje trener (tel. 722 248 546).',
+        answer: 'Nabór oraz kontynuacja — przez formularz online AIPAX. O przydziale do grupy decyduje trener (tel. 728 559 101).',
       },
       {
         question: 'Jak wyglądają płatności?',
@@ -193,7 +196,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     city_locative: 'w Dębicy',
     hero_image_url: '/images/miasta/debica-hero.jpg',
     // Rolka z zajęć w Dębicy (YouTube Short) — grana jako tło hero
-    hero_youtube_id: 'KPxvLDfjE7g',
+    hero_youtube_id: 'x3iyx0UW76w',
     hero_image_position: 'right 46%',
     hall: {
       name: 'AIR SPACE Dębica',
@@ -223,7 +226,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     benefits: ['prawidłowa postawa', 'koordynacja', 'siła i gibkość', 'praca w grupie', 'dyscyplina'],
     videos: [
       {
-        url: 'https://www.youtube.com/embed/w4_uA0wOyak',
+        url: 'https://youtube.com/shorts/x3iyx0UW76w',
         poster: '/images/miasta/debica-zajawka.jpg',
         label: 'Trening w AIR SPACE Dębica',
       },
@@ -263,7 +266,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       },
       {
         question: 'Jak zapisać dziecko?',
-        answer: 'Zapisy prowadzimy online przez system AIPAX — zarówno nabór, jak i kontynuację. Pytania: tel. 722 248 546 (trener Gabriel).',
+        answer: 'Zapisy prowadzimy online przez system AIPAX — zarówno nabór, jak i kontynuację. Pytania: tel. 728 559 101 (trener Gabriel).',
       },
       {
         question: 'Ile kosztują zajęcia i jak płacić?',
@@ -566,7 +569,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       },
       {
         question: 'Jak zapisać dziecko?',
-        answer: 'Online przez system AIPAX (wymagane założenie konta). Pytania: trener Gabriel, tel. 722 248 546.',
+        answer: 'Online przez system AIPAX (wymagane założenie konta). Pytania: trener Gabriel, tel. 728 559 101.',
       },
       {
         question: 'Jak wyglądają płatności?',
