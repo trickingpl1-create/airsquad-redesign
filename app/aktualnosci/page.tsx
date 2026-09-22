@@ -70,10 +70,15 @@ export default function NewsPage() {
             titleFontWeight={500}
             gradientFontWeight={500}
           />
-          <div className="mt-2 grid grid-cols-1 gap-5 md:grid-cols-2">
-            {news.map((item) => (
-              <NewsCard key={item.title} {...item} />
-            ))}
+          {/* Układ: 1 główny news (poziomy, duży) + 3 mniejsze w rzędzie pod
+              spodem. Na mobile wszystko wraca do jednej kolumny. */}
+          <div className="mt-2">
+            <NewsCard {...news[0]} featured />
+            <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3">
+              {news.slice(1).map((item) => (
+                <NewsCard key={item.title} {...item} />
+              ))}
+            </div>
           </div>
         </div>
       </main>
