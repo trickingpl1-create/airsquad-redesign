@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // Wyciąga ID filmu z linku YouTube (watch?v=, youtu.be/, embed/, shorts/).
 // shorts/ dodane, bo rolki z telefonu kopiuje się właśnie w tym formacie.
@@ -11,9 +11,10 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null
 }
 
-// Fasada „Naszych Zajawek" — oryginalne klubowe MP4 (hostowane na starym
-// WordPressie, linkowane bezpośrednio) LUB film z YouTube — montują się
-// dopiero po kliknięciu, żeby ciężkie wideo nie dotykało ładowania strony.
+// „Nasze zajawki" — MP4 z klubowego WordPressa LUB film z YouTube. Odtwarza się
+// automatycznie DOPIERO po wejściu w widok (IntersectionObserver), wyciszony i
+// w pętli — jak tło-teaser. Do tego momentu montuje się tylko poster, więc
+// ciężki player nie dotyka pierwszego ładowania strony (efekt lazy zachowany).
 export function CityVideo({
   url,
   poster,
@@ -23,66 +24,80 @@ export function CityVideo({
   poster?: string
   label?: string
 }) {
-  const [playing, setPlaying] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
   const youtubeId = getYouTubeId(url)
 
-  if (playing && youtubeId) {
-    return (
-      <iframe
-        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1`}
-        title={label ?? 'Film'}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerPolicy="strict-origin-when-cross-origin"
-        allowFullScreen
-        className="block h-full min-h-72 w-full rounded-3xl border-0"
-      />
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    // Gdy przeglądarka nie zna IntersectionObserver — od razu montujemy player.
+    if (typeof IntersectionObserver === 'undefined') {
+      setInView(true)
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setInView(true)
+          io.disconnect() // start jednorazowy — nie restartujemy przy każdym scrollu
+        }
+      },
+      { threshold: 0.4 },
     )
-  }
-
-  if (playing) {
-    return (
-      <video
-        src={url}
-        poster={poster}
-        controls
-        autoPlay
-        playsInline
-        className="block h-full min-h-72 w-full rounded-3xl object-cover"
-      />
-    )
-  }
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   return (
-    <button
-      type="button"
-      onClick={() => setPlaying(true)}
-      aria-label={`Odtwórz film${label ? `: ${label}` : ''}`}
-      className="group relative block h-full min-h-72 w-full overflow-hidden rounded-3xl border border-border text-left"
+    <div
+      ref={ref}
+      className="relative block h-full min-h-72 w-full overflow-hidden rounded-3xl border border-border"
     >
-      {poster ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={poster}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-90"
-        />
-      ) : (
-        <span className="absolute inset-0 bg-gradient-to-br from-cyan/15 to-background" />
-      )}
-      <span className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/10 to-background/70" />
-      <span className="absolute inset-0 flex items-center justify-center">
-        <span className="grid h-16 w-16 place-items-center rounded-full bg-white shadow-[0_0_40px_rgba(103,232,249,0.45)] transition-transform group-hover:scale-105">
-          <span
-            aria-hidden
-            className="ml-1 block h-0 w-0 border-y-[12px] border-l-[20px] border-y-transparent border-l-background"
+      {inView ? (
+        youtubeId ? (
+          <iframe
+            // mute=1 → autoplay przechodzi przez politykę przeglądarek;
+            // loop=1 wymaga playlist=<to samo id>, inaczej YouTube nie zapętla.
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=1&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1`}
+            title={label ?? 'Film'}
+            allow="autoplay; encrypted-media; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full border-0"
           />
-        </span>
-      </span>
-      {label && (
-        <span className="absolute bottom-4 left-5 font-mono text-[11px] uppercase tracking-[0.12em] text-foreground/70">
-          ▶ {label}
-        </span>
+        ) : (
+          <video
+            src={url}
+            poster={poster}
+            muted
+            loop
+            autoPlay
+            playsInline
+            controls
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )
+      ) : (
+        <>
+          {poster ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={poster}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover opacity-90"
+            />
+          ) : (
+            <span className="absolute inset-0 bg-gradient-to-br from-cyan/15 to-background" />
+          )}
+          <span className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background/50" />
+          {label && (
+            <span className="absolute bottom-4 left-5 font-mono text-[11px] uppercase tracking-[0.12em] text-foreground/70">
+              ▶ {label}
+            </span>
+          )}
+        </>
       )}
-    </button>
+    </div>
   )
 }
