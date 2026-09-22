@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 // Fonty self-hosted z paczek @fontsource (te same kroje co wcześniej z Google
 // Fonts). Powody: build nie zależy od sieci (next/font/google pobiera CSS
 // z fonts.googleapis.com w czasie builda i wywala się offline/za firewallem),
@@ -11,6 +12,21 @@ import { EnrolFab } from '@/components/enrol-fab'
 import { ENROL_CITIES } from '@/lib/content/enrol-cities'
 import { SITE_URL } from '@/lib/seo/site'
 import './globals.css'
+
+// Cookiebot — CMP zgód (RODO). Tryb "manual": baner zgód pokazuje się i zapisuje
+// wybór użytkownika, ale NIE blokuje automatycznie skryptów ani iframe'ów. To
+// świadoma decyzja — hero-filmy (YouTube) i widget zapisów AIPAX mają grać od
+// razu; auto-blokada wstrzymywałaby je do czasu akceptacji. Jeśli w przyszłości
+// dojdzie własna analityka (GA/Meta Pixel), trzeba ją otagować data-cookieconsent
+// albo przełączyć na data-blockingmode="auto".
+// CBID = Domain Group ID z konta manage.cookiebot.com. Dopóki jest placeholderem,
+// skrypt się nie renderuje (guard niżej) — żadnego zapytania z błędnym ID.
+// CBID przepięty z istniejącego konta Cookiebot starej strony airsquad.pl (tam
+// ładowany przez GTM). To samo Domain Group obejmuje subdomeny, więc pokrywa
+// new.airsquad.pl i docelowo airsquad.pl — nie zakładamy nowego konta.
+// Adnotacja `: string` celowo — bez niej TS zawęża do typu literalnego i przy
+// porównaniu w guardzie niżej zgłasza TS2367.
+const COOKIEBOT_CBID: string = 'fc61955c-aa38-4593-aecc-45d2739b74ff'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -88,6 +104,22 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="font-sans antialiased min-h-screen bg-background text-foreground">
+        {/* Cookiebot: strategy="afterInteractive". W trybie manual nic nie jest
+            automatycznie blokowane, więc CMP nie musi wystartować przed resztą —
+            Next wstrzykuje <script id="Cookiebot"> z atrybutami data-* (uc.js sam
+            je odczytuje) po hydracji. beforeInteractive w App Routerze/React 19
+            renderuje surowy <script> w drzewie Reacta i sypie błędami hydracji
+            („<script> cannot be a child of <html>"), więc świadomie afterInteractive.
+            Renderowany dopiero po wpisaniu prawdziwego CBID (patrz stała wyżej). */}
+        {COOKIEBOT_CBID !== 'TODO-WKLEJ-CBID' && (
+          <Script
+            id="Cookiebot"
+            src="https://consent.cookiebot.com/uc.js"
+            data-cbid={COOKIEBOT_CBID}
+            data-blockingmode="manual"
+            strategy="afterInteractive"
+          />
+        )}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
