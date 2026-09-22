@@ -206,11 +206,11 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
       </div>
       <div className="flex min-h-[92px] flex-col justify-center rounded-3xl border border-border bg-card px-6 py-5">
         <div className="flex items-center gap-2.5">
-          <span className="shrink-0 rounded-full border border-emerald/30 bg-emerald/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-emerald">
+          <span className="shrink-0 rounded-full border border-violet-soft/30 bg-violet-soft/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-violet-soft">
             Kontakt
           </span>
           <p className="min-w-0 text-sm font-medium text-foreground">
-            <a href={`tel:+48${CLUB_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-emerald">
+            <a href={`tel:+48${CLUB_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-violet-soft">
               {CLUB_CONTACT.phone}
             </a>
           </p>

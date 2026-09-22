@@ -90,7 +90,6 @@ export const LETNI_EVENT: Event = {
     { url: '/images/letni/galeria-akro.jpg', caption: '// akrobatyka na plaży' },
     { url: '/images/letni/galeria-kajaki.jpg', caption: '// kajaki i SUP na jeziorze' },
     { url: '/images/letni/galeria-paintball.jpg', caption: '// paintball w lesie' },
-    { url: '/images/bg-aircamp.jpg', caption: '// obóz Air Camp' },
     { url: '/images/old-site/dzieci-airtrack.jpg' },
     { url: '/images/old-site/tricking.jpg' },
     { url: '/images/old-site/tumbling.jpg' },
