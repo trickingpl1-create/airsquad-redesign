@@ -8,7 +8,6 @@ import { PricingSection } from '@/components/home/pricing-section'
 import { CityAipaxCalendar } from '@/components/seo/city-aipax-calendar'
 import { CityVideo } from '@/components/seo/city-video'
 import { CLUB_CONTACT, PAYMENT_INFO } from '@/lib/content/cities'
-import { Calendar, MapPin, Phone, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { CityPage } from '@/lib/types/database'
 
@@ -66,6 +65,36 @@ const CROSS_LINKS = [
   { href: '/grafik/', label: 'Grafik zajęć' },
   { href: '/trenerzy/', label: 'Trenerzy' },
 ] as const
+
+// Krótka forma dni na kartę „Treningi" (np. „pon – pt", „pon · śr · pt") jako
+// wartość, a pełny `training_days_label` zostaje szczegółem pod spodem. Dane mają
+// tylko długą formę, więc skracamy w locie. Gdy wzorca nie rozpoznamy → null,
+// wtedy karta pokazuje samą długą formę (bez rozjazdu z resztą pasków).
+function abbrevDay(word: string): string | null {
+  const s = word.trim().toLowerCase()
+  if (s.startsWith('poniedział')) return 'pon'
+  if (s.startsWith('wtor')) return 'wt'
+  if (s.startsWith('środ') || s.startsWith('srod')) return 'śr'
+  if (s.startsWith('czwart')) return 'czw'
+  if (s.startsWith('piąt') || s.startsWith('piat')) return 'pt'
+  if (s.startsWith('sobot') || s.startsWith('sobó')) return 'sob'
+  if (s.startsWith('niedziel')) return 'niedz'
+  return null
+}
+
+function shortTrainingDays(label: string): string | null {
+  const range = label.match(/od\s+(\p{L}+)\s+do\s+(\p{L}+)/iu)
+  if (range) {
+    const a = abbrevDay(range[1])
+    const b = abbrevDay(range[2])
+    if (a && b) return `${a} – ${b}`
+  }
+  const parts = label
+    .split(/,|\bi\b/iu)
+    .map((p) => abbrevDay(p))
+    .filter((x): x is string => Boolean(x))
+  return parts.length ? parts.join(' · ') : null
+}
 
 export function CityPageView({ data: city, currentPath, parents = [] }: CityViewProps) {
   const cityName = city.city_name ?? city.h1_title.replace(/^Akrobatyka\s+/i, '')
@@ -129,62 +158,64 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
   // Pasek info też wyniesiony: w miastach z wideo YT renderuje się WEWNĄTRZ
   // hero (wideo jest tłem także pod kafelkami — jak na stronie głównej),
   // w pozostałych jako osobna sekcja pod kafelkiem hero.
+  // Pasek info w stylu „pigułka kategorii + wartość + szczegół" (akceptacja
+  // użytkownika 2026-09-21). Pigułka zastępuje ikonę i pełni rolę etykiety, więc
+  // z nazwy sali zdejmujemy wiodące „Sala " — inaczej wychodzi „SALA · Sala AIR
+  // SPACE…". `min-h` + justify-center wyrównuje karty niezależnie od liczby
+  // linii (długa nazwa sali w Bieczu vs krótkie sąsiadki). Na mobile jedna
+  // kolumna — przy dwóch zostaje za mało miejsca na tekst obok pigułki.
+  const hallTitle = city.hall?.name.replace(/^Sala\s+/i, '')
   const infoBar = (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {/* Ikona w barwionym chipie 40×40, całość centrowana w pionie —
-          wariant A z makiety, akceptacja użytkownika 2026-08-27. Chip
-          daje ikonie stałą oś, więc karty o różnej liczbie linii tekstu
-          (3-linijkowa nazwa sali w Bieczu obok 1-linijkowych sąsiadów)
-          nie rozjeżdżają wiersza. `min-h` wyrównuje karty także między
-          wierszami siatki 2×2. `min-w-0` + `break-words` pozwalają
-          łamać adres i e-mail zamiast rozpychać kartę.
-          Na mobile jedna kolumna: przy dwóch kartach zostaje ~90 px na
-          tekst obok ikony i nazwy sal łamią się na trzy linie. */}
       {city.hall && (
-        <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan/15">
-            <MapPin className="h-5 w-5 text-cyan" aria-hidden />
-          </span>
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-foreground">{city.hall.name}</p>
-            <p className="break-words font-mono text-[11px] text-muted-foreground">{city.hall.address}</p>
+        <div className="flex min-h-[92px] flex-col justify-center rounded-3xl border border-border bg-card px-6 py-5">
+          <div className="flex items-center gap-2.5">
+            <span className="shrink-0 rounded-full border border-cyan/30 bg-cyan/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-cyan">
+              Sala
+            </span>
+            <p className="min-w-0 text-sm font-medium text-foreground">{hallTitle}</p>
           </div>
+          <p className="mt-1.5 break-words font-mono text-[11px] text-muted-foreground">{city.hall.address}</p>
         </div>
       )}
       {trainingDays && (
-        <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber/15">
-            <Calendar className="h-5 w-5 text-amber" aria-hidden />
-          </span>
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-foreground">Dni treningów</p>
-            <p className="font-mono text-[11px] text-muted-foreground">{trainingDays}</p>
+        <div className="flex min-h-[92px] flex-col justify-center rounded-3xl border border-border bg-card px-6 py-5">
+          <div className="flex items-center gap-2.5">
+            <span className="shrink-0 rounded-full border border-amber/30 bg-amber/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-amber">
+              Treningi
+            </span>
+            <p className="min-w-0 text-sm font-medium text-foreground">
+              {shortTrainingDays(trainingDays) ?? trainingDays}
+            </p>
           </div>
+          {shortTrainingDays(trainingDays) && (
+            <p className="mt-1.5 break-words font-mono text-[11px] text-muted-foreground">{trainingDays}</p>
+          )}
         </div>
       )}
-      <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pink/15">
-          <Users className="h-5 w-5 text-pink" aria-hidden />
-        </span>
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-foreground">Małe grupy</p>
-          <p className="font-mono text-[11px] text-muted-foreground">
-            {city.group_ratio_label ?? 'dzieci · młodzież · dorośli'}
-          </p>
+      <div className="flex min-h-[92px] flex-col justify-center rounded-3xl border border-border bg-card px-6 py-5">
+        <div className="flex items-center gap-2.5">
+          <span className="shrink-0 rounded-full border border-pink/30 bg-pink/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-pink">
+            Grupy
+          </span>
+          <p className="min-w-0 text-sm font-medium text-foreground">Małe grupy</p>
         </div>
+        <p className="mt-1.5 break-words font-mono text-[11px] text-muted-foreground">
+          {city.group_ratio_label ?? 'dzieci · młodzież · dorośli'}
+        </p>
       </div>
-      <div className="flex min-h-[88px] items-center gap-3.5 rounded-3xl border border-border bg-card p-5">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald/15">
-          <Phone className="h-5 w-5 text-emerald" aria-hidden />
-        </span>
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-foreground">
+      <div className="flex min-h-[92px] flex-col justify-center rounded-3xl border border-border bg-card px-6 py-5">
+        <div className="flex items-center gap-2.5">
+          <span className="shrink-0 rounded-full border border-emerald/30 bg-emerald/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-emerald">
+            Kontakt
+          </span>
+          <p className="min-w-0 text-sm font-medium text-foreground">
             <a href={`tel:+48${CLUB_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-emerald">
               {CLUB_CONTACT.phone}
             </a>
           </p>
-          <p className="break-words font-mono text-[11px] text-muted-foreground">{CLUB_CONTACT.email}</p>
         </div>
+        <p className="mt-1.5 break-words font-mono text-[11px] text-muted-foreground">{CLUB_CONTACT.email}</p>
       </div>
     </div>
   )
