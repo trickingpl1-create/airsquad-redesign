@@ -204,6 +204,10 @@ export interface CityPage {
   aipax_embed_view?: 'calendar' | 'form'
   /** Nadpisuje wyliczane z groups_info podsumowanie dni treningów (pasek info) */
   training_days_label?: string
+  /** Wiersz szczegółu pod wartością „Treningi" w pasku info (np. „otwarte od
+   *  poniedziałku do piątku"). Gdy pusty, pod spodem pokazuje się pełny
+   *  training_days_label — ale tylko gdy wartość główną skrócono. */
+  training_days_detail?: string
   /** Nadpisuje domyślny opis "dzieci · młodzież · dorośli" w karcie "Małe grupy" (pasek info) */
   group_ratio_label?: string
   /** Nazwa miasta w mianowniku, np. "Rzeszów" (badge, breadcrumb) */

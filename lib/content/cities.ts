@@ -157,6 +157,11 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     main_content:
       '<p>Treningi akrobatyki dla dzieci od 7. roku życia prowadzimy w salach Szkoły Podstawowej nr 4 i nr 10 w Dębicy. Zajęcia rozwijają koordynację, siłę i pewność ruchu — od pierwszych przewrotów po salta na matach AirTrack.</p>',
     schedule_content: null,
+    // Grupy w Dębicy spotykają się 1–3× w tygodniu (różne warianty). Zamiast
+    // sklejać dni wszystkich grup w nieczytelny ciąg, w pasku info pokazujemy
+    // czytelną częstotliwość zamiast konkretnych dni.
+    training_days_label: '1, 2 lub 3 razy w tyg',
+    training_days_detail: 'otwarte od poniedziałku do piątku',
     // Grafik 1:1 z kalendarzy AIPAX Dębica (sezon 2026/27): nabór + kontynuacja.
     groups_info: [
       { name: 'AcroDębica NABÓR (Air Space)', days: 'wt · czw', hours: '16:00–17:00', level: 'nowe dzieci', enrolling: true },

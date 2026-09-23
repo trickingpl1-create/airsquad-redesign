@@ -113,6 +113,12 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
     }))
     .filter((f) => f.question && f.answer)
   const trainingDays = city.training_days_label ?? [...new Set(groups.map((g) => g.days).filter(Boolean))].join(', ')
+  // Wiersz szczegółu pod wartością „Treningi": własny `training_days_detail`
+  // (np. Dębica: „otwarte od poniedziałku do piątku"), a gdy go brak — pełny
+  // `trainingDays`, ale tylko jeśli wartość główną skrócono (inaczej dublowałby
+  // ten sam tekst pod spodem).
+  const trainingDaysDetail =
+    city.training_days_detail ?? (shortTrainingDays(trainingDays) ? trainingDays : null)
 
   // Treść hero wyniesiona, bo używają jej dwa układy: pełne tło (miasta z
   // wideo YT — jak hero na stronie głównej) oraz obramowany kafelek (reszta).
@@ -158,19 +164,22 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
   // Pasek info też wyniesiony: w miastach z wideo YT renderuje się WEWNĄTRZ
   // hero (wideo jest tłem także pod kafelkami — jak na stronie głównej),
   // w pozostałych jako osobna sekcja pod kafelkiem hero.
-  // Pasek info w stylu „pigułka kategorii + wartość + szczegół" (akceptacja
-  // użytkownika 2026-09-21). Pigułka zastępuje ikonę i pełni rolę etykiety, więc
-  // z nazwy sali zdejmujemy wiodące „Sala " — inaczej wychodzi „SALA · Sala AIR
-  // SPACE…". `min-h` + justify-center wyrównuje karty niezależnie od liczby
-  // linii (długa nazwa sali w Bieczu vs krótkie sąsiadki). Na mobile jedna
-  // kolumna — przy dwóch zostaje za mało miejsca na tekst obok pigułki.
+  // Pasek info w stylu „pigułka kategorii + wartość + szczegół" (wariant 3b,
+  // akceptacja użytkownika 2026-09-22). Kolor niesie znaczenie: fioletowa
+  // pigułka = informacja (Sala/Treningi/Grupy), cyjan = jedyna akcja w pasku
+  // (Kontakt/telefon) — karta kontaktu ma też cyjanową ramkę. Pigułka zastępuje
+  // ikonę i pełni rolę etykiety, więc z nazwy sali zdejmujemy wiodące „Sala "
+  // — inaczej wychodzi „SALA · Sala AIR SPACE…". `min-h` + justify-center
+  // wyrównuje karty niezależnie od liczby linii (długa nazwa sali w Bieczu vs
+  // krótkie sąsiadki). Na mobile jedna kolumna — przy dwóch zostaje za mało
+  // miejsca na tekst obok pigułki.
   const hallTitle = city.hall?.name.replace(/^Sala\s+/i, '')
   const infoBar = (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {city.hall && (
-        <div className="flex min-h-[92px] flex-col justify-center rounded-3xl border border-border bg-card px-6 py-5">
+        <div className="flex min-h-[74px] flex-col justify-center rounded-2xl border border-border bg-card px-4 py-3.5">
           <div className="flex items-center gap-2.5">
-            <span className="shrink-0 rounded-full border border-cyan/30 bg-cyan/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-cyan">
+            <span className="shrink-0 rounded-full bg-primary/20 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-violet-soft">
               Sala
             </span>
             <p className="min-w-0 text-sm font-medium text-foreground">{hallTitle}</p>
@@ -179,23 +188,23 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
         </div>
       )}
       {trainingDays && (
-        <div className="flex min-h-[92px] flex-col justify-center rounded-3xl border border-border bg-card px-6 py-5">
+        <div className="flex min-h-[74px] flex-col justify-center rounded-2xl border border-border bg-card px-4 py-3.5">
           <div className="flex items-center gap-2.5">
-            <span className="shrink-0 rounded-full border border-amber/30 bg-amber/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-amber">
+            <span className="shrink-0 rounded-full bg-primary/20 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-violet-soft">
               Treningi
             </span>
             <p className="min-w-0 text-sm font-medium text-foreground">
               {shortTrainingDays(trainingDays) ?? trainingDays}
             </p>
           </div>
-          {shortTrainingDays(trainingDays) && (
-            <p className="mt-1.5 break-words font-mono text-[11px] text-muted-foreground">{trainingDays}</p>
+          {trainingDaysDetail && (
+            <p className="mt-1.5 break-words font-mono text-[11px] text-muted-foreground">{trainingDaysDetail}</p>
           )}
         </div>
       )}
-      <div className="flex min-h-[92px] flex-col justify-center rounded-3xl border border-border bg-card px-6 py-5">
+      <div className="flex min-h-[74px] flex-col justify-center rounded-2xl border border-border bg-card px-4 py-3.5">
         <div className="flex items-center gap-2.5">
-          <span className="shrink-0 rounded-full border border-pink/30 bg-pink/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-pink">
+          <span className="shrink-0 rounded-full bg-primary/20 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-violet-soft">
             Grupy
           </span>
           <p className="min-w-0 text-sm font-medium text-foreground">Małe grupy</p>
@@ -204,13 +213,13 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
           {city.group_ratio_label ?? 'dzieci · młodzież · dorośli'}
         </p>
       </div>
-      <div className="flex min-h-[92px] flex-col justify-center rounded-3xl border border-border bg-card px-6 py-5">
+      <div className="flex min-h-[74px] flex-col justify-center rounded-2xl border border-cyan/35 bg-card px-4 py-3.5">
         <div className="flex items-center gap-2.5">
-          <span className="shrink-0 rounded-full border border-violet-soft/30 bg-violet-soft/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-violet-soft">
+          <span className="shrink-0 rounded-full bg-cyan/15 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-cyan">
             Kontakt
           </span>
           <p className="min-w-0 text-sm font-medium text-foreground">
-            <a href={`tel:+48${CLUB_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-violet-soft">
+            <a href={`tel:+48${CLUB_CONTACT.phone.replace(/\s/g, '')}`} className="text-cyan hover:underline">
               {CLUB_CONTACT.phone}
             </a>
           </p>
