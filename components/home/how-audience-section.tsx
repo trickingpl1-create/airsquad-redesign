@@ -34,7 +34,7 @@ export function HowAudienceSection() {
   return (
     <section
       id="dla-kogo"
-      className="relative overflow-hidden bg-background px-6 py-16 md:px-10 md:py-20"
+      className="relative overflow-hidden px-6 py-16 md:px-10 md:py-20"
     >
       <div className="relative mx-auto max-w-7xl">
         <div className="mb-8 md:mb-10">

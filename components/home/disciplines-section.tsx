@@ -77,7 +77,7 @@ export function DisciplinesSection() {
   return (
     <section
       id="dyscypliny"
-      className="relative overflow-hidden bg-secondary px-6 py-24 md:px-10 md:py-32"
+      className="relative overflow-hidden px-6 py-24 md:px-10 md:py-32"
     >
       <div
         aria-hidden

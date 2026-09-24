@@ -10,6 +10,7 @@ import { MarqueeSection } from '@/components/home/marquee-section'
 import { TrainingTypesSection } from '@/components/home/training-types-section'
 import { DisciplinesSection } from '@/components/home/disciplines-section'
 import { HowAudienceSection } from '@/components/home/how-audience-section'
+import { SectionVideoBand } from '@/components/home/section-video-band'
 import { CampsSection } from '@/components/home/camps-section'
 import { TeamSection } from '@/components/home/team-section'
 import { CTASection } from '@/components/home/cta-section'
@@ -99,11 +100,13 @@ export default async function HomePage() {
         <HowStepsSection cities={ENROL_CITIES} />
         <PromoSection />
         <MarqueeSection />
-        <TrainingTypesSection trainingTypes={trainingTypes} />
-        <DisciplinesSection />
-        <HowAudienceSection />
-        <CampsSection />
         <TeamSection />
+        <TrainingTypesSection trainingTypes={trainingTypes} />
+        <SectionVideoBand>
+          <DisciplinesSection />
+          <HowAudienceSection />
+        </SectionVideoBand>
+        <CampsSection />
         <CTASection cities={ENROL_CITIES} />
       </main>
       <Footer />
