@@ -218,6 +218,9 @@ export interface CityPage {
   pricing_hide_plans?: string[]
   /** Ukrywa wskazane wejścia jednorazowe w sekcji #cennik dla tego miasta */
   pricing_hide_drop_ins?: string[]
+  /** Per-miasto podmiana treści cech planów w #cennik: mapa „oryginalna cecha" → „nowa treść"
+   *  (np. Dębica: { '1 trening / tydzień': '1 trening / tydzień tylko w szkołach' }) */
+  pricing_feature_overrides?: Record<string, string>
   /** Gdy true, przyciski planów w #cennik prowadzą do formularza AIPAX tego miasta (aipax_form_id)
    *  zamiast /kontakt, a etykieta traci nazwę planu */
   pricing_enrol_via_aipax?: boolean

@@ -162,6 +162,9 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     // czytelną częstotliwość zamiast konkretnych dni.
     training_days_label: '1, 2 lub 3 razy w tyg',
     training_days_detail: 'otwarte od poniedziałku do piątku',
+    // Dębica trenuje w salach szkolnych (SP nr 4 i nr 10), więc plan Basic (1×/tydz.)
+    // doprecyzowujemy „tylko w szkołach" — tylko tutaj, inne miasta bez zmian.
+    pricing_feature_overrides: { '1 trening / tydzień': '1 trening / tydzień tylko w szkołach' },
     // Grafik 1:1 z kalendarzy AIPAX Dębica (sezon 2026/27): nabór + kontynuacja.
     groups_info: [
       { name: 'AcroDębica NABÓR (Air Space)', days: 'wt · czw', hours: '16:00–17:00', level: 'nowe dzieci', enrolling: true },

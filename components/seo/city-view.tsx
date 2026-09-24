@@ -619,6 +619,7 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
         <PricingSection
           hidePlans={city.pricing_hide_plans}
           hideDropIns={city.pricing_hide_drop_ins}
+          featureOverrides={city.pricing_feature_overrides}
         />
 
         {/* Zajawki + zapisy */}

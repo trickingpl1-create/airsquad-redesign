@@ -54,9 +54,16 @@ interface PricingSectionProps {
   hidePlans?: string[]
   /** Ukrywa wskazane wejścia jednorazowe (dopasowanie po nazwie, np. ['Pojedynczy trening']) */
   hideDropIns?: string[]
+  /** Per-miasto podmiana treści cech planów: mapa „oryginalna cecha" → „nowa treść".
+   *  Np. Dębica: { '1 trening / tydzień': '1 trening / tydzień tylko w szkołach' }. */
+  featureOverrides?: Record<string, string>
 }
 
-export function PricingSection({ hidePlans = [], hideDropIns = [] }: PricingSectionProps = {}) {
+export function PricingSection({
+  hidePlans = [],
+  hideDropIns = [],
+  featureOverrides = {},
+}: PricingSectionProps = {}) {
   const visiblePlans = plans.filter((p) => !hidePlans.includes(p.name))
   const visibleDropIns = dropIn.filter(([name]) => !hideDropIns.includes(name))
   return (
@@ -145,7 +152,7 @@ export function PricingSection({ hidePlans = [], hideDropIns = [] }: PricingSect
                     >
                       ✓
                     </span>
-                    {f}
+                    {featureOverrides[f] ?? f}
                   </li>
                 ))}
               </ul>
