@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Instagram } from 'lucide-react'
 import { TEAM } from '@/lib/content/team'
+import { BackgroundVideo } from '@/components/background-video'
 
 const YOUTUBE_ID = 'uFobcH0aQ7g'
 
@@ -31,9 +32,10 @@ export function HeroSection() {
             height: 'max(100vh, calc(100vw * 9 / 16))',
           }}
         >
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&mute=1&loop=1&playlist=${YOUTUBE_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1&start=9&end=25`}
-            allow="autoplay; encrypted-media"
+          <BackgroundVideo
+            youtubeId={YOUTUBE_ID}
+            start={9}
+            end={25}
             className="absolute inset-0 h-full w-full border-0 opacity-95"
             title="Air Squad background video"
           />

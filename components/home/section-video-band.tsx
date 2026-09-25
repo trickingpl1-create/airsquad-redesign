@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { BackgroundVideo } from '@/components/background-video'
 
 const YOUTUBE_ID = 'w4_uA0wOyak' // AIRMEETING 2026 (poziomy 16:9)
 
@@ -27,9 +28,8 @@ export function SectionVideoBand({ children }: { children: ReactNode }) {
             height: 'max(100vh, calc(100vw * 9 / 16))',
           }}
         >
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&mute=1&loop=1&playlist=${YOUTUBE_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1`}
-            allow="autoplay; encrypted-media"
+          <BackgroundVideo
+            youtubeId={YOUTUBE_ID}
             className="absolute inset-0 h-full w-full border-0 opacity-95"
             title="Air Squad — tło sekcji: AIRMEETING 2026"
           />

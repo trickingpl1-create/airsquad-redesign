@@ -221,8 +221,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     },
     trainers: [
       { name: 'Patryk Dębski', role: 'licencjat fizjoterapii' },
-      { name: 'Gabriela Cichoń', role: 'magister fizjoterapii' },
-      { name: 'Gabriel Myśliwiec', role: 'instruktor akrobatyki, trener trickingu' },
+      { name: 'Paulina Bester-Myśliwiec' },
     ],
     trainers_image_url: '/images/miasta/debica-trenerzy.jpg',
     first_training: [

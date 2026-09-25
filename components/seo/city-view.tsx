@@ -7,6 +7,7 @@ import { SectionHeader } from '@/components/home/section-header'
 import { PricingSection } from '@/components/home/pricing-section'
 import { CityAipaxCalendar } from '@/components/seo/city-aipax-calendar'
 import { CityVideo } from '@/components/seo/city-video'
+import { BackgroundVideo } from '@/components/background-video'
 import { CLUB_CONTACT, PAYMENT_INFO } from '@/lib/content/cities'
 import { cn } from '@/lib/utils'
 import type { CityPage } from '@/lib/types/database'
@@ -301,11 +302,8 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                       style={{ backgroundImage: `url(${city.hero_image_url})` }}
                     />
                   )}
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${city.hero_youtube_id}?autoplay=1&mute=1&loop=1&playlist=${city.hero_youtube_id}&controls=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1`}
-                    allow="autoplay; encrypted-media"
-                    title=""
-                    tabIndex={-1}
+                  <BackgroundVideo
+                    youtubeId={city.hero_youtube_id}
                     className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-0"
                     style={{ width: 'max(330vw, 178vh)', aspectRatio: '16 / 9' }}
                   />

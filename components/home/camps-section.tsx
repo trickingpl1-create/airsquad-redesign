@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { LETNI_EVENT } from '@/lib/content/letni'
+import { BackgroundVideo } from '@/components/background-video'
 
 // Ta sama zajawka co na /letni/ (lib/content/letni.ts → LETNI_EVENT.youtubeId)
 const AIRCAMP_YOUTUBE_ID = '-P1J3YntBpY'
@@ -49,11 +50,9 @@ export function CampsSection() {
           zapętlone i wyciszone; object-fit: cover kadruje iframe pod wysokość sekcji
           (nie viewportu), więc działa niezależnie od tego, ile treści jest poniżej. */}
       <div aria-hidden className="absolute inset-0 overflow-hidden">
-        <iframe
-          src={`https://www.youtube-nocookie.com/embed/${AIRCAMP_YOUTUBE_ID}?autoplay=1&mute=1&loop=1&playlist=${AIRCAMP_YOUTUBE_ID}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&playsinline=1`}
-          allow="autoplay; encrypted-media"
+        <BackgroundVideo
+          youtubeId={AIRCAMP_YOUTUBE_ID}
           className="pointer-events-none absolute inset-0 h-full w-full scale-150 border-0 opacity-70 md:scale-100"
-          style={{ objectFit: 'cover' }}
           title="Air Camp 2026 — wideo w tle"
         />
       </div>
