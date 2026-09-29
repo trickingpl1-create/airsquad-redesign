@@ -3,17 +3,18 @@ import type { Metadata } from 'next'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SectionHeader } from '@/components/home/section-header'
+import { HowStepsSection } from '@/components/home/how-steps-section'
+import { EnrolSearch } from '@/components/zapisy/enrol-search'
 import { generateSEOMetadata } from '@/lib/seo/metadata'
-import { ENROL_CITIES } from '@/lib/content/enrol-cities'
+import { ENROL_CITIES, ENROL_CITY_CARDS } from '@/lib/content/enrol-cities'
 import { CLUB_CONTACT } from '@/lib/content/cities'
 
 // Historyczny URL WordPressa i wg docs/03-mapa-url.md „główna ścieżka konwersji",
-// więc musi zwracać 200 — a w eksporcie statycznym istnieje tylko to, co powstanie
-// w czasie builda. Jawna trasa zamiast wiersza w `static_pages`: generyczny
-// StaticPageView osadza AipaxWidget z placeholderowym form-id, a realne formularze
-// per-miasto siedzą w lib/content/cities.ts. Zamiast osadzać jeden wspólny
-// kalendarz, kierujemy do sekcji #zapisy właściwego miasta — to też prawdziwe,
-// indeksowalne linki wewnętrzne zamiast treści chowanej za JS-em.
+// więc musi zwracać 200. Treść jak na airsquad.pl/zapisy: hasło „dla dzieci,
+// młodzieży i dorosłych", wyszukiwarka miejscowości i lista wszystkich sekcji —
+// każda karta linkuje do kalendarza AIPAX danego miasta (/{slug}/#zapisy) oraz
+// do jego podstrony. Kafle kroków i modal zapisów współdzielone ze stroną główną
+// (HowStepsSection), dane sal/odbiorców czytane z cities.ts (ENROL_CITY_CARDS).
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Zapisy na zajęcia — akrobatyka i tricking',
   description:
@@ -25,12 +26,14 @@ export const metadata: Metadata = generateSEOMetadata({
 const EVENTS = [
   {
     href: '/letni/',
+    kicker: 'Lato 2026 · Air Camp',
     label: 'Air Camp',
     desc: 'Letni obóz sportowy — akrobatyka, kajaki, longboardy, paintball.',
     accent: 'var(--emerald)',
   },
   {
     href: '/airmeeting/',
+    kicker: 'Wydarzenie · Air Meeting',
     label: 'Air Meeting',
     desc: 'Spotkanie, zawody i wspólne emocje dla członków klubu.',
     accent: 'var(--cyan)',
@@ -42,7 +45,7 @@ export default function EnrolPage() {
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1 bg-background pb-24 pt-32 md:pb-32 md:pt-40">
-        <div className="mx-auto max-w-5xl px-6 md:px-10">
+        <div className="mx-auto max-w-6xl px-6 md:px-10">
           <SectionHeader
             as="h1"
             kicker="Zapisy"
@@ -51,58 +54,56 @@ export default function EnrolPage() {
             gradientPart="i zacznij trenować."
             titleFontWeight={400}
             gradientFontWeight={400}
+            className="mb-6"
           />
 
-          <p className="-mt-4 mb-10 max-w-2xl leading-relaxed text-muted-foreground">
-            Każde miasto ma własny grafik i własny kalendarz zapisów. Kliknij
-            swoją lokalizację — zobaczysz grupy, godziny i wolne miejsca, a zapis
-            potwierdzisz w formularzu AIPAX.
+          <div className="inline-flex items-center gap-3 rounded-full border border-foreground/20 bg-foreground/5 px-5 py-2.5 backdrop-blur-sm">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald opacity-75" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald" />
+            </span>
+            <span className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-foreground/90">
+              Dla dzieci, młodzieży i dorosłych · Sezon 2025/26 · zapisy otwarte
+            </span>
+          </div>
+
+          <p className="mt-6 max-w-2xl leading-relaxed text-muted-foreground">
+            Wpisz miejscowość, a zobaczysz grupy treningowe. Każda lokalizacja ma
+            własny grafik i kalendarz zapisów — na podstronie miasta zobaczysz
+            grupy, godziny i wolne miejsca, a zapis potwierdzisz w formularzu
+            AIPAX.
           </p>
 
-          <ul className="grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
-            {ENROL_CITIES.map((city) => (
-              <li key={city.slug}>
-                <Link
-                  href={`/${city.slug}/#zapisy`}
-                  className="group flex items-center justify-between rounded-2xl border border-border bg-card p-5 transition-colors hover:border-violet-soft/50"
-                >
-                  <span
-                    className="display-bold text-xl text-foreground"
-                    style={{ fontWeight: 500 }}
-                  >
-                    {city.name}
-                  </span>
-                  <span
-                    aria-hidden
-                    className="font-mono text-sm text-muted-foreground transition-transform group-hover:translate-x-1"
-                  >
-                    →
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <EnrolSearch cities={ENROL_CITY_CARDS} />
+        </div>
 
-          <h2
-            className="display-bold mt-14 text-2xl text-foreground md:text-3xl"
-            style={{ fontWeight: 400 }}
-          >
-            Obozy i wydarzenia
-          </h2>
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {/* Kroki „Jak to działa" + modal zapisów — te same co na stronie głównej */}
+        <HowStepsSection cities={ENROL_CITIES} />
+
+        <div className="mx-auto max-w-6xl px-6 md:px-10">
+          <SectionHeader
+            kicker="Poza sezonem"
+            kickerColorClass="text-amber"
+            title="Obozy i"
+            gradientPart="wydarzenia."
+            titleFontWeight={400}
+            gradientFontWeight={400}
+            className="mb-6 md:mb-8"
+          />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {EVENTS.map((event) => (
               <Link
                 key={event.href}
                 href={event.href}
-                className="rounded-2xl border border-border bg-card p-5 transition-colors hover:border-violet-soft/50"
+                className="rounded-3xl border border-border bg-card p-6 transition-colors hover:border-violet-soft/50"
               >
                 <span
                   className="font-mono text-[11px] font-bold uppercase tracking-[0.16em]"
                   style={{ color: event.accent }}
                 >
-                  {event.label}
+                  {event.kicker}
                 </span>
-                <p className="mb-0 mt-2 text-sm leading-relaxed text-muted-foreground">
+                <p className="mb-0 mt-3 text-sm leading-relaxed text-muted-foreground">
                   {event.desc}
                 </p>
               </Link>
@@ -110,18 +111,21 @@ export default function EnrolPage() {
           </div>
 
           <div className="mt-14 rounded-3xl border border-border bg-card p-6 md:p-8">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-pink">
+              Pomoc
+            </p>
             <h2
-              className="display-bold text-xl text-foreground"
-              style={{ fontWeight: 500 }}
+              className="display-bold mt-2 text-2xl text-foreground md:text-3xl"
+              style={{ fontWeight: 400 }}
             >
               Nie wiesz, którą grupę wybrać?
             </h2>
-            <p className="mt-2 leading-relaxed text-muted-foreground">
+            <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
               O przydziale do grupy decyduje trener po zajęciach próbnych —
               dzielimy według umiejętności, nie tylko wieku. Zadzwoń, jeśli chcesz
               to omówić wcześniej.
             </p>
-            <div className="mt-5 flex flex-wrap gap-4 font-mono text-sm">
+            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 font-mono text-sm">
               <a
                 href={`tel:+48${CLUB_CONTACT.phoneTrainer.replace(/\s/g, '')}`}
                 className="text-cyan hover:underline"

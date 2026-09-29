@@ -208,7 +208,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     hero_image_position: 'right 46%',
     hall: {
       name: 'AIR SPACE Dębica',
-      address: 'SP nr 4 i SP nr 10',
+      address: 'ul. Lwowska 51 · SP nr 4 i nr 10',
       city: 'Dębica',
       mapQuery: 'Szkoła Podstawowa nr 4, Dębica',
       note: 'Zajęcia odbywają się w salach Szkoły Podstawowej nr 4 i nr 10 w Dębicy.',
