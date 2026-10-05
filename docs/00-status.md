@@ -1,6 +1,6 @@
 # Status projektu Air Squad
 
-Stan: **przed launchem produkcyjnym**.
+Stan: **po launchu** — `airsquad.pl` serwuje nową stronę od **2026-10-05**. Stary WordPress odsunięty do `public_html_wp/` (poza webrootem), nietknięty, z działającym rollbackiem. Przebieg i weryfikacja: `zamiana_strony.md` sekcja 0.
 Aktualizacja: ostatni commit w katalogu `app/`.
 
 Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `docs/_archive/` (`QUICKSTART.md`, `PROJECT_ROADMAP.md`, `IMPLEMENTATION_GUIDE.md`, `CONTENT_MIGRATION_STRATEGY.md`, `DATABASE_SEED_VERIFICATION_REPORT.md`, `COLOR_SCHEME_UPDATE.md`) — zostawione tylko jako historia, nie używać do planowania.
@@ -11,7 +11,7 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 - Next.js 16 (App Router), **strona publiczna jako eksport statyczny** (`output: 'export'` → katalog `out/`, hosting na zwykłym serwerze plików bez Node.js)
 - Panel admina wydzielony do osobnej aplikacji `admin-app/` (SSR + proxy auth), hosting na Vercelu jako osobny projekt — uzasadnienie w `04-architektura.md`
 - Supabase: Postgres + Auth + Storage + RLS
-- Domena: do podpięcia przed launchem
+- Domena: **`airsquad.pl` = nowa strona** (podmiana 2026-10-05, `zamiana_strony.md` sekcja 0). `new.airsquad.pl` pozostaje wersją testową z `noindex`. Stary WordPress odsunięty do `public_html_wp/`, rollback jedną komendą (`scripts/move-wp-aside.sh --rollback`)
 
 ### Treść i SEO
 - 6 stron miast (`/rzeszow`, `/debica`, `/jaslo`, `/biecz`, `/brzostek`, `/pilzno`). Tyczyn wycofany — zajęcia zawieszone, adres przekierowany 301 na `/rzeszow/`, szczegóły w `03-mapa-url.md`
@@ -50,16 +50,17 @@ Ten dokument zastępuje wcześniejsze pliki strategiczne. Stare wersje są w `do
 ## Co musi się zdarzyć przed launchem
 
 Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
-**Lista robocza na dzień podmiany i pełny audyt SEO (2026-09-06): `zamiana_strony.md`.**
+**Lista robocza na dzień podmiany, audyt SEO i werdykt „czy można przepinać" (2026-09-26): `zamiana_strony.md`.**
 
 ### Blokery launchu
 - [ ] **Założyć konto administratora w Supabase** — `klub.airsquad@gmail.com`, Authentication → Users → Add user, z „Auto Confirm User". Panel dokleja `@airsquad.pl` tylko do loginu bez małpy, więc pełny adres wpisuje się w całości (`admin-app/lib/auth-login.ts`)
 - [ ] **Wyłączyć rejestrację własną** (Authentication → Providers → Email → „Enable signup") — panel nie sprawdza roli, więc **każde** konto założone w tym projekcie Supabase dostaje pełny dostęp do `/admin/*`. Przy publicznym adresie panelu to jedyna rzecz z tej listy, która jest realnym problemem bezpieczeństwa, a nie wygody
 - [ ] Podmienić placeholderowy form-id AIPAX w `components/aipax-widget.tsx` (`5f7b99af-…`, ten sam oznaczony jako zaślepka w `lib/content/akrobatyka.ts`). Podstrony miast mają już realne, per-miasto ID w `cities.ts` — brakuje tylko formularza ogólnego
 - [x] ~~Wgrać realne zdjęcia trenerów~~ — 7 portretów w `public/images/trenerzy/` i 4 zdjęcia grupowe kadry w `public/images/kadra/` (hero `/trenerzy/`), z wariantami rozmiarowymi z `scripts/make-image-variants.mjs`. Świadomie **nie** w Supabase Storage: strona jest statyczna i pliki jadą z FTP razem z `out/`; skład i role w `lib/content/team.ts`
-- [ ] Wgrać realne zdjęcia lokalizacji (wszystkie 6 sal) — dziś podstrony miast używają zdjęć ze starej strony (`public/images/old-site/`, `public/images/miasta/`)
+- [ ] Wgrać realne zdjęcia lokalizacji (wszystkie 6 sal) — dziś podstrony miast używają zdjęć ze starej strony z `public/images/miasta/` (27 ścieżek w `lib/content/cities.ts`; katalog `old-site/` nie jest już przez nie używany)
+- [ ] Przenieść 54 pliki galerii i filmów „Nasze zajawki" (46 jpg + 8 mp4, ≈310 MB) z `wp-content/uploads/` do `public/media/` albo Supabase Storage i podmienić `WP_UPLOADS` w `cities.ts`/`letni.ts`. **Nie pilne**: katalog został na serwerze po podmianie i jest wykluczony z `--delete` w `deploy-ftp.sh`, więc pliki działają. Dopóki tam są, `wp-content/` nie wolno kasować
 - [x] ~~Zweryfikować, że wszystkie chronione URL-e z `03-mapa-url.md` zwracają 200~~ — komplet obecny w `out/`; skrypt porównujący w `04-architektura.md`. Wyjątki świadome: `/tyczyn/` wycofany z 301 na `/rzeszow/`, `/zajecia/` to proponowany hub, który nigdy nie istniał
-- [x] ~~Wpisać produkcyjne `NEXT_PUBLIC_SUPABASE_*`~~ — projekt podłączony, canonicale i sitemapa budują się na `https://airsquad.pl`
+- [ ] **Supabase: host projektu nie istnieje w DNS** (`ajwuxxflltppzgzdyijf.supabase.co` → NXDOMAIN; stan niezmienny od 2026-09-06, potwierdzony ponownie 2026-09-26). Wartości są wkompilowane w build, więc `/sklep/` i `/media/` renderują puste szkielety, a panel nie ma się do czego logować. Gabriel: dashboard Supabase → czy projekt istnieje / ma nowy ref. Jeśli nowy ref → podmiana `NEXT_PUBLIC_SUPABASE_*` w `.env.local` i na Vercelu + rebuild **przed** wysyłką produkcyjną. (Canonicale i sitemapa budują się poprawnie na `https://airsquad.pl` niezależnie od tego.)
 - [x] ~~**Uruchomić SQL w kolejności `001` → `002` → `003a` → `004`.**~~ — wykonane; 13 tabel odpowiada, `products` ma 6 wierszy, reszta pusta (treść z fallbacków), RLS zweryfikowane (odczyt `orders` przez `anon` zablokowany, zapis przechodzi).
   `003_seed_data.sql` i `005_seed_seo_pages.sql` celowo pominięte — wstawiają treść uboższą albo atrapy trenerów, a wiersz z bazy nadpisuje bogatszy fallback z `lib/content/`, łącznie z ID formularzy AIPAX. Uzasadnienie w `04-architektura.md`
 - [x] ~~Utworzyć projekt Vercel dla panelu~~ — projekt `airsquad-admin` założony, zmienne Supabase ustawione; panel uniezależniony od katalogu nadrzędnego i wdrażany z CLI (`cd admin-app && vercel --prod`). Zostało samo wywołanie deployu.
@@ -67,13 +68,16 @@ Zadania krytyczne, blokujące publikację. Reszta to nice-to-have.
 - [x] ~~Podpiąć serwer docelowy~~ — wdrożenie przez FTPS na cyber-folks (`scripts/deploy-ftp.sh`). Port 22 zamknięty, więc `deploy.sh` na rsync odpada. Wersja testowa stoi na **new.airsquad.pl**
 - [x] ~~Włączyć Let's Encrypt dla `new.airsquad.pl`~~ — certyfikat dodany w DirectAdmin, `https://new.airsquad.pl/` przechodzi pełną weryfikację
 - [x] ~~Wdrożyć panel~~ — `cd admin-app && vercel --prod` wykonane; panel odpowiada pod `https://airsquad-admin.vercel.app/admin/login`
-- [ ] **Konto FTP z dostępem do `domains/airsquad.pl/public_html`** — obecne konto `strona@airsquad.online` jest zamknięte w katalogu domeny `airsquad.online` (dlatego staging leży w `public_html/new` tej domeny), więc `REMOTE_PRODUCTION` w `.deploy-target` jest puste i `./scripts/deploy-ftp.sh production` nie ma dokąd wysłać. Bez tego **nie da się podmienić starej strony**: potrzebne osobne konto FTP założone w DirectAdmin na domenie `airsquad.pl`, login+hasło do `~/.netrc`, ścieżka do `.deploy-target`
+- [x] ~~Uzupełnić `REMOTE_PRODUCTION` w `.deploy-target`~~ — ustawione na `public_html`. Konto FTP `MG@airsquad.pl` ląduje w katalogu domowym domeny `airsquad.pl` i **ma dostęp do docrootu produkcji**; komentarz twierdzący, że „produkcja jest poza zasięgiem tego konta — to inna domena", był nieprawdziwy, a ciągnięty za nim bloker „założyć konto FTP" nigdy nie istniał. Staging (`public_html/new`) leży wewnątrz docrootu produkcji, więc `new/` jest wykluczone z `--delete`
 - [ ] Usunąć testowe zamówienie `TEST-RLS-PROBE` z tabeli `orders`
 - [ ] Poprawić opisy produktów w panelu — dane z seeda są bez polskich znaków („bawelna", „Ciepla", „cwiczen")
 
 ### Ważne, ale nie blokujące
-- [ ] Podpiąć email service (Resend) do formularza kontaktowego i zamówień ze sklepu
-- [ ] Google Search Console + sitemap submission
+- [ ] **`og:image` gubione na 29 z 44 stron** (miasta, dyscypliny, wydarzenia, `/zapisy/`, `/polityka-prywatnosci/`, `/obozy-sportowe/` + duplikaty hubów) — `lib/seo/metadata.tsx:31` zwraca `undefined`, co kasuje wartość dziedziczoną z layoutu. Udostępnienia na FB/WhatsApp bez obrazka. Poprawka: domyślne `/opengraph-image` + `og:url` z canonicala + `siteName`/`locale`. (Wpis w `zamiana_strony.md` 7.3 twierdzący, że to naprawione, był błędny.)
+- [ ] Odbudować treść `/airmeeting/` (≈46 słów) i `/gravityjam/` (≈51) — jedyna realna regresja SEO na chronionych adresach; materiał odzyskany w `zamiana_strony.md` 7.6
+- [ ] **Brak jakiejkolwiek analityki** — stara strona ma GTM-W44NNPZ i Meta Pixel, nowa nie ma nic. Po podmianie ciągłość GA4/Pixela się urywa; decyzja, czy przenosić kontener
+- [ ] Podpiąć email service (Resend) do zamówień ze sklepu (`/kontakt/` nie ma formularza — kontakt to `mailto:`, więc nic nie ginie)
+- [ ] Google Search Console + sitemap submission — **warunek monitoringu po podmianie**; bez własności `airsquad.pl` nie ma jak wysłać sitemapy ani pilnować 404
 - [ ] Statystyki odwiedzin — `@vercel/analytics` usunięte ze strony publicznej (skrypt `/_vercel/insights/script.js` istnieje tylko na Vercelu i dawał 404 na serwerze statycznym); do wyboru Plausible/Umami/GA
 - [ ] Test mobile na realnych urządzeniach (iOS Safari, Android Chrome)
 
