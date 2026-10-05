@@ -16,9 +16,8 @@ import './globals.css'
 // Cookiebot — CMP zgód (RODO). Tryb "manual": baner zgód pokazuje się i zapisuje
 // wybór użytkownika, ale NIE blokuje automatycznie skryptów ani iframe'ów. To
 // świadoma decyzja — hero-filmy (YouTube) i widget zapisów AIPAX mają grać od
-// razu; auto-blokada wstrzymywałaby je do czasu akceptacji. Jeśli w przyszłości
-// dojdzie własna analityka (GA/Meta Pixel), trzeba ją otagować data-cookieconsent
-// albo przełączyć na data-blockingmode="auto".
+// razu; auto-blokada wstrzymywałaby je do czasu akceptacji. Konsekwencja: każdy
+// skrypt zbierający dane musi sam pilnować zgody — patrz GTM niżej.
 // CBID = Domain Group ID z konta manage.cookiebot.com. Dopóki jest placeholderem,
 // skrypt się nie renderuje (guard niżej) — żadnego zapytania z błędnym ID.
 // CBID przepięty z istniejącego konta Cookiebot starej strony airsquad.pl (tam
@@ -120,6 +119,47 @@ export default function RootLayout({
             strategy="afterInteractive"
           />
         )}
+        {/* Google Tag Manager — ten sam kontener, co na starej stronie WordPress
+            (sprawdzone w jej HTML przed podmianą 2026-10-05). Wnosi z powrotem
+            Google Analytics 4 i Meta Pixel skonfigurowane w panelu GTM, bez
+            zakładania nowej usługi — dzięki temu dane lecą do TEJ SAMEJ usługi
+            GA4 i historia sprzed podmiany się nie rozjeżdża.
+
+            Zgoda: Cookiebot działa w trybie "manual", więc NIE blokuje skryptów
+            sam z siebie — GTM ładuje się dopiero, gdy użytkownik zaakceptuje
+            kategorię „statistics". Ładowanie jest w funkcji odpalanej dwa razy:
+            raz od razu (gdy zgoda była zapisana we wcześniejszej wizycie), raz na
+            zdarzeniu CookiebotOnAccept (gdy klika teraz). Guard __gtmLoaded
+            pilnuje, żeby kontener nie wszedł dwa razy i nie dublował odsłon.
+
+            Świadomie NIE tagujemy skryptu przez type="text/plain"
+            + data-cookieconsent: next/script wstrzykuje element po hydracji, a
+            Cookiebot przepisuje typy przy swoim starcie — przy tej kolejności
+            skrypt potrafi nigdy nie wystartować. Jawny warunek jest pewniejszy. */}
+        <Script id="gtm-consented" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function airsquadLoadGTM() {
+            if (window.__gtmLoaded) return;
+            window.__gtmLoaded = true;
+            (function(w,d,s,l,i){
+              w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+              var f = d.getElementsByTagName(s)[0],
+                  j = d.createElement(s),
+                  dl = l != 'dataLayer' ? '&l=' + l : '';
+              j.async = true;
+              j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+              f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-W44NNPZ');
+          }
+          if (window.Cookiebot && window.Cookiebot.consent && window.Cookiebot.consent.statistics) {
+            airsquadLoadGTM();
+          }
+          window.addEventListener('CookiebotOnAccept', function () {
+            if (window.Cookiebot && window.Cookiebot.consent && window.Cookiebot.consent.statistics) {
+              airsquadLoadGTM();
+            }
+          });
+        `}</Script>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -132,7 +172,7 @@ export default function RootLayout({
         {/* Bez <Analytics /> z @vercel/analytics — skrypt ładuje się z
             /_vercel/insights/script.js, które istnieje tylko na Vercelu.
             Na docelowym serwerze statycznym dawał 404 przy każdym wejściu.
-            Statystyki: dołożyć skrypt hostowany osobno (Plausible/Umami/GA). */}
+            Statystyki idą przez GTM wyżej (GA4 + Meta Pixel z panelu GTM). */}
       </body>
     </html>
   )
