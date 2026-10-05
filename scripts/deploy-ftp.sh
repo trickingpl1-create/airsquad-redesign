@@ -51,11 +51,23 @@ case "$FTP_HOST" in *.cyber-folks.pl) ;; *)
 # zamiast na serwerze.
 if [ "$TARGET" = "staging" ]; then
   case "$REMOTE" in
-    *new|*new/|.) ;;
+    *new|*new/) ;;
     *) echo "✗ Cel staging to '$REMOTE' — spodziewam się katalogu 'new'." >&2
        echo "  Odmawiam synchronizacji: pod airsquad.pl/public_html stoi produkcja." >&2
        exit 1 ;;
   esac
+  # Sama nazwa katalogu to za mało: staging („…/public_html/new") leży WEWNĄTRZ
+  # docrootu produkcji, więc literówka w .deploy-target albo zmiana docrootu
+  # potrafi wycelować „staging" prosto w airsquad.pl — a paczka stagingowa ma
+  # noindex i leci z --delete. Dlatego odmawiamy też, gdy cel jest tym samym
+  # katalogiem co produkcja. Kropka „." (katalog domowy) nie jest już dozwolona.
+  if [ -n "${REMOTE_PRODUCTION:-}" ]; then
+    case "${REMOTE%/}" in
+      "${REMOTE_PRODUCTION%/}")
+        echo "✗ Cel staging '$REMOTE' jest równy REMOTE_PRODUCTION — przerywam." >&2
+        exit 1 ;;
+    esac
+  fi
 fi
 
 [ -f "$HOME/.netrc" ] || { echo "✗ Brak ~/.netrc" >&2; exit 1; }
@@ -91,7 +103,8 @@ echo "→ Buduję statykę i .htaccess dla: $TARGET"
 echo "   ✓ $(find out -name '*.html' | wc -l | tr -d ' ') stron HTML"
 
 if [ "$TARGET" = "production" ] && [ "$DRY" != "--dry-run" ]; then
-  grep -q noindex out/.htaccess && { echo "✗ Paczka produkcyjna ma noindex — przerywam." >&2; exit 1; }
+  grep -q "Header set X-Robots-Tag" out/.htaccess && { echo "✗ Paczka produkcyjna ma noindex — przerywam." >&2; exit 1; }
+  grep -q "RewriteCond %{HTTP_HOST}" out/.htaccess || { echo "✗ Paczka produkcyjna bez reguły www → bez www — przerywam." >&2; exit 1; }
   echo ""; echo "!! PRODUKCJA: $FTP_HOST:$REMOTE — --delete skasuje pliki spoza out/"
   printf "   Wpisz 'produkcja', żeby potwierdzić: "; read -r A
   [ "$A" = "produkcja" ] || { echo "Przerwane."; exit 1; }
@@ -106,7 +119,27 @@ fi
 # skasowałoby je razem z WordPressem w dniu podmiany. Wykluczony wzorzec nie jest
 # ani wysyłany, ani kasowany. Docelowo pliki mają trafić do public/media/ albo
 # Supabase Storage (docs/zamiana_strony.md, sekcja 1 pkt 8).
-MIRROR="--reverse --delete --perms --verbose --parallel=4 --exclude-glob .DS_Store --exclude-glob cgi-bin/ --exclude-glob wp-content/uploads/"
+# Co NIE jest ani wysyłane, ani kasowane przez --delete (ustalone audytem 2026-10-02):
+#  wp-content/   — stąd nowa strona ładuje 54 pliki (8 filmów, 46 zdjęć, ~310 MB)
+#                  galerii i „Nasze zajawki" na /letni/ i landingach miast, plus
+#                  271 obrazów ze starej sitemapy, które zna Google Images.
+#                  Docelowo do public/media/ albo Supabase Storage.
+#  new/          — katalog stagingu leży FIZYCZNIE w public_html produkcji
+#                  (ten sam ETag pod airsquad.pl/new/ i new.airsquad.pl).
+#                  Bez tego pierwszy deploy produkcyjny skasowałby staging.
+#  public_html_wp/ — katalog, do którego w dniu podmiany trafia stary WordPress.
+#  .well-known/  — walidacja ACME przy odnawianiu certyfikatu Let's Encrypt.
+#  *.html w korzeniu o losowej nazwie — pliki weryfikacji domeny (zastane na
+#                  serwerze 2026-10-02); skasowanie unieważnia weryfikację.
+MIRROR="--reverse --delete --perms --verbose --parallel=4 \
+  --exclude-glob .DS_Store \
+  --exclude-glob cgi-bin/ \
+  --exclude-glob wp-content/ \
+  --exclude-glob new/ \
+  --exclude-glob public_html_wp/ \
+  --exclude-glob .well-known/ \
+  --exclude-glob qqo1u10feqoy353e9bs3hjimex4ek7.html \
+  --exclude-glob 5x9t82plju2orf9n5cozmu7uzvozh5.html"
 [ "$DRY" = "--dry-run" ] && MIRROR="$MIRROR --dry-run"
 
 CMDFILE="$(mktemp)"; chmod 600 "$CMDFILE"
