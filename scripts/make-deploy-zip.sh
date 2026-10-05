@@ -68,7 +68,24 @@ echo "→ Składam .htaccess dla: $TARGET"
     echo '  Header set X-Robots-Tag "noindex, nofollow"'
     echo '</IfModule>'
   else
-    echo "# Wersja produkcyjna — indeksowanie włączone, bez nagłówka noindex."
+    echo "# Wersja produkcyjna — indeksowanie włączone, bez nagłówka blokującego roboty."
+    echo ""
+    echo "# www → bez www. Do dnia podmiany robił to PHP WordPressa (odpowiedź 301"
+    echo "# niosła nagłówek x-redirect-by: WordPress), a nie serwer — na statycznym"
+    echo "# docroocie www.airsquad.pl serwowałoby drugą kopię całej strony pod 200"
+    echo "# (sprawdzone na www.new.airsquad.pl, 2026-09-26). Tylko produkcja: staging"
+    echo "# stoi na własnym hoście i nie ma czego sklejać."
+    echo '<IfModule mod_rewrite.c>'
+    echo '  RewriteEngine On'
+    echo '  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]'
+    echo '  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]'
+    echo '</IfModule>'
+    echo ""
+    echo "# Stare adresy sitemapy Yoasta. Search Console i stary robots.txt znają"
+    echo "# /sitemap_index.xml; nowa strona wystawia /sitemap.xml. Bez tego GSC"
+    echo "# dostaje 404 na mapie, którą ma zapisaną."
+    echo "Redirect 301 /sitemap_index.xml /sitemap.xml"
+    echo "Redirect 301 /page-sitemap.xml /sitemap.xml"
   fi
   echo ""
   node scripts/emit-redirects.mjs
@@ -125,10 +142,14 @@ rm -f "$OUTZIP"
 echo "→ Kontrola zawartości:"
 unzip -l "$OUTZIP" | grep -E "\.htaccess|index\.html$" | head -3
 echo "   stron HTML: $(cd out && find . -name '*.html' | wc -l | tr -d ' ')"
+# Szukamy DYREKTYWY, nie słowa: "noindex" pada też w komentarzu wersji
+# produkcyjnej, przez co ta kontrola zawsze przerywała paczkę produkcyjną
+# (błąd nigdy nie ujawniony, bo ścieżki produkcyjnej nikt nie uruchomił).
 if [ "$TARGET" = "staging" ]; then
-  grep -q "noindex" out/.htaccess && echo "   ✓ noindex obecny" || { echo "   ✗ BRAK noindex" >&2; exit 1; }
+  grep -q "Header set X-Robots-Tag" out/.htaccess && echo "   ✓ noindex obecny" || { echo "   ✗ BRAK noindex" >&2; exit 1; }
 else
-  grep -q "noindex" out/.htaccess && { echo "   ✗ noindex w paczce PRODUKCYJNEJ" >&2; exit 1; } || echo "   ✓ bez noindex"
+  grep -q "Header set X-Robots-Tag" out/.htaccess && { echo "   ✗ noindex w paczce PRODUKCYJNEJ" >&2; exit 1; } || echo "   ✓ bez noindex"
+  grep -q "RewriteCond %{HTTP_HOST}" out/.htaccess && echo "   ✓ reguła www → bez www" || { echo "   ✗ BRAK reguły www" >&2; exit 1; }
 fi
 
 echo ""
