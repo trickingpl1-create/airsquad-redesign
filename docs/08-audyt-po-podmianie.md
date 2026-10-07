@@ -6,7 +6,7 @@ Stan: `airsquad.pl` serwuje nową stronę od 2026-10-05 ok. 14:50 (przebieg: `za
 
 ## Stan prac (aktualizowany)
 
-**2026-10-06 — w kodzie, czeka na akceptację, commit i wdrożenie (staging → produkcja):**
+**2026-10-07 — scommitowane (`71f4a51`, docs `03b8fd3`) i wdrożone na staging `new.airsquad.pl` (sprawdzone na żywo); czeka na wdrożenie produkcyjne:**
 F11 (konta FB/YT/TikTok/IG, wspólna lista `lib/content/socials.ts`), F04 (linki do kanonicznych slugów, `/longboardy/` i `/obozy-sportowe/` w stopce), F13 (przycisk zapisu na stronach dyscyplin), F05 (`/szarfy/` → `/debica/`, `/spotkanie/` → `/letni/`), R2.1 (YouTube API dopiero po zgodzie marketingowej), F47 (fasada filmu na `/letni/`), F30/F31 (Open Graph na wszystkich stronach), F38, F59, F35 (kwadratowe favicony ze starej strony), F56 (waga 400 nagłówków na hubach), przycisk „Ustawienia cookies” w stopce, F19 (AIPAX ładowany przy zbliżeniu do sekcji zapisów) + F55 (title ramek AIPAX), F17 (filmy w tle po załadowaniu strony / przy widoczności; przy reduced-motion i oszczędzaniu danych wcale — część F52), F22 (logotypy WebP, bez preloadu pod zgięciem, poprawne proporcje), F14 — część kodowa (zdarzenie `enrol_open` do GTM, tylko przy zgodzie na statystykę). Przy okazji: F29 (0 linków wewnętrznych bez końcowego ukośnika), martwa kotwica `#aircamp` na kartach cennika 6 miast (→ `/letni/` i `/obozy-sportowe/`), pływający przycisk nie zasłania już ikon social media w stopce na desktopie, ikona iOS na tle marki.
 Weryfikacja niezależna (4 kontrole + sceptycy): 0 blokerów, 0 „major”; 13 drobnych usterek — poprawione. Testy w Chromium: bez zgody 0 ciasteczek YouTube i 0 skryptu YouTube API; AIPAX na `/rzeszow/` 0 żądań przed przewinięciem do zapisów; `enrol_open` tylko przy zgodzie; 0 błędów konsoli.
 
