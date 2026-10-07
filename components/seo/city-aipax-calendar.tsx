@@ -3,7 +3,12 @@
 import { useEffect, useRef, useState } from 'react'
 
 // Kalendarz AIPAX dla podstrony miasta — oficjalny widget (skrypt) montuje
-// się od razu przy wejściu na sekcję zapisów.
+// się dopiero, gdy sekcja zapisów zbliża się do widoku (IntersectionObserver
+// z zapasem MOUNT_MARGIN). Wcześniej skrypt doklejał się zaraz po hydratacji,
+// choć #zapisy leży kilka ekranów niżej: ok. 4 MB i 1,6 s pracy wątku głównego
+// na każdej odsłonie miasta, także u osób, które do zapisów nie dochodzą
+// (audyt 2026-10-06, F19). Kliknięcie „Zapisz dziecko w …” (#zapisy) przewija
+// do sekcji, więc widget startuje od razu po skoku.
 const AIPAX_SRC = 'https://aipax.pro/scripts/aipax-enrolment-widget.v1.js?v=20260505'
 
 // Ten sam próg co tailwindowe `md` — dzięki temu CSS placeholdera i JS wybierający
@@ -12,6 +17,10 @@ const AIPAX_SRC = 'https://aipax.pro/scripts/aipax-enrolment-widget.v1.js?v=2026
 // liczy się od domyślnej czcionki przeglądarki: przy ustawieniu 20px `48rem` = 960px,
 // więc twarde `768px` po stronie JS rozjechałoby się z CSS-em o prawie 200px.
 const DESKTOP_MEDIA_QUERY = '(min-width: 48rem)'
+
+// Zapas przed sekcją, przy którym zaczynamy ładować widget — przy zwykłym
+// przewijaniu kalendarz jest gotowy, zanim rodzic do niego dojedzie.
+const MOUNT_MARGIN = '800px 0px'
 
 // Startowa wysokość, jaką skrypt AIPAX wpisuje iframe'owi launchera inline
 // (`height:320px`), zanim ten zmierzy się i przyśle AIPAX_ENROLMENT_LAUNCHER_RESIZE
@@ -45,21 +54,53 @@ function AipaxCalendarWidget({
     const host = hostRef.current
     if (!host) return
 
-    const script = document.createElement('script')
-    script.src = AIPAX_SRC
-    script.async = true
-    script.setAttribute('data-aipax-form-id', formId)
-    script.setAttribute('data-aipax-locale', 'pl')
-    // Skrypt AIPAX mapuje KAŻDĄ wartość różną od 'calendar' (w tym brak atrybutu)
-    // na mode=launcher, więc dla launchera po prostu nie ustawiamy atrybutu — to
-    // dokładnie ten sam DOM, który leciał dotąd dla wariantu 'form'.
-    if (view === 'calendar') script.setAttribute('data-aipax-view', 'calendar')
-    host.appendChild(script)
+    let mounted = false
+    // Iframe wstawia skrypt AIPAX bez atrybutu title — czytnik ekranu ogłasza
+    // wtedy anonimową ramkę (F55). Dopisujemy go, gdy tylko ramka się pojawi.
+    const titleObserver = new MutationObserver(() => {
+      host.querySelectorAll('iframe:not([title])').forEach((frame) => {
+        frame.setAttribute('title', `Zapisy AIPAX — ${cityName}`)
+      })
+    })
+
+    const mount = () => {
+      if (mounted) return
+      mounted = true
+      titleObserver.observe(host, { childList: true, subtree: true })
+      const script = document.createElement('script')
+      script.src = AIPAX_SRC
+      script.async = true
+      script.setAttribute('data-aipax-form-id', formId)
+      script.setAttribute('data-aipax-locale', 'pl')
+      // Skrypt AIPAX mapuje KAŻDĄ wartość różną od 'calendar' (w tym brak atrybutu)
+      // na mode=launcher, więc dla launchera po prostu nie ustawiamy atrybutu — to
+      // dokładnie ten sam DOM, który leciał dotąd dla wariantu 'form'.
+      if (view === 'calendar') script.setAttribute('data-aipax-view', 'calendar')
+      host.appendChild(script)
+    }
+
+    // Bez IntersectionObservera (bardzo stare przeglądarki) montujemy od razu.
+    const viewportObserver =
+      'IntersectionObserver' in window
+        ? new IntersectionObserver(
+            (entries) => {
+              if (entries.some((entry) => entry.isIntersecting)) {
+                viewportObserver?.disconnect()
+                mount()
+              }
+            },
+            { rootMargin: MOUNT_MARGIN }
+          )
+        : null
+    if (viewportObserver) viewportObserver.observe(host)
+    else mount()
 
     return () => {
+      viewportObserver?.disconnect()
+      titleObserver.disconnect()
       host.innerHTML = ''
     }
-  }, [formId, view])
+  }, [formId, view, cityName])
 
   return (
     <div

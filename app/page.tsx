@@ -15,9 +15,10 @@ import { CampsSection } from '@/components/home/camps-section'
 import { TeamSection } from '@/components/home/team-section'
 import { CTASection } from '@/components/home/cta-section'
 import { PromoSection } from '@/components/home/promo-section'
-import { StructuredData } from '@/lib/seo/metadata'
+import { DEFAULT_OG_IMAGE, DEFAULT_SOCIAL, SITE_NAME, StructuredData } from '@/lib/seo/metadata'
 import { SITE_URL } from '@/lib/seo/site'
 import { CLUB_CONTACT } from '@/lib/content/cities'
+import { SOCIAL_URLS } from '@/lib/content/socials'
 
 // Dane organizacji do JSON-LD (Organization + WebSite) — checklista publikacji
 // wymaga ich na stronie głównej. Adres = siedziba stowarzyszenia ze stopki;
@@ -42,7 +43,7 @@ const ORGANIZATION_JSONLD = {
     addressCountry: 'PL',
   },
   areaServed: ['Rzeszów', 'Dębica', 'Jasło', 'Biecz', 'Brzostek', 'Pilzno'],
-  sameAs: ['https://www.instagram.com/airsquad_akrobatyka/'],
+  sameAs: SOCIAL_URLS,
   sport: ['Akrobatyka', 'Tricking', 'Tumbling', 'Longboard'],
 }
 
@@ -50,6 +51,14 @@ const ORGANIZATION_JSONLD = {
 // (każda indeksowana strona musi wskazywać swój adres kanoniczny, docs/02-plan-seo.md).
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
+  openGraph: {
+    ...DEFAULT_SOCIAL,
+    url: '/',
+    siteName: SITE_NAME,
+    locale: 'pl_PL',
+    type: 'website',
+    images: [DEFAULT_OG_IMAGE],
+  },
 }
 
 // Strona główna jest cache'owalna (ISR) — publiczne dane, brak cookies().

@@ -1,14 +1,16 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import { Metadata } from 'next'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { InstagramFeed } from '@/components/integrations/instagram-feed'
 import { YouTubeSection } from '@/components/integrations/youtube-section'
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/media/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Media',
-  description: 'Galeria wideo i zdjęcia z Air Squad. Śledź nas na Instagramie!',
-}
+  description:
+    'Galeria wideo i zdjęcia z Air Squad. Śledź nas na Instagramie!',
+  canonical: '/media/',
+})
 
 export default function MediaPage() {
   return (
@@ -19,17 +21,17 @@ export default function MediaPage() {
       <main className="min-h-screen bg-background pt-24">
         <div className="container mx-auto px-4 py-12">
           <div className="mb-12">
-            <h1 className="text-4xl font-bold font-display mb-2">Media</h1>
+            <h1 className="text-4xl font-normal font-display mb-2">Media</h1>
             <p className="text-muted-foreground">Wideo i zdjęcia z naszych treningów i eventów</p>
           </div>
 
           <div className="mb-16">
-            <h2 className="text-3xl font-bold font-display mb-6">Nasze wideo</h2>
+            <h2 className="text-3xl font-normal font-display mb-6">Nasze wideo</h2>
             <YouTubeSection />
           </div>
 
           <div>
-            <h2 className="text-3xl font-bold font-display mb-6">Instagram</h2>
+            <h2 className="text-3xl font-normal font-display mb-6">Instagram</h2>
             <p className="text-muted-foreground mb-6">
               Śledź nas na <a href="https://instagram.com/airsquad_akrobatyka" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                 @airsquad_akrobatyka

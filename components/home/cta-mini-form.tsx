@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { AipaxModal } from '@/components/aipax-modal'
+import type { EnrolTracking } from '@/lib/analytics'
 import type { EnrolCity } from '@/lib/content/enrol-cities'
 
 // Poziom mapuje się na typ formularza AIPAX: nabór (nowe osoby) albo
@@ -20,7 +21,11 @@ export function CtaMiniForm({ cities }: { cities: EnrolCity[] }) {
   const [citySlug, setCitySlug] = useState('')
   const [level, setLevel] = useState<(typeof LEVELS)[number]['value']>('nabor')
   const [error, setError] = useState(false)
-  const [openForm, setOpenForm] = useState<{ formId: string; title: string } | null>(null)
+  const [openForm, setOpenForm] = useState<{
+    formId: string
+    title: string
+    tracking: EnrolTracking
+  } | null>(null)
 
   const submit = () => {
     const city = cities.find((c) => c.slug === citySlug)
@@ -31,7 +36,15 @@ export function CtaMiniForm({ cities }: { cities: EnrolCity[] }) {
     const formId =
       level === 'kontynuacja' ? (city.formIdContinuation ?? city.formId) : city.formId
     const suffix = level === 'kontynuacja' ? 'kontynuacja' : 'nabór'
-    setOpenForm({ formId, title: `Zapisy — ${city.name} (${suffix})` })
+    setOpenForm({
+      formId,
+      title: `Zapisy — ${city.name} (${suffix})`,
+      tracking: {
+        city: city.slug,
+        type: level === 'kontynuacja' && city.formIdContinuation ? 'kontynuacja' : 'nabor',
+        source: 'cta_form',
+      },
+    })
   }
 
   return (
@@ -108,6 +121,7 @@ export function CtaMiniForm({ cities }: { cities: EnrolCity[] }) {
           formId={openForm.formId}
           title={openForm.title}
           onClose={() => setOpenForm(null)}
+          tracking={openForm.tracking}
         />
       )}
     </div>

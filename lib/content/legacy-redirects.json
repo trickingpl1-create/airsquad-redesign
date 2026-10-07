@@ -31,8 +31,8 @@
   },
   {
     "from": "/spotkanie/",
-    "to": "/wydarzenia/",
-    "reason": "Archiwalne spotkanie klubowe.",
+    "to": "/letni/",
+    "reason": "Informacje organizacyjne dla rodziców uczestników Air Camp (zbiórka, karta kwalifikacyjna, lista rzeczy) — najbliższy temat to landing Air Camp. Poprawione 2026-10-06 (wcześniej /wydarzenia/).",
     "status": "propozycja"
   },
   {
@@ -55,8 +55,8 @@
   },
   {
     "from": "/szarfy/",
-    "to": "/sklep/",
-    "reason": "Sprzedaż szarf klubowych — odpowiednik to sklep.",
+    "to": "/debica/",
+    "reason": "Warsztaty na szarfach powietrznych w AIR SPACE Dębica (czerwiec 2026) — sala i zajęcia są na landingu Dębicy. Poprawione 2026-10-06 (wcześniej /sklep/, błędnie opisane jako sprzedaż szarf).",
     "status": "propozycja"
   }
 ]

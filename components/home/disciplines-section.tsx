@@ -64,7 +64,7 @@ const DISCIPLINES: Discipline[] = [
   {
     num: '06',
     slug: 'snowboard',
-    href: '/obozy/', // brak strony /dyscypliny/snowboard/ — wyjazdy zimowe są w obozach
+    href: '/obozy-sportowe/', // brak strony snowboardu — wyjazdy zimowe opisuje chroniony hub obozów
     name: 'Snowboard',
     age: 'OD 7 LAT',
     desc: 'Wyjazdy zimowe, technika, pierwsze tricki w snowparku.',

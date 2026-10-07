@@ -45,7 +45,7 @@ export function SEOPageLayout({
               {eyebrow}
             </Sticker>
           )}
-          <h1 className="font-[family-name:var(--font-display)] text-5xl font-black uppercase leading-[0.9] tracking-tighter text-primary-foreground sm:text-6xl md:text-7xl lg:text-8xl">
+          <h1 className="font-[family-name:var(--font-display)] text-5xl font-normal leading-[0.9] tracking-[0.025em] text-primary-foreground sm:text-6xl md:text-7xl lg:text-8xl">
             {title}
           </h1>
           {subtitle && (
@@ -58,7 +58,7 @@ export function SEOPageLayout({
 
       {/* Content */}
       <div className="container mx-auto px-4 py-16 md:py-20">
-        <div className="prose prose-lg mx-auto max-w-3xl prose-headings:font-[family-name:var(--font-display)] prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter prose-h2:text-4xl prose-h3:text-2xl prose-strong:text-foreground prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline prose-li:my-1">
+        <div className="prose prose-lg mx-auto max-w-3xl prose-headings:font-[family-name:var(--font-display)] prose-headings:font-normal prose-headings:tracking-[0.025em] prose-h2:text-4xl prose-h3:text-2xl prose-strong:text-foreground prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline prose-li:my-1">
           {children}
         </div>
       </div>
@@ -74,7 +74,7 @@ interface FAQSectionProps {
 export function FAQSection({ items }: { items: FAQSectionProps[] }) {
   return (
     <div className="my-12 not-prose border-2 border-foreground bg-card p-8 shadow-sticker-lg">
-      <h2 className="mb-6 font-[family-name:var(--font-display)] text-3xl font-black uppercase tracking-tighter text-foreground">
+      <h2 className="mb-6 font-[family-name:var(--font-display)] text-3xl font-normal tracking-[0.025em] text-foreground">
         Często zadawane pytania
       </h2>
       <div className="divide-y-2 divide-foreground/10">
@@ -105,7 +105,7 @@ interface GroupInfo {
 export function GroupsInfoSection({ groups }: { groups: GroupInfo[] }) {
   return (
     <div className="my-12 not-prose">
-      <h2 className="mb-8 font-[family-name:var(--font-display)] text-3xl font-black uppercase tracking-tighter text-foreground">
+      <h2 className="mb-8 font-[family-name:var(--font-display)] text-3xl font-normal tracking-[0.025em] text-foreground">
         Grupy treningowe
       </h2>
       <div className="grid gap-6 md:grid-cols-2">
@@ -114,7 +114,7 @@ export function GroupsInfoSection({ groups }: { groups: GroupInfo[] }) {
             key={index}
             className="border-2 border-foreground bg-card p-6 shadow-sticker transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-sticker-lg"
           >
-            <h3 className="mb-4 font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-primary">
+            <h3 className="mb-4 font-[family-name:var(--font-display)] text-2xl font-normal tracking-[0.025em] text-primary">
               {group.name}
             </h3>
             <dl className="space-y-3 text-sm">

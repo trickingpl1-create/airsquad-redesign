@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import { getLocations } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -5,12 +7,12 @@ import { MapPin, Navigation, Phone } from 'lucide-react'
 import { Sticker } from '@/components/ui/sticker'
 import Link from 'next/link'
 
-export const metadata = {
-  alternates: { canonical: '/lokalizacje/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Lokalizacje',
   description:
-    'Znajdź salę treningową Air Squad najbliżej siebie. 7 lokalizacji w regionie Podkarpacia.',
-}
+    'Znajdź salę treningową Air Squad najbliżej siebie. 6 lokalizacji w regionie Podkarpacia.',
+  canonical: '/lokalizacje/',
+})
 
 const TILE_GRADIENTS = [
   'from-primary to-accent',
@@ -36,8 +38,8 @@ export default async function LocationsPage() {
             <Sticker variant="cyan" rotate="right" size="sm" className="mb-6">
               {locations.length} miast w regionie
             </Sticker>
-            <h1 className="font-[family-name:var(--font-display)] text-6xl font-black uppercase leading-[0.9] tracking-tighter text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
-              lokalizacje
+            <h1 className="font-[family-name:var(--font-display)] text-6xl font-normal leading-none pb-2 tracking-[0.025em] text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
+              Lokalizacje
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-medium text-primary-foreground/85 md:text-xl">
               Znajdź najbliższą salę. Każda z dedykowaną przestrzenią treningową, matami i opieką trenerską.
@@ -64,7 +66,7 @@ export default async function LocationsPage() {
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center">
-                      <span className="font-[family-name:var(--font-display)] text-6xl font-black uppercase tracking-tighter text-primary-foreground/40">
+                      <span className="font-[family-name:var(--font-display)] text-6xl font-normal tracking-[0.025em] text-primary-foreground/40">
                         {location.city}
                       </span>
                     </div>
@@ -73,7 +75,7 @@ export default async function LocationsPage() {
 
                 {/* Content */}
                 <div className="border-t-2 border-foreground p-6">
-                  <h2 className="font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-foreground">
+                  <h2 className="font-[family-name:var(--font-display)] text-2xl font-normal tracking-[0.025em] text-foreground">
                     {location.city}
                   </h2>
                   <p className="mt-1 flex items-start gap-2 text-sm text-muted-foreground">
@@ -98,7 +100,7 @@ export default async function LocationsPage() {
                       </a>
                     )}
                     <Link
-                      href={`/lokalizacje/${location.slug || location.city.toLowerCase()}`}
+                      href={location.slug ? `/${location.slug}/` : '/lokalizacje/'}
                       className="inline-flex items-center gap-2 border-2 border-foreground bg-primary px-3 py-2 text-xs font-black uppercase tracking-wider text-primary-foreground transition-all hover:bg-foreground"
                     >
                       Szczegóły →
@@ -112,12 +114,12 @@ export default async function LocationsPage() {
           {/* Contact CTA */}
           <div className="mt-20 border-2 border-foreground bg-foreground p-12 text-center text-background shadow-sticker-xl md:p-16">
             <p className="text-xs font-black uppercase tracking-widest text-cyan">Masz pytania?</p>
-            <h2 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-black uppercase leading-none tracking-tighter md:text-6xl">
+            <h2 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-normal leading-none tracking-[0.025em] md:text-6xl">
               Zadzwoń lub napisz
             </h2>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
-                href="/kontakt"
+                href="/kontakt/"
                 className="inline-block border-2 border-cyan bg-cyan px-10 py-4 font-black uppercase tracking-wider text-cyan-foreground transition-all hover:bg-background hover:text-foreground"
               >
                 Napisz do nas

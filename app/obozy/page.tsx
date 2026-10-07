@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import { getCampLandingSlugs, getCamps } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -6,12 +8,12 @@ import { Calendar, MapPin, Users, ArrowRight, Tent } from 'lucide-react'
 import Link from 'next/link'
 import { CAMP_TYPES } from '@/lib/types/database'
 
-export const metadata = {
-  alternates: { canonical: '/obozy/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Obozy',
   description:
     'Obozy sportowe Air Squad — letnie i zimowe. Intensywne treningi, integracja i niezapomniane przygody.',
-}
+  canonical: '/obozy/',
+})
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('pl-PL', {
@@ -56,8 +58,8 @@ export default async function CampsPage() {
             <Sticker variant="cyan" rotate="left" size="sm" className="mb-6">
               Aircamp 2026 · Lato
             </Sticker>
-            <h1 className="font-[family-name:var(--font-display)] text-6xl font-black uppercase leading-[0.9] tracking-tighter text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
-              obozy
+            <h1 className="font-[family-name:var(--font-display)] text-6xl font-normal leading-none pb-2 tracking-[0.025em] text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
+              Obozy
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-medium text-primary-foreground/85 md:text-xl">
               7 dni intensywnego treningu, integracji i przygody. Akrobatyka, kajaki, paintball, gry, ognisko.
@@ -70,7 +72,7 @@ export default async function CampsPage() {
           {upcomingCamps && upcomingCamps.length > 0 && (
             <div className="mb-20">
               <div className="mb-8 flex items-end justify-between gap-4">
-                <h2 className="font-[family-name:var(--font-display)] text-3xl font-black uppercase tracking-tighter text-foreground md:text-5xl">
+                <h2 className="font-[family-name:var(--font-display)] text-3xl font-normal tracking-[0.025em] text-foreground md:text-5xl">
                   Nadchodzące
                 </h2>
                 <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
@@ -109,7 +111,7 @@ export default async function CampsPage() {
                       )}
                     </div>
                     <div className="border-t-2 border-foreground p-6 md:p-8">
-                      <h3 className="font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-foreground md:text-3xl">
+                      <h3 className="font-[family-name:var(--font-display)] text-2xl font-normal tracking-[0.025em] text-foreground md:text-3xl">
                         {camp.name}
                       </h3>
                       <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
@@ -132,7 +134,7 @@ export default async function CampsPage() {
                       <div className="mt-6 flex items-end justify-between gap-4 border-t-2 border-foreground/10 pt-5">
                         <div>
                           {camp.price && (
-                            <div className="font-[family-name:var(--font-display)] text-3xl font-black tracking-tighter text-foreground">
+                            <div className="font-[family-name:var(--font-display)] text-3xl font-normal tracking-[0.025em] text-foreground">
                               {formatPrice(camp.price)}
                             </div>
                           )}
@@ -167,7 +169,7 @@ export default async function CampsPage() {
           {(!upcomingCamps || upcomingCamps.length === 0) && (
             <div className="mb-20 border-2 border-dashed border-foreground/30 bg-card p-12 text-center md:p-20">
               <Tent className="mx-auto mb-4 h-16 w-16 text-muted-foreground/50" aria-hidden />
-              <h3 className="font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-foreground">
+              <h3 className="font-[family-name:var(--font-display)] text-2xl font-normal tracking-[0.025em] text-foreground">
                 Brak nadchodzących obozów
               </h3>
               <p className="mt-2 text-muted-foreground">Śledź nas w social mediach po nowości.</p>
@@ -177,7 +179,7 @@ export default async function CampsPage() {
           {/* Past */}
           {pastCamps && pastCamps.length > 0 && (
             <div>
-              <h2 className="mb-8 font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-muted-foreground md:text-3xl">
+              <h2 className="mb-8 font-[family-name:var(--font-display)] text-2xl font-normal tracking-[0.025em] text-muted-foreground md:text-3xl">
                 Archiwum
               </h2>
               <div className="grid gap-4 md:grid-cols-3">
@@ -189,7 +191,7 @@ export default async function CampsPage() {
                     <div className="text-xs font-black uppercase tracking-widest text-muted-foreground">
                       {CAMP_TYPES[camp.type as keyof typeof CAMP_TYPES]}
                     </div>
-                    <h3 className="mt-1 font-[family-name:var(--font-display)] text-lg font-black uppercase tracking-tighter text-foreground">
+                    <h3 className="mt-1 font-[family-name:var(--font-display)] text-lg font-normal tracking-[0.025em] text-foreground">
                       {camp.name}
                     </h3>
                     <div className="mt-1 text-xs text-muted-foreground">

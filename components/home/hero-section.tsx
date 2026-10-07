@@ -81,10 +81,10 @@ export function HeroSection() {
             {/* Hero logo */}
             <div className="mb-6">
               <Image
-                src="/images/airsquad-logo.png"
+                src="/images/airsquad-logo.webp"
                 alt="Air Squad"
-                width={240}
-                height={114}
+                width={592}
+                height={355}
                 className="h-[90px] w-auto object-contain drop-shadow-[0_0_24px_rgba(168,85,247,0.6)]"
                 priority
               />

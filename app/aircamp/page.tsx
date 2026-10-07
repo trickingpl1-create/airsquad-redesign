@@ -1,18 +1,15 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  // /aircamp/ dubluje treść /letni/ — kanoniczny jest historyczny adres Air Camp
-  alternates: { canonical: '/letni/' },
+// /aircamp/ dubluje treść /letni/ — kanoniczny jest historyczny adres Air Camp
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Air Camp 2026 — Obóz sportowo-rekreacyjny',
-  description: 'Letni obóz Air Squad — akrobatyka, longboard, kajaki, paintball. Zapisy dla dzieci i młodzieży.',
-  openGraph: {
-    title: 'Air Camp 2026 — Obóz sportowo-rekreacyjny',
-    description: 'Letni obóz Air Squad — akrobatyka, longboard, kajaki, paintball.',
-    images: [{ url: '/images/aircamp-2026-logo.png' }],
-  },
-}
+  description:
+    'Letni obóz Air Squad — akrobatyka, longboard, kajaki, paintball. Zapisy dla dzieci i młodzieży.',
+  canonical: '/letni/',
+})
 
 export default function AircampPage() {
   return (
@@ -37,16 +34,16 @@ export default function AircampPage() {
         <div className="relative mx-auto max-w-3xl text-center">
           <div className="mb-8 flex justify-center">
             <Image
-              src="/images/aircamp-2026-logo.png"
+              src="/images/aircamp-2026-logo.webp"
               alt="Air Camp 2026"
-              width={400}
-              height={200}
+              width={782}
+              height={600}
               className="h-[160px] w-auto object-contain drop-shadow-[0_0_24px_rgba(16,185,129,0.4)]"
               priority
             />
           </div>
 
-          <h1 className="display-bold text-4xl text-foreground md:text-6xl">
+          <h1 className="display-bold text-4xl text-foreground md:text-6xl" style={{ fontWeight: 400 }}>
             Letnie przygody z{' '}
             <span className="bg-gradient-to-r from-emerald to-cyan bg-clip-text text-transparent">
               Air Squad
@@ -84,7 +81,7 @@ export default function AircampPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="rounded-2xl border border-border bg-card p-8">
               <div className="mb-4 text-4xl">🏕️</div>
-              <h3 className="display-bold text-2xl text-foreground">Terminy 2026</h3>
+              <h3 className="display-bold text-2xl text-foreground" style={{ fontWeight: 400 }}>Terminy 2026</h3>
               <p className="mt-3 text-sm text-muted-foreground">
                 Turnusy od czerwca do sierpnia. Nowe terminy co tydzień dla różnych grup wiekowych.
               </p>
@@ -92,7 +89,7 @@ export default function AircampPage() {
 
             <div className="rounded-2xl border border-border bg-card p-8">
               <div className="mb-4 text-4xl">👥</div>
-              <h3 className="display-bold text-2xl text-foreground">Małe grupy</h3>
+              <h3 className="display-bold text-2xl text-foreground" style={{ fontWeight: 400 }}>Małe grupy</h3>
               <p className="mt-3 text-sm text-muted-foreground">
                 Do 20 osób w grupie, dwóch doświadczonych trenerów na każdy turnus.
               </p>
@@ -100,7 +97,7 @@ export default function AircampPage() {
 
             <div className="rounded-2xl border border-border bg-card p-8">
               <div className="mb-4 text-4xl">🎯</div>
-              <h3 className="display-bold text-2xl text-foreground">6 dyscyplin</h3>
+              <h3 className="display-bold text-2xl text-foreground" style={{ fontWeight: 400 }}>6 dyscyplin</h3>
               <p className="mt-3 text-sm text-muted-foreground">
                 Akrobatyka, tricking, longboard, kajaki, paintball, show dance i wiele więcej.
               </p>
@@ -117,7 +114,7 @@ export default function AircampPage() {
             background: 'linear-gradient(135deg, var(--emerald) 0%, var(--cyan) 100%)',
           }}
         >
-          <h2 className="display-bold text-4xl md:text-5xl">Gotowy na przygodę?</h2>
+          <h2 className="display-bold text-4xl md:text-5xl" style={{ fontWeight: 400 }}>Gotowy na przygodę?</h2>
           <p className="mt-4 text-lg opacity-90">
             Wybierz turnus, zarezerwuj miejsce i dołącz do najlepszego obozu na Podkarpaciu.
           </p>

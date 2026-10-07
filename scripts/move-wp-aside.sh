@@ -3,7 +3,14 @@
 #
 #   ./scripts/move-wp-aside.sh              → pokazuje plan, nic nie rusza
 #   ./scripts/move-wp-aside.sh --apply      → przenosi (pyta o potwierdzenie)
-#   ./scripts/move-wp-aside.sh --rollback   → przywraca stan sprzed przenosin
+#   ./scripts/move-wp-aside.sh --rollback   → cofa CAŁĄ podmianę (oba etapy):
+#                                             WordPress wraca pod airsquad.pl
+#   ./scripts/move-wp-aside.sh --apply-wp-content
+#                                           → tylko drugi etap (2026-10-06): kod WP
+#                                             z wp-content/ + blokada PHP (pyta)
+#   ./scripts/move-wp-aside.sh --rollback-wp-content
+#                                           → cofa TYLKO drugi etap; nowa strona
+#                                             zostaje pod airsquad.pl
 #
 # PO CO
 # Katalog `public_html` to docroot airsquad.pl i stoi w nim WordPress. Żeby
@@ -16,9 +23,15 @@
 #   wp-content/   — nowa strona ładuje stamtąd 54 pliki (8 filmów „Nasze
 #                   zajawki" + 46 zdjęć galerii, ok. 310 MB) na /letni/ i
 #                   landingach miast; dodatkowo 271 obrazów z tego katalogu
-#                   zna Google Images ze starej sitemapy. Wyjątek: podkatalog
-#                   duplicator-backups/ przenosimy, bo kopie Duplicatora
-#                   potrafią zawierać zrzut bazy, a leżą w webrootcie.
+#                   zna Google Images ze starej sitemapy. Zostają więc uploads/
+#                   i gallery/ (zdjęcia starej galerii NextGEN). Przenosimy:
+#                   duplicator-backups/ (kopie Duplicatora potrafią zawierać
+#                   zrzut bazy) oraz — od 2026-10-06 — cały kod WordPressa:
+#                   wtyczki, motywy, mu-plugins, upgrade*, languages. Ich pliki
+#                   PHP dało się wywołać z internetu, a readme.txt ujawniały
+#                   wersje porzuconych, nieaktualizowanych wtyczek (audyt F02).
+#                   Do wp-content/ trafia .htaccess blokujący wykonywanie PHP
+#                   (scripts/wp-content.htaccess); rollback go zdejmuje.
 #   new/          — katalog wersji testowej (new.airsquad.pl) leży fizycznie
 #                   wewnątrz public_html produkcji.
 #   cgi-bin/      — katalog systemowy hostingu.
@@ -31,10 +44,12 @@ set -euo pipefail
 
 MODE="${1:-}"
 case "$MODE" in
-  ""|--dry-run) ACTION="plan" ;;
-  --apply)      ACTION="apply" ;;
-  --rollback)   ACTION="rollback" ;;
-  *) echo "Użycie: $0 [--apply|--rollback]" >&2; exit 1 ;;
+  ""|--dry-run)       ACTION="plan" ;;
+  --apply)            ACTION="apply" ;;
+  --apply-wp-content) ACTION="apply-wp-content" ;;
+  --rollback)         ACTION="rollback" ;;
+  --rollback-wp-content) ACTION="rollback-wp-content" ;;
+  *) echo "Użycie: $0 [--apply|--apply-wp-content|--rollback|--rollback-wp-content]" >&2; exit 1 ;;
 esac
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -86,7 +101,20 @@ ITEMS=(
   "wp-trackback.php"
   "xmlrpc.php"
 )
-NESTED=( "wp-content/duplicator-backups" )
+# Kod WordPressa w wp-content/ — spisany z serwera 2026-10-06. Etap drugi
+# (--apply-wp-content); pełny --apply i --rollback obejmują go razem z resztą.
+WP_CONTENT_CODE=(
+  "wp-content/plugins"
+  "wp-content/themes"
+  "wp-content/mu-plugins"
+  "wp-content/upgrade"
+  "wp-content/upgrade-temp-backup"
+  "wp-content/languages"
+  "wp-content/index.php"
+  "wp-content/rsssl-managed-htaccess.lock"
+)
+NESTED=( "wp-content/duplicator-backups" "${WP_CONTENT_CODE[@]}" )
+WP_CONTENT_HTACCESS="$ROOT/scripts/wp-content.htaccess"
 
 if [ "$ACTION" = "plan" ]; then
   echo "PLAN (nic nie zostanie zmienione)"
@@ -100,7 +128,8 @@ if [ "$ACTION" = "plan" ]; then
   for i in "${NESTED[@]}"; do echo "    → $i"; done
   echo ""
   echo "  Zostaje w miejscu:"
-  echo "    · wp-content/ (bez duplicator-backups) — filmy, galerie, 271 obrazów z Google Images"
+  echo "    · wp-content/uploads/ i wp-content/gallery/ — filmy, galerie, 271 obrazów z Google Images"
+  echo "      (+ wp-content/.htaccess blokujący wykonywanie PHP)"
   echo "    · new/        — wersja testowa"
   echo "    · cgi-bin/    — katalog hostingu"
   echo "    · 5x9t82plju2orf9n5cozmu7uzvozh5.html, qqo1u10feqoy353e9bs3hjimex4ek7.html — weryfikacja domeny"
@@ -114,7 +143,21 @@ if [ "$ACTION" = "plan" ]; then
   exit 0
 fi
 
-if [ "$ACTION" = "apply" ]; then
+if [ "$ACTION" = "apply-wp-content" ]; then
+  echo "!! $FTP_HOST — przenosiny kodu WordPressa z $PROD/wp-content/ do $ASIDE/wp-content/"
+  for i in "${WP_CONTENT_CODE[@]}"; do echo "    → $i"; done
+  echo "   + wgranie $PROD/wp-content/.htaccess (blokada PHP)."
+  echo "   Media (uploads/, gallery/) zostają. Nic nie jest kasowane. Cofnięcie: $0 --rollback-wp-content"
+  printf "   Wpisz 'przenies', żeby potwierdzić: "; read -r A
+  [ "$A" = "przenies" ] || { echo "Przerwane."; exit 1; }
+elif [ "$ACTION" = "rollback-wp-content" ]; then
+  echo "!! $FTP_HOST — cofnięcie drugiego etapu: kod WP z $ASIDE/wp-content/ z powrotem do $PROD/wp-content/"
+  for i in "${WP_CONTENT_CODE[@]}"; do echo "    ← $i"; done
+  echo "   + zdjęcie $PROD/wp-content/.htaccess (blokada PHP) na bok."
+  echo "   Nowa strona zostaje pod airsquad.pl (to NIE jest pełny rollback podmiany)."
+  printf "   Wpisz 'cofnij', żeby potwierdzić: "; read -r A
+  [ "$A" = "cofnij" ] || { echo "Przerwane."; exit 1; }
+elif [ "$ACTION" = "apply" ]; then
   echo "!! $FTP_HOST — przenosiny starego WordPressa z $PROD/ do $ASIDE/"
   echo "   Nic nie jest kasowane. Cofnięcie: $0 --rollback"
   echo "   UWAGA: od tej chwili airsquad.pl będzie zwracać błąd, dopóki nie"
@@ -138,12 +181,13 @@ t=open(os.path.expanduser('~/.netrc'),encoding='utf-8').read().split()
 print(t[t.index('password')+1])
 ")"
 
-python3 - "$CMDFILE" "$CA_BUNDLE" "$FTP_HOST" "$PROD" "$ASIDE" "$ACTION" "${ITEMS[@]}" "--nested--" "${NESTED[@]}" <<'PY'
+python3 - "$CMDFILE" "$CA_BUNDLE" "$FTP_HOST" "$PROD" "$ASIDE" "$ACTION" "$WP_CONTENT_HTACCESS" "${ITEMS[@]}" "--nested--" "${NESTED[@]}" "--wpcode--" "${WP_CONTENT_CODE[@]}" <<'PY'
 import os, sys
-cmdfile, ca, host, prod, aside, action = sys.argv[1:7]
-rest = sys.argv[7:]
+cmdfile, ca, host, prod, aside, action, htaccess = sys.argv[1:8]
+rest = sys.argv[8:]
 split = rest.index('--nested--')
-items, nested = rest[:split], rest[split+1:]
+split2 = rest.index('--wpcode--')
+items, nested, wpcode = rest[:split], rest[split+1:split2], rest[split2+1:]
 
 t = open(os.path.expanduser('~/.netrc'), encoding='utf-8').read().split()
 user, pw = t[t.index('login')+1], t[t.index('password')+1]
@@ -160,6 +204,9 @@ lines = [
     f"user {esc(user)} {esc(pw)}",
 ]
 
+# .htaccess z blokadą PHP: wgrywany przy przenosinach kodu, przy rollbacku
+# odkładany obok (stary WP nie miał tego pliku w wp-content/).
+put_htaccess = f"put {esc(htaccess)} -o {esc(prod + '/wp-content/.htaccess')}"
 if action == 'apply':
     lines.append(f"mkdir -f {esc(aside)}")
     lines.append(f"mkdir -f {esc(aside + '/wp-content')}")
@@ -167,7 +214,20 @@ if action == 'apply':
         lines.append(f"mv {esc(prod + '/' + i)} {esc(aside + '/' + i)}")
     for i in nested:
         lines.append(f"mv {esc(prod + '/' + i)} {esc(aside + '/' + i)}")
+    lines.append(put_htaccess)
+elif action == 'apply-wp-content':
+    lines.append(f"mkdir -f {esc(aside + '/wp-content')}")
+    for i in wpcode:
+        lines.append(f"mv {esc(prod + '/' + i)} {esc(aside + '/' + i)}")
+    lines.append(put_htaccess)
+    lines.append("echo '--- wp-content po operacji ---'")
+    lines.append(f"cls -1a --sort=name {esc(prod + '/wp-content/')}")
+elif action == 'rollback-wp-content':
+    lines.append(f"mv {esc(prod + '/wp-content/.htaccess')} {esc(aside + '/wp-content.htaccess.nowa-strona')}")
+    for i in wpcode:
+        lines.append(f"mv {esc(aside + '/' + i)} {esc(prod + '/' + i)}")
 else:
+    lines.append(f"mv {esc(prod + '/wp-content/.htaccess')} {esc(aside + '/wp-content.htaccess.nowa-strona')}")
     for i in items:
         lines.append(f"mv {esc(aside + '/' + i)} {esc(prod + '/' + i)}")
     for i in nested:
@@ -195,6 +255,10 @@ fi
 
 if [ "$ACTION" = "apply" ]; then
   echo "Przeniesione. Teraz: ./scripts/deploy-ftp.sh production"
+elif [ "$ACTION" = "apply-wp-content" ]; then
+  echo "Przeniesione. Sprawdź: media z wp-content/uploads → 200, *.php w wp-content → 403/404."
+elif [ "$ACTION" = "rollback-wp-content" ]; then
+  echo "Cofnięte — kod WP znów w $PROD/wp-content/, blokada PHP zdjęta. Nowa strona bez zmian."
 else
   echo "Cofnięte — stara strona powinna znów działać pod airsquad.pl."
 fi

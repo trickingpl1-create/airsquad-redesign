@@ -104,6 +104,7 @@ export function EnrolFab({ cities }: { cities: EnrolCity[] }) {
           formId={selected.formId}
           title={`Zapisy — ${selected.name}`}
           onClose={() => setSelected(null)}
+          tracking={{ city: selected.slug, type: 'nabor', source: 'fab' }}
         />
       )}
     </>

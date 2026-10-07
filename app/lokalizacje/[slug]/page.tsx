@@ -53,7 +53,7 @@ export default async function CityPage({ params }: CityPageProps) {
     <CityPageView
       data={cityPage}
       currentPath={`/lokalizacje/${slug}`}
-      parents={[{ name: 'Lokalizacje', url: '/lokalizacje' }]}
+      parents={[{ name: 'Lokalizacje', url: '/lokalizacje/' }]}
     />
   )
 }

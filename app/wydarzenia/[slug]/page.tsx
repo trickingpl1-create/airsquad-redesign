@@ -47,7 +47,7 @@ export default async function EventPage({ params }: EventPageProps) {
     <EventView
       data={event}
       currentPath={`/wydarzenia/${slug}`}
-      parents={[{ name: 'Wydarzenia', url: '/wydarzenia' }]}
+      parents={[{ name: 'Wydarzenia', url: '/wydarzenia/' }]}
     />
   )
 }

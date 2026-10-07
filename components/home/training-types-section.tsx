@@ -61,7 +61,7 @@ export function TrainingTypesSection({ trainingTypes }: TrainingTypesSectionProp
             return (
               <Link
                 key={type.id}
-                href={`/dyscypliny/${type.slug}`}
+                href={`/${type.slug}/`}
                 className="group relative min-h-56 overflow-hidden rounded-3xl border border-border bg-card p-7 transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
               >
                 {/* Top accent stripe */}

@@ -1,3 +1,4 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import { Metadata } from 'next'
 import { getEvents } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
@@ -6,12 +7,12 @@ import { Sticker } from '@/components/ui/sticker'
 import Link from 'next/link'
 import { Calendar, MapPin, ArrowRight } from 'lucide-react'
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/wydarzenia/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Wydarzenia',
   description:
     'Nadchodzące wydarzenia Air Squad — AirMeeting, spotkania akrobatyczne i Gravity Jam.',
-}
+  canonical: '/wydarzenia/',
+})
 
 const EVENT_TYPE_LABELS = {
   airmeeting: 'AirMeeting',
@@ -33,6 +34,26 @@ function formatDate(dateStr: string): string {
   })
 }
 
+// Opisy wydarzeń w lib/content/letni.ts są HTML-em (renderuje je EventView);
+// na kafelkach potrzebny jest czysty tekst — inaczej widać „<p>" (F38).
+function stripHtml(html: string): string {
+  return html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&[a-z]+;/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function pluralizeEvents(n: number): string {
+  if (n === 1) return 'wydarzenie'
+  const lastTwo = n % 100
+  const last = n % 10
+  if (last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14)) return 'wydarzenia'
+  return 'wydarzeń'
+}
+
 export default async function EventsPage() {
   const events = await getEvents()
 
@@ -41,6 +62,9 @@ export default async function EventsPage() {
     spotkanie: events.filter((e) => e.event_type === 'spotkanie'),
     gravityjam: events.filter((e) => e.event_type === 'gravityjam'),
   }
+  // Licznik = karty faktycznie pokazane na stronie (getEvents() zwraca też Air
+  // Camp, który ma własną sekcję obozów) — wcześniej „3 wydarzeń" przy 2 kartach.
+  const shownCount = Object.values(eventsByType).reduce((n, list) => n + list.length, 0)
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -54,10 +78,10 @@ export default async function EventsPage() {
           />
           <div className="container relative mx-auto px-4 py-20 md:py-28">
             <Sticker variant="white" rotate="left" size="sm" className="mb-6">
-              {events?.length || 0} wydarzeń · 2026
+              {shownCount} {pluralizeEvents(shownCount)}
             </Sticker>
-            <h1 className="font-[family-name:var(--font-display)] text-6xl font-black uppercase leading-[0.9] tracking-tighter text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
-              wydarzenia
+            <h1 className="font-[family-name:var(--font-display)] text-6xl font-normal leading-none pb-2 tracking-[0.025em] text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
+              Wydarzenia
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-medium text-primary-foreground/85 md:text-xl">
               AirMeeting, spotkania akrobatyczne, Gravity Jam. Środowisko, które pcha do przodu.
@@ -72,7 +96,7 @@ export default async function EventsPage() {
 
             return (
               <div key={type} className="mb-20">
-                <h2 className="mb-8 font-[family-name:var(--font-display)] text-3xl font-black uppercase tracking-tighter text-foreground md:text-5xl">
+                <h2 className="mb-8 font-[family-name:var(--font-display)] text-3xl font-normal tracking-[0.025em] text-foreground md:text-5xl">
                   {label}
                 </h2>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -97,7 +121,7 @@ export default async function EventsPage() {
                         )}
                       </div>
                       <div className="border-t-2 border-foreground p-6">
-                        <h3 className="font-[family-name:var(--font-display)] text-xl font-black uppercase tracking-tighter text-foreground">
+                        <h3 className="font-[family-name:var(--font-display)] text-xl font-normal tracking-[0.025em] text-foreground">
                           {event.title}
                         </h3>
                         {event.event_date && (
@@ -114,12 +138,12 @@ export default async function EventsPage() {
                         )}
                         {event.description && (
                           <p className="mt-3 line-clamp-2 text-sm text-muted-foreground">
-                            {event.description}
+                            {stripHtml(event.description)}
                           </p>
                         )}
                         <div className="mt-5 flex gap-2">
                           <Link
-                            href={`/wydarzenia/${event.slug}`}
+                            href={`/${event.slug}/`}
                             className="inline-flex flex-1 items-center justify-center gap-2 border-2 border-foreground bg-primary px-3 py-2 text-xs font-black uppercase tracking-wider text-primary-foreground transition-all hover:bg-foreground"
                           >
                             Więcej
@@ -147,7 +171,7 @@ export default async function EventsPage() {
           {!events?.length && (
             <div className="border-2 border-dashed border-foreground/30 bg-card p-12 text-center md:p-20">
               <Calendar className="mx-auto h-12 w-12 text-muted-foreground/50" aria-hidden />
-              <h3 className="mt-4 font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-foreground">
+              <h3 className="mt-4 font-[family-name:var(--font-display)] text-2xl font-normal tracking-[0.025em] text-foreground">
                 Brak wydarzeń
               </h3>
               <p className="mt-2 text-muted-foreground">Sprawdź ponownie wkrótce.</p>

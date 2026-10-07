@@ -1,3 +1,4 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Header } from '@/components/layout/header'
@@ -5,14 +6,14 @@ import { Footer } from '@/components/layout/footer'
 import { Handshake, MapPin, TrendingUp, Phone } from 'lucide-react'
 
 // Nowa strona (dokładana, nie zastępuje żadnego chronionego URL-a z docs/03-mapa-url.md).
-export const metadata: Metadata = {
-  // Marka jest doklejana przez szablon title z app/layout.tsx — bez tego
-  // w SERP-ie wychodziło „…salę Air Squad | Air Squad"
+// Marka jest doklejana przez szablon title z app/layout.tsx — bez tego
+// w SERP-ie wychodziło „…salę Air Squad | Air Squad"
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Franczyza — otwórz własną salę',
   description:
     'Otwórz salę akrobatyczną Air Squad w swoim mieście. Sprawdzony model treningowy, rozpoznawalna marka na Podkarpaciu i wsparcie na start.',
-  alternates: { canonical: '/franczyza/' },
-}
+  canonical: '/franczyza/',
+})
 
 const BENEFITS = [
   {
@@ -42,7 +43,7 @@ export default function FranczyzaPage() {
             <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-emerald md:text-xs">
               Twoje miasto? // Franczyza
             </p>
-            <h1 className="display-bold mt-4 max-w-3xl text-5xl text-foreground md:text-6xl">
+            <h1 className="display-bold mt-4 max-w-3xl text-5xl text-foreground md:text-6xl" style={{ fontWeight: 400 }}>
               Otwórz salę <span className="gradient-text">Air Squad</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
@@ -61,7 +62,7 @@ export default function FranczyzaPage() {
                 className="rounded-3xl border border-border bg-card p-7"
               >
                 <benefit.icon className="h-7 w-7 text-emerald" aria-hidden />
-                <h2 className="display-bold mt-4 text-xl text-foreground">
+                <h2 className="display-bold mt-4 text-xl text-foreground" style={{ fontWeight: 400 }}>
                   {benefit.title}
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -73,7 +74,7 @@ export default function FranczyzaPage() {
 
           <div className="mx-auto mt-10 flex max-w-5xl flex-col items-start justify-between gap-6 rounded-3xl border border-dashed border-emerald/50 bg-emerald/5 p-8 md:flex-row md:items-center">
             <div>
-              <h2 className="display-bold text-2xl text-foreground">
+              <h2 className="display-bold text-2xl text-foreground" style={{ fontWeight: 400 }}>
                 Porozmawiajmy o Twoim mieście
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">

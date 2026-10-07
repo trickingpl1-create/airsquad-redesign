@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
+import { trackEnrolOpen, type EnrolTracking } from '@/lib/analytics'
 
 export const AIPAX_ENROLMENT_BASE = 'https://aipax.pro/pl/external/enrolment-form-v2'
 
@@ -12,11 +13,20 @@ export function AipaxModal({
   formId,
   title,
   onClose,
+  tracking,
 }: {
   formId: string
   title: string
   onClose: () => void
+  /** Dane zdarzenia enrol_open (GTM) — wysyłane raz, przy otwarciu modala. */
+  tracking?: EnrolTracking
 }) {
+  useEffect(() => {
+    if (tracking) trackEnrolOpen(tracking)
+    // Tylko przy montażu: jedno otwarcie = jedno zdarzenie.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // ESC zamyka; scroll strony zablokowany na czas otwarcia
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

@@ -1,3 +1,4 @@
+import { YouTubeFacade } from '@/components/youtube-facade'
 import Image from 'next/image'
 import Link from 'next/link'
 import { StructuredData, Breadcrumb } from '@/lib/seo/metadata'
@@ -136,10 +137,10 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
               </div>
             )}
             <Image
-              src="/images/aircamp-2026-logo.png"
+              src="/images/aircamp-2026-logo.webp"
               alt="Air Camp 2026"
-              width={280}
-              height={140}
+              width={782}
+              height={600}
               className="mx-auto mb-5 h-[110px] w-auto object-contain drop-shadow-[0_0_34px_rgba(16,185,129,0.45)]"
               priority
             />
@@ -435,14 +436,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
                 Zobacz <span className="gradient-text">film.</span>
               </h2>
               <div className="mx-auto mt-9 aspect-video max-w-2xl overflow-hidden rounded-3xl border border-border shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
-                <iframe
-                  src={`https://www.youtube.com/embed/${camp.youtubeId}`}
-                  title="Air Camp — film"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                  className="block h-full w-full border-0"
-                />
+                <YouTubeFacade youtubeId={camp.youtubeId} title="Air Camp — film" />
               </div>
             </div>
           </section>
@@ -485,10 +479,10 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
                 <div className="flex items-center gap-3.5 border-b border-border p-5">
                   <div className="h-[52px] w-[52px] flex-shrink-0 rounded-full bg-gradient-to-br from-primary via-accent to-amber p-0.5">
                     <Image
-                      src="/images/airsquad-logo.png"
+                      src="/images/airsquad-logo.webp"
                       alt="Air Squad Akrobatyka"
-                      width={52}
-                      height={52}
+                      width={592}
+                      height={355}
                       className="h-full w-full rounded-full bg-background object-cover p-1.5"
                     />
                   </div>

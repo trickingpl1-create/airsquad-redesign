@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
           <p className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-cyan">
             Dokumenty klubu
           </p>
-          <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-black uppercase leading-none tracking-tighter text-foreground md:text-6xl">
+          <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-normal leading-none tracking-[0.025em] text-foreground md:text-6xl">
             Polityka prywatności
           </h1>
           <p className="mt-4 text-sm text-muted-foreground">

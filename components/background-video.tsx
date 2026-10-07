@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
+import { hasMarketingConsent, onConsentChange } from '@/lib/consent'
 
 // IFrame Player API ładujemy raz na całą stronę (idempotentnie) — kolejne
 // instancje <BackgroundVideo> współdzielą ten sam skrypt i globalny callback.
@@ -49,6 +50,23 @@ type YTPlayer = {
  * wywołujący przez `className`/`style`, tak jak przy zwykłym <iframe>. Gdy JS
  * nie wystartuje, film i tak gra i zapętla się przez parametry URL
  * (autoplay/mute/loop) — degradacja bez „stop na play".
+ *
+ * ZGODA: skrypt https://www.youtube.com/iframe_api ładowany w głównej ramce
+ * zapisuje ciasteczka YouTube (YSC, VISITOR_INFO1_LIVE…), które Cookiebot
+ * klasyfikuje jako marketingowe — dlatego ładujemy go WYŁĄCZNIE po zgodzie
+ * marketingowej (audyt 2026-10-06, R2.1). Bez zgody gra sam iframe
+ * youtube-nocookie z parametrami URL: pętla całego filmu zamiast precyzyjnego
+ * wycinka start–end, ale bez ciasteczek śledzących.
+ *
+ * KIEDY SIĘ ŁADUJE (audyt 2026-10-06, F17): iframe nie trafia już do HTML-a.
+ *  • activation="idle" (domyślnie, hero) — po zdarzeniu load i chwili
+ *    bezczynności przeglądarki, więc YouTube nie konkuruje z LCP i hydratacją;
+ *  • activation="visible" (sekcje niżej) — gdy kontener zbliża się do widoku,
+ *    a po wyjściu z niego iframe jest odmontowywany (mniej dekodowania wideo).
+ * Wcześniej trzy filmy na stronie głównej startowały naraz: ok. 43–58 MB
+ * transferu na wizytę mobilną i ok. 0,7 s blokady wątku głównego.
+ * Przy prefers-reduced-motion albo trybie oszczędzania danych film w ogóle się
+ * nie uruchamia — zostaje tło sekcji (WCAG 2.2.2, F52).
  */
 export function BackgroundVideo({
   youtubeId,
@@ -57,6 +75,7 @@ export function BackgroundVideo({
   className,
   style,
   title = '',
+  activation = 'idle',
 }: {
   youtubeId: string
   /** Sekunda startu pętli (opcjonalny wycinek). */
@@ -67,10 +86,60 @@ export function BackgroundVideo({
   className?: string
   style?: CSSProperties
   title?: string
+  /** Kiedy montować film: po bezczynności po load (hero) albo przy widoczności. */
+  activation?: 'idle' | 'visible'
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
+  // Element w DOM (placeholder albo iframe) — obserwowany przy activation="visible".
+  const [box, setBox] = useState<HTMLElement | null>(null)
+  const [active, setActive] = useState(false)
 
   useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true
+    if (reducedMotion || saveData) return
+
+    if (activation === 'visible') {
+      if (!box || !('IntersectionObserver' in window)) return
+      const observer = new IntersectionObserver(
+        (entries) => setActive(entries.some((entry) => entry.isIntersecting)),
+        { rootMargin: '200px 0px' }
+      )
+      observer.observe(box)
+      return () => observer.disconnect()
+    }
+
+    // activation === 'idle'
+    let idleId = 0
+    let timer = 0
+    const schedule = () => {
+      const w = window as Window & {
+        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+        cancelIdleCallback?: (id: number) => void
+      }
+      if (w.requestIdleCallback) idleId = w.requestIdleCallback(() => setActive(true), { timeout: 2500 })
+      else timer = window.setTimeout(() => setActive(true), 1200)
+    }
+    if (document.readyState === 'complete') schedule()
+    else window.addEventListener('load', schedule, { once: true })
+    return () => {
+      window.removeEventListener('load', schedule)
+      const w = window as Window & { cancelIdleCallback?: (id: number) => void }
+      if (idleId && w.cancelIdleCallback) w.cancelIdleCallback(idleId)
+      if (timer) window.clearTimeout(timer)
+    }
+  }, [activation, box])
+  // Startowo false także po stronie serwera — stan zgody znamy dopiero w przeglądarce.
+  const [marketingConsent, setMarketingConsent] = useState(false)
+
+  useEffect(() => {
+    const sync = () => setMarketingConsent(hasMarketingConsent())
+    sync()
+    return onConsentChange(sync)
+  }, [])
+
+  useEffect(() => {
+    if (!marketingConsent || !active) return
     let player: YTPlayer | null = null
     let pollTimer = 0
     let cancelled = false
@@ -129,7 +198,7 @@ export function BackgroundVideo({
       // zarządza React → „removeChild" crash. Osierocony player i tak zniknie
       // z GC przy odmontowaniu iframe'a (pełna nawigacja).
     }
-  }, [youtubeId, start, end])
+  }, [youtubeId, start, end, marketingConsent, active])
 
   const params = new URLSearchParams({
     autoplay: '1',
@@ -148,9 +217,18 @@ export function BackgroundVideo({
   })
   if (start != null) params.set('start', String(start))
 
+  if (!active) {
+    // Pusty element o tych samych wymiarach — miejsce w układzie i cel dla
+    // IntersectionObservera, dopóki film nie ma się uruchomić.
+    return <div ref={setBox} aria-hidden className={className} style={style} />
+  }
+
   return (
     <iframe
-      ref={iframeRef}
+      ref={(node) => {
+        iframeRef.current = node
+        setBox(node)
+      }}
       src={`https://www.youtube-nocookie.com/embed/${youtubeId}?${params.toString()}`}
       allow="autoplay; encrypted-media"
       title={title}

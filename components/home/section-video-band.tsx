@@ -32,6 +32,7 @@ export function SectionVideoBand({ children }: { children: ReactNode }) {
             youtubeId={YOUTUBE_ID}
             className="absolute inset-0 h-full w-full border-0 opacity-95"
             title="Air Squad — tło sekcji: AIRMEETING 2026"
+            activation="visible"
           />
         </div>
         {/* Przyciemnienie dla czytelności treści nad filmem (jak w hero). */}

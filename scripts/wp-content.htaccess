@@ -1,0 +1,12 @@
+# Wgrywany na serwer jako public_html/wp-content/.htaccess przez
+# scripts/move-wp-aside.sh --apply-wp-content (audyt 2026-10-06, F02).
+#
+# Od podmiany (2026-10-05) wp-content/ to już tylko magazyn mediów: nowa strona
+# ładuje stąd filmy i zdjęcia z uploads/, a Google Grafika zna stare adresy
+# z uploads/ i gallery/. Kod WordPressa (wtyczki, motywy) przeniesiono do
+# public_html_wp/wp-content/. Żaden skrypt nie powinien się tu wykonywać —
+# także plik .php podrzucony w przyszłości do uploads/.
+# Przetestowane na serwerze: plik statyczny → 200, *.php → 403.
+<FilesMatch "\.(php[0-9]?|phtml|phar|pl|py|cgi|sh)$">
+  Require all denied
+</FilesMatch>

@@ -215,7 +215,7 @@ export function PricingSection({
               <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-emerald md:text-xs">
                 Letnie przygody
               </p>
-              <h3 className="display-bold mt-3 text-3xl text-foreground md:text-4xl">
+              <h3 className="display-bold mt-3 text-3xl text-foreground md:text-4xl" style={{ fontWeight: 400 }}>
                 Air Camp 2026
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
@@ -223,7 +223,7 @@ export function PricingSection({
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
-                  href="/obozy"
+                  href="/letni/"
                   className="rounded-full px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white"
                   style={{
                     background: 'linear-gradient(135deg, var(--emerald), var(--cyan))',
@@ -231,8 +231,10 @@ export function PricingSection({
                 >
                   Sprawdź turnusy
                 </Link>
+                {/* Wcześniej #aircamp — kotwica istnieje tylko na stronie głównej,
+                    na stronach miast klik nic nie robił. */}
                 <Link
-                  href="#aircamp"
+                  href="/obozy-sportowe/"
                   className="rounded-full border border-emerald/40 bg-emerald/5 px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-emerald hover:border-emerald/60"
                 >
                   Dowiedz się więcej
@@ -241,10 +243,10 @@ export function PricingSection({
             </div>
             <div className="flex justify-center md:justify-end">
               <Image
-                src="/images/aircamp-2026-logo.png"
+                src="/images/aircamp-2026-logo.webp"
                 alt="Air Camp 2026 — Obóz sportowo-rekreacyjny"
-                width={320}
-                height={160}
+                width={782}
+                height={600}
                 className="h-[120px] w-auto object-contain drop-shadow-[0_0_16px_rgba(16,185,129,0.3)]"
               />
             </div>

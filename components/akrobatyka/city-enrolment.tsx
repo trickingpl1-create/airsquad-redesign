@@ -1,5 +1,6 @@
 'use client'
 
+import { trackEnrolOpen } from '@/lib/analytics'
 import { useEffect, useState } from 'react'
 import { MapPin, ArrowRight } from 'lucide-react'
 
@@ -36,6 +37,8 @@ export function CityEnrolment({ cities }: { cities: EnrolmentCity[] }) {
   function choose(slug: string) {
     const next = slug === selected ? null : slug
     setSelected(next)
+    // Tylko świadomy wybór (klik), nie przywrócenie z localStorage.
+    if (next) trackEnrolOpen({ city: next, type: 'nabor', source: 'discipline_page' })
     if (typeof window !== 'undefined') {
       if (next) localStorage.setItem(STORAGE_KEY, next)
       else localStorage.removeItem(STORAGE_KEY)
@@ -47,7 +50,7 @@ export function CityEnrolment({ cities }: { cities: EnrolmentCity[] }) {
   const active = cities.find((c) => c.slug === selected) || null
 
   return (
-    <section className="space-y-6">
+    <section id="zapisy" className="scroll-mt-28 space-y-6">
       <div>
         <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-amber">
           Gdzie trenujemy · zapisy online

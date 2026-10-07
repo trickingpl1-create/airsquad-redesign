@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import Link from 'next/link'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -7,12 +9,12 @@ import { TeamPortraitCard, initials, photoVariant } from '@/components/team/team
 import { TEAM, TEAM_FEATURED, TEAM_REST } from '@/lib/content/team'
 import { TEAM_PHOTOS } from '@/lib/content/team-photos'
 
-export const metadata = {
-  alternates: { canonical: '/trenerzy/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Trenerzy',
   description:
     'Kadra Air Squad — instruktorzy akrobatyki, trickingu i tumblingu: magistrowie WF, fizjoterapeuci i instruktorzy judo. Zajęcia w sześciu miastach Podkarpacia.',
-}
+  canonical: '/trenerzy/',
+})
 
 export default function TrainersPage() {
   return (

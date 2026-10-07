@@ -69,7 +69,10 @@ export function ExpandableGallery({
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="rounded-full border border-cyan/45 bg-white/5 px-8 py-3.5 font-mono text-xs font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-white/10"
+            aria-expanded={expanded}
+            // text-foreground zamiast text-white: sekcja ma tło bg-background, więc w trybie
+            // jasnym biały napis był niewidoczny (kontrast 1,11:1 — audyt 2026-10-06, F59).
+            className="rounded-full border border-cyan/45 bg-foreground/5 px-8 py-3.5 font-mono text-xs font-bold uppercase tracking-[0.1em] text-foreground transition-colors hover:bg-foreground/10"
           >
             {expanded ? 'Zwiń galerię' : 'Pokaż więcej zdjęć'}
           </button>

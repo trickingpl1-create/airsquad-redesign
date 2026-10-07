@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { TrackedEnrolLink } from '@/components/tracked-enrol-link'
 import { StructuredData, Breadcrumb } from '@/lib/seo/metadata'
 import { SITE_URL } from '@/lib/seo/site'
 import { Header } from '@/components/layout/header'
@@ -390,12 +391,21 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                   ? `${AIPAX_ENROLMENT_BASE}/${groupFormId}`
                   : '#zapisy'
                 return (
-                  <a
+                  <TrackedEnrolLink
                     key={group.name}
                     href={enrolUrl}
                     {...(groupFormId
                       ? { target: '_blank', rel: 'noopener noreferrer' }
                       : {})}
+                    tracking={
+                      groupFormId
+                        ? {
+                            city: city.slug,
+                            type: groupFormId === city.aipax_form_id ? 'nabor' : 'kontynuacja',
+                            source: 'city_group',
+                          }
+                        : undefined
+                    }
                     className={`group rounded-3xl border p-6 transition-transform hover:-translate-y-1 ${
                       group.enrolling
                         ? 'border-emerald/45 bg-emerald/5'
@@ -425,7 +435,7 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                     <p className="mt-3 font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-primary transition-colors group-hover:text-primary/80">
                       Zapisz się <span aria-hidden>→</span>
                     </p>
-                  </a>
+                  </TrackedEnrolLink>
                 )
               })}
             </div>

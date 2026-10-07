@@ -11,6 +11,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { EnrolFab } from '@/components/enrol-fab'
 import { ENROL_CITIES } from '@/lib/content/enrol-cities'
 import { SITE_URL } from '@/lib/seo/site'
+import { DEFAULT_OG_IMAGE, DEFAULT_SOCIAL, SITE_NAME } from '@/lib/seo/metadata'
 import './globals.css'
 
 // Cookiebot — CMP zgód (RODO). Tryb "manual": baner zgód pokazuje się i zapisuje
@@ -48,15 +49,16 @@ export const metadata: Metadata = {
     'zajęcia dla dzieci',
   ],
   authors: [{ name: 'Air Squad' }],
-  icons: {
-    icon: '/images/airsquad-logo.png',
-    apple: '/images/airsquad-logo.png',
-  },
+  // Ikony z konwencji plików Next.js: app/favicon.ico, app/icon.png (512×512),
+  // app/apple-icon.png (180×180) + public/apple-touch-icon.png dla iOS. To ta sama
+  // kwadratowa ikona, którą miała stara strona (WP site_icon, ID 19788) — Google
+  // wymaga favicony 1:1, a wcześniejsze logo 592×355 nią nie było (F35).
+  // Bez `url`: wartość z layoutu dziedziczyły strony bez własnego openGraph,
+  // więc huby podawały og:url strony głównej (F30). Każda strona ustawia teraz
+  // własny url = canonical (generateSEOMetadata w lib/seo/metadata.tsx).
   openGraph: {
-    title: 'Air Squad — Akrobatyka, Tricking, Longboard',
-    description: 'Dołącz do najlepszego klubu akrobatycznego w regionie. Pierwszy trening za 40 zł.',
-    url: SITE_URL,
-    siteName: 'Air Squad',
+    ...DEFAULT_SOCIAL,
+    siteName: SITE_NAME,
     locale: 'pl_PL',
     type: 'website',
     // /opengraph-image to prawdziwy PNG 1200×630 generowany z app/opengraph-image.tsx
@@ -65,20 +67,12 @@ export const metadata: Metadata = {
     // obraz na każdej podstronie, która dziedziczy openGraph z layoutu.
     // Serwer musi mu nadać Content-Type: scripts/make-deploy-zip.sh dopisuje
     // ForceType image/png do .htaccess (plik nie ma rozszerzenia).
-    images: [
-      {
-        url: '/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: 'Air Squad — Akrobatyka, Tricking, Longboard',
-      },
-    ],
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Air Squad — Akrobatyka, Tricking, Longboard',
-    description: 'Dołącz do najlepszego klubu akrobatycznego w regionie. Pierwszy trening za 40 zł.',
-    images: ['/opengraph-image'],
+    ...DEFAULT_SOCIAL,
+    images: [DEFAULT_OG_IMAGE.url],
   },
 }
 

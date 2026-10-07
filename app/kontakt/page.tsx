@@ -5,16 +5,17 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SectionHeader } from '@/components/home/section-header'
 import { CLUB_CONTACT } from '@/lib/content/cities'
-import { StructuredData } from '@/lib/seo/metadata'
+import { StructuredData, generateSEOMetadata } from '@/lib/seo/metadata'
 import { SITE_URL } from '@/lib/seo/site'
+import { SOCIALS } from '@/lib/content/socials'
 import { MapPin, Phone, Mail, Instagram } from 'lucide-react'
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/kontakt/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Kontakt',
   description:
     'Skontaktuj się z Air Squad — telefon, email, social media. Zapisy na zajęcia online przez kalendarz AIPAX na podstronie Twojego miasta.',
-}
+  canonical: '/kontakt/',
+})
 
 // Chipy miast — zapisy dzieci idą przez kalendarze AIPAX na podstronach
 // (chronione root-slugi SEO), nie przez formularz kontaktowy.
@@ -32,13 +33,6 @@ const ALL_CITY_CHIPS = [
 const CITY_CHIPS = ALL_CITY_CHIPS.filter(
   (chip) => !isWithdrawnLocation(chip.slug.replaceAll('/', ''))
 )
-
-const SOCIALS = [
-  { label: 'Instagram', href: 'https://instagram.com/airsquad_akrobatyka' },
-  { label: 'TikTok', href: 'https://tiktok.com/@airsquad' },
-  { label: 'YouTube', href: 'https://youtube.com/@airsquad' },
-  { label: 'Facebook', href: 'https://facebook.com/airsquad' },
-] as const
 
 export default function ContactPage() {
   return (
@@ -168,13 +162,13 @@ export default function ContactPage() {
               <div className="mt-2 flex flex-wrap gap-2">
                 {SOCIALS.map((s) => (
                   <a
-                    key={s.label}
+                    key={s.short}
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="rounded-md border border-cyan/25 bg-cyan/10 px-2 py-0.5 font-mono text-[11px] text-cyan transition-colors hover:bg-cyan/20"
                   >
-                    {s.label}
+                    {s.name}
                   </a>
                 ))}
               </div>

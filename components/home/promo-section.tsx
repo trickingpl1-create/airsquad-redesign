@@ -5,8 +5,10 @@ const promoCards = [
     kicker: 'WYDARZENIE KLUBOWE',
     title: 'AkroNocki',
     desc: 'Nocowanie na sali razem z treningiem wieczorem i rano, integracja, dyskoteka, karaoke i film. Niezapomniana noc dla członków klubu.',
-    cta: 'Zobacz szczegóły',
-    href: '/aktualnosci',
+    // Na /aktualnosci/ nie ma wpisu o AkroNockach — do czasu ogłoszenia z terminem
+    // i ceną CTA prowadzi do kontaktu zamiast donikąd (audyt 2026-10-06, F38).
+    cta: 'Zapytaj o termin',
+    href: '/kontakt/',
     accentColor: 'var(--blue-deep)',
     gradientFrom: 'from-blue-deep/42',
     gradientTo: 'to-blue-deep/22',

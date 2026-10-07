@@ -1,14 +1,17 @@
+import type { Metadata } from 'next'
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import Link from 'next/link'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { AipaxWidget } from '@/components/aipax-widget'
 import { SectionHeader } from '@/components/home/section-header'
 
-export const metadata = {
-  alternates: { canonical: '/grafik/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Grafik zajęć',
-  description: 'Sprawdź grafik zajęć Air Squad. Akrobatyka, tricking, skoki na ścieżce w 6 lokalizacjach na Podkarpaciu.',
-}
+  description:
+    'Sprawdź grafik zajęć Air Squad. Akrobatyka, tricking, skoki na ścieżce w 6 lokalizacjach na Podkarpaciu.',
+  canonical: '/grafik/',
+})
 
 // Kafelki miast — szczegółowy grafik grup każdego miasta żyje na jego
 // podstronie (chronione root-slugi SEO, jak w components/home/cities-section.tsx).

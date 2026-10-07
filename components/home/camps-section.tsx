@@ -54,6 +54,7 @@ export function CampsSection() {
           youtubeId={AIRCAMP_YOUTUBE_ID}
           className="pointer-events-none absolute inset-0 h-full w-full scale-150 border-0 opacity-70 md:scale-100"
           title="Air Camp 2026 — wideo w tle"
+          activation="visible"
         />
       </div>
       <div
@@ -65,12 +66,14 @@ export function CampsSection() {
         {/* Air Camp hero logo */}
         <div className="mb-12 flex justify-center">
           <Image
-            src="/images/aircamp-2026-logo.png"
+            // WebP 782×600 zamiast PNG 2457×1885 (1,4 MB) i bez priority — sekcja
+            // jest daleko pod zgięciem, a preload zabierał pasmo hero (audyt F22).
+            src="/images/aircamp-2026-logo.webp"
             alt="Air Camp 2026 — Obóz sportowo-rekreacyjny"
-            width={580}
-            height={290}
+            width={782}
+            height={600}
+            loading="lazy"
             className="h-[300px] w-auto object-contain drop-shadow-[0_0_32px_rgba(16,185,129,0.4)]"
-            priority
           />
         </div>
 
@@ -137,7 +140,7 @@ export function CampsSection() {
             jest jedynym, więc renderuje się bezwarunkowo. */}
         <div className="mt-14 text-center">
           <Link
-            href="/obozy"
+            href="/letni/"
             className="inline-block rounded-2xl px-10 py-5 text-sm font-bold tracking-tight text-primary-foreground shadow-[0_14px_36px_oklch(0.58_0.24_290/0.35)] transition-transform hover:-translate-y-0.5"
             style={{
               background: 'linear-gradient(135deg, var(--primary), var(--accent))',

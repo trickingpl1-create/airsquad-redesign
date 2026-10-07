@@ -34,7 +34,7 @@ export function DisciplinesReveal({ disciplines }: { disciplines: readonly Disci
       {disciplines.map((d, i) => (
         <Link
           key={d.num}
-          href={d.href ?? `/dyscypliny/${d.slug}/`}
+          href={d.href ?? `/${d.slug}/`}
           className={`group/slice relative flex min-h-40 w-full flex-col justify-end overflow-hidden p-5 text-white focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-cyan md:min-h-0 md:w-auto md:grow md:basis-0 md:p-6 md:transition-[flex-grow,filter] md:duration-500 md:ease-out md:hover:z-10 md:hover:grow-[2.8] md:focus-visible:grow-[2.8] md:[filter:saturate(0.9)_brightness(0.74)] md:hover:[filter:none] md:focus-visible:[filter:none] md:[clip-path:var(--clip)] motion-reduce:md:transition-none ${
             i === 0 ? '' : 'md:-ml-[34px]'
           }`}

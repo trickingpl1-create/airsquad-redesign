@@ -1,15 +1,17 @@
+import type { Metadata } from 'next'
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SectionHeader } from '@/components/home/section-header'
 import { CLUB_CONTACT } from '@/lib/content/cities'
 import { NewsCard, type NewsItem } from '@/components/aktualnosci/news-card'
 
-export const metadata = {
-  alternates: { canonical: '/aktualnosci/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Aktualności',
   description:
     'Ogłoszenia klubu Air Squad — wydarzenia, obozy, zapisy i bieżące informacje dla rodziców i zawodników.',
-}
+  canonical: '/aktualnosci/',
+})
 
 // Cztery aktualne ogłoszenia z airsquad.pl/aktualnosci/ (2026-09-22). „Tablica
 // ogłoszeń", nie chronologiczny blog — aktualizowana ręcznie w kodzie, bez DB.

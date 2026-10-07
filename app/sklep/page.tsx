@@ -1,14 +1,15 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import { Metadata } from 'next'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { StoreClient } from './store-client'
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/sklep/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Sklep',
   description:
     'Oficjalne gadżety i odzież Air Squad. Zamawiasz online, płacisz u trenera przy odbiorze na treningu.',
-}
+  canonical: '/sklep/',
+})
 
 export default function StorePage() {
   return (

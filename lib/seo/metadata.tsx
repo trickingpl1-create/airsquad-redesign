@@ -12,7 +12,31 @@ interface SEOMetadata {
   noindex?: boolean
 }
 
+// Wspólne wartości Open Graph. Next.js NIE scala obiektu openGraph z layoutem —
+// strona, która ustawia własne openGraph, zastępuje go w całości. Dlatego każda
+// strona dostaje komplet (obraz, url, siteName, locale) z tego jednego miejsca;
+// wcześniej 29 stron traciło og:image, a huby dziedziczyły og:url i tytuł
+// strony głównej (audyt 2026-10-06, F30/F31).
+export const SITE_NAME = 'Air Squad'
+export const DEFAULT_SOCIAL = {
+  title: 'Air Squad — Akrobatyka, Tricking, Longboard',
+  description: 'Dołącz do najlepszego klubu akrobatycznego w regionie. Pierwszy trening za 40 zł.',
+}
+// /opengraph-image = PNG 1200×630 z app/opengraph-image.tsx (eksport statyczny:
+// out/opengraph-image; Content-Type nadaje ForceType w .htaccess).
+export const DEFAULT_OG_IMAGE = {
+  url: '/opengraph-image',
+  width: 1200,
+  height: 630,
+  alt: DEFAULT_SOCIAL.title,
+}
+
 export function generateSEOMetadata(seo: SEOMetadata): Metadata {
+  // Tytuł strony dostaje sufiks „| Air Squad” z szablonu w layoucie; og:title
+  // szablonu nie dziedziczy, więc markę dopisujemy tu (bez dublowania).
+  const socialTitle = seo.title.includes(SITE_NAME) ? seo.title : `${seo.title} | ${SITE_NAME}`
+  const images = seo.ogImage ? [{ url: seo.ogImage }] : [DEFAULT_OG_IMAGE]
+
   return {
     title: seo.title,
     description: seo.description,
@@ -25,16 +49,19 @@ export function generateSEOMetadata(seo: SEOMetadata): Metadata {
     },
     alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
     openGraph: {
-      title: seo.title,
+      title: socialTitle,
       description: seo.description,
       type: (seo.ogType as any) || 'website',
-      images: seo.ogImage ? [{ url: seo.ogImage }] : undefined,
+      url: seo.canonical,
+      siteName: SITE_NAME,
+      locale: 'pl_PL',
+      images,
     },
     twitter: {
       card: (seo.twitterCard as any) || 'summary_large_image',
-      title: seo.title,
+      title: socialTitle,
       description: seo.description,
-      images: seo.ogImage ? [seo.ogImage] : undefined,
+      images: images.map((image) => image.url),
     },
   }
 }

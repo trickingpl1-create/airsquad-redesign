@@ -31,10 +31,10 @@ export default function ErrorPage({
         {/* Logo */}
         <Link href="/">
           <Image
-            src="/images/airsquad-logo.png"
+            src="/images/airsquad-logo.webp"
             alt="Air Squad"
-            width={180}
-            height={86}
+            width={592}
+            height={355}
             className="h-[72px] w-auto object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.55)]"
             priority
           />

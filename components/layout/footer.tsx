@@ -1,38 +1,38 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { SOCIALS } from '@/lib/content/socials'
+import { CookieSettingsButton } from '@/components/cookie-settings-button'
 
 const linkGroups = [
   {
     label: '/treningi',
     links: [
-      { href: '/akrobatyka', label: 'akrobatyka' },
-      { href: '/dyscypliny', label: 'wszystkie dyscypliny' },
+      { href: '/akrobatyka/', label: 'akrobatyka' },
+      { href: '/tricking-akademia/', label: 'tricking' },
+      { href: '/tumbling/', label: 'tumbling' },
+      { href: '/longboardy/', label: 'longboard' },
+      { href: '/dyscypliny/', label: 'wszystkie dyscypliny' },
     ],
   },
   {
     label: '/obozy',
     links: [
-      { href: '/letni', label: 'obozy' },
-      { href: '/airmeeting', label: 'airmeeting' },
-      { href: '/gravityjam', label: 'gravity jam' },
+      { href: '/letni/', label: 'air camp' },
+      { href: '/obozy-sportowe/', label: 'obozy sportowe' },
+      { href: '/airmeeting/', label: 'airmeeting' },
+      { href: '/gravityjam/', label: 'gravity jam' },
     ],
   },
   {
     label: '/klub',
     links: [
-      { href: '/grafik', label: 'grafik' },
-      { href: '/trenerzy', label: 'zespół' },
-      { href: '/kontakt', label: 'kontakt' },
-      { href: '/polityka-prywatnosci', label: 'polityka prywatności' },
+      { href: '/zapisy/', label: 'zapisy' },
+      { href: '/grafik/', label: 'grafik' },
+      { href: '/trenerzy/', label: 'zespół' },
+      { href: '/kontakt/', label: 'kontakt' },
+      { href: '/polityka-prywatnosci/', label: 'polityka prywatności' },
     ],
   },
-] as const
-
-const socials = [
-  { label: 'IG', href: 'https://instagram.com/airsquad_akrobatyka' },
-  { label: 'TT', href: 'https://tiktok.com/@airsquad' },
-  { label: 'YT', href: 'https://youtube.com/@airsquad' },
-  { label: 'FB', href: 'https://facebook.com/airsquad' },
 ] as const
 
 export function Footer() {
@@ -51,10 +51,10 @@ export function Footer() {
           <div>
             <Link href="/">
               <Image
-                src="/images/airsquad-logo.png"
+                src="/images/airsquad-logo.webp"
                 alt="Air Squad"
-                width={160}
-                height={76}
+                width={592}
+                height={355}
                 className="h-[64px] w-auto object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.45)]"
               />
             </Link>
@@ -101,21 +101,27 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-7">
+        {/* md:pr-48 — miejsce na pływający przycisk „Zapisz się” (fixed, prawy dolny róg);
+            bez tego na desktopie zasłaniał ikony social media. */}
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-7 md:pr-48">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground/70">
             © {year} Air/Squad · Wszystkie prawa zastrzeżone
+            {/* Zmiana/wycofanie zgody na cookies — polityka prywatności odsyła tutaj. */}
+            <span aria-hidden> · </span>
+            <CookieSettingsButton className="-my-2 inline-block cursor-pointer py-2 uppercase tracking-[0.16em] text-muted-foreground underline underline-offset-2 transition-colors hover:text-cyan" />
           </p>
           <div className="flex gap-3">
-            {socials.map((s) => (
+            {SOCIALS.map((s) => (
               <a
-                key={s.label}
+                key={s.short}
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={s.label}
+                aria-label={`${s.short} — ${s.name} Air Squad (nowa karta)`}
+                title={s.name}
                 className="grid h-9 w-9 place-items-center rounded-xl border border-border font-mono text-[11px] font-bold text-violet-soft transition-colors hover:border-cyan hover:text-cyan"
               >
-                {s.label}
+                <span aria-hidden>{s.short}</span>
               </a>
             ))}
           </div>

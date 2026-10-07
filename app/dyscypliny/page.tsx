@@ -1,3 +1,4 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata'
 import { Metadata } from 'next'
 import { getDisciplines } from '@/lib/seo/queries'
 import { Header } from '@/components/layout/header'
@@ -6,12 +7,12 @@ import { Sticker } from '@/components/ui/sticker'
 import Link from 'next/link'
 import { Flame, Users, ArrowRight } from 'lucide-react'
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/dyscypliny/' },
+export const metadata: Metadata = generateSEOMetadata({
   title: 'Dyscypliny',
   description:
     'Poznaj nasze dyscypliny treningowe — akrobatyka, tricking, tumbling i longboardy. Zajęcia dla każdego poziomu zaawansowania.',
-}
+  canonical: '/dyscypliny/',
+})
 
 const TILE_GRADIENTS = [
   'from-primary to-accent',
@@ -37,8 +38,8 @@ export default async function DisciplinesPage() {
             <Sticker variant="cyan" rotate="left" size="sm" className="mb-6">
               4 dyscypliny · 1 klub
             </Sticker>
-            <h1 className="font-[family-name:var(--font-display)] text-6xl font-black uppercase leading-[0.9] tracking-tighter text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
-              dyscypliny
+            <h1 className="font-[family-name:var(--font-display)] text-6xl font-normal leading-none pb-2 tracking-[0.025em] text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
+              Dyscypliny
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-medium text-primary-foreground/85 md:text-xl">
               Od akrobatyki dla 4-latków po tricking dla zaawansowanych. Znajdź swoje miejsce.
@@ -52,7 +53,7 @@ export default async function DisciplinesPage() {
             {disciplines.map((discipline, idx) => (
               <Link
                 key={discipline.id}
-                href={`/dyscypliny/${discipline.slug}`}
+                href={`/${discipline.slug}/`}
                 className="group relative block overflow-hidden border-2 border-foreground bg-card shadow-sticker-lg transition-all hover:-translate-x-1 hover:-translate-y-1 hover:shadow-sticker-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary"
               >
                 {/* Visual */}
@@ -81,7 +82,7 @@ export default async function DisciplinesPage() {
 
                 {/* Content */}
                 <div className="border-t-2 border-foreground bg-card p-6 md:p-8">
-                  <h2 className="font-[family-name:var(--font-display)] text-3xl font-black uppercase tracking-tighter text-foreground transition-colors group-hover:text-primary md:text-4xl">
+                  <h2 className="font-[family-name:var(--font-display)] text-3xl font-normal tracking-[0.025em] text-foreground transition-colors group-hover:text-primary md:text-4xl">
                     {discipline.name}
                   </h2>
                   {discipline.short_description && (
@@ -104,7 +105,7 @@ export default async function DisciplinesPage() {
           {!disciplines.length && (
             <div className="border-2 border-dashed border-foreground/30 bg-card p-12 text-center">
               <Flame className="mx-auto h-12 w-12 text-muted-foreground/50" aria-hidden />
-              <h3 className="mt-4 font-[family-name:var(--font-display)] text-2xl font-black uppercase tracking-tighter text-foreground">
+              <h3 className="mt-4 font-[family-name:var(--font-display)] text-2xl font-normal tracking-[0.025em] text-foreground">
                 Brak dostępnych dyscyplin
               </h3>
               <p className="mt-2 text-muted-foreground">Sprawdź ponownie wkrótce.</p>
@@ -116,7 +117,7 @@ export default async function DisciplinesPage() {
             <p className="text-xs font-black uppercase tracking-widest text-cyan">
               Pierwszy trening za 40 zł
             </p>
-            <h2 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-black uppercase leading-none tracking-tighter md:text-6xl">
+            <h2 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-normal leading-none tracking-[0.025em] md:text-6xl">
               Sprawdź na sobie
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-background/70">
@@ -124,13 +125,13 @@ export default async function DisciplinesPage() {
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
-                href="/kontakt"
+                href="/kontakt/"
                 className="inline-block border-2 border-cyan bg-cyan px-10 py-4 font-black uppercase tracking-wider text-cyan-foreground transition-all hover:bg-background hover:text-foreground"
               >
                 Zapisz się
               </Link>
               <Link
-                href="/lokalizacje"
+                href="/lokalizacje/"
                 className="inline-block border-2 border-background px-10 py-4 font-black uppercase tracking-wider text-background transition-all hover:bg-background hover:text-foreground"
               >
                 Lokalizacje

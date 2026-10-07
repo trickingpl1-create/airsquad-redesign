@@ -393,17 +393,20 @@ export function DisciplineView({
           {/* CTA Section */}
           <section className="rounded-lg border border-primary/20 bg-primary/5 p-8 text-center">
             <h2 className="text-2xl font-bold text-foreground">
-              Chcesz spróbować {discipline.name}?
+              Chcesz spróbować?
             </h2>
             <p className="mt-2 text-muted-foreground">
               Pierwszy trening kosztuje 40 zł. Zapisz się teraz!
             </p>
-            <div className="mt-6 flex justify-center gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Zapisz się na zajęcia
+            {/* Wcześniej <Button> bez href — przycisk nic nie robił. Kotwica prowadzi
+                do wyboru miasta i kalendarza AIPAX wyżej na tej stronie (CityEnrolment,
+                id="zapisy"); bez miast — na /zapisy/. */}
+            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+              <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
+                <a href={cities.length > 0 ? '#zapisy' : '/zapisy/'}>Zapisz się na zajęcia</a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <a href="/lokalizacje">Zobacz lokalizacje</a>
+                <a href="/lokalizacje/">Zobacz lokalizacje</a>
               </Button>
             </div>
           </section>
@@ -695,7 +698,7 @@ export function EventView({
                 </Button>
               )}
               <Button variant="outline" size="lg" asChild>
-                <a href="/kontakt">Skontaktuj się</a>
+                <a href="/kontakt/">Skontaktuj się</a>
               </Button>
             </div>
           </section>
@@ -784,7 +787,7 @@ export function StaticPageView({
                     Skontaktuj się
                   </Button>
                   <Button variant="outline" size="lg" asChild>
-                    <a href="/lokalizacje">
+                    <a href="/lokalizacje/">
                       Znajdź lokalizację
                     </a>
                   </Button>

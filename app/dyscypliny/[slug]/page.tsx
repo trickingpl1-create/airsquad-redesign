@@ -49,7 +49,7 @@ export default async function DisciplinePage({ params }: DisciplinePageProps) {
     <DisciplineView
       data={discipline}
       currentPath={`/dyscypliny/${slug}`}
-      parents={[{ name: 'Dyscypliny', url: '/dyscypliny' }]}
+      parents={[{ name: 'Dyscypliny', url: '/dyscypliny/' }]}
       cities={cities}
     />
   )
