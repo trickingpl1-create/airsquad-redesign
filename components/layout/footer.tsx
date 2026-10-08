@@ -101,9 +101,14 @@ export function Footer() {
           ))}
         </div>
 
-        {/* md:pr-48 — miejsce na pływający przycisk „Zapisz się” (fixed, prawy dolny róg);
-            bez tego na desktopie zasłaniał ikony social media. */}
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-7 md:pr-48">
+        {/* Dwa pływające elementy wchodzą w ten pasek, każdy z innej strony:
+            md:pr-48 — przycisk „Zapisz się” (fixed, prawy dolny róg) na desktopie;
+            pb-20    — znaczek Cookiebota (fixed, LEWY dolny róg, 48×48 + 10 px odstępu).
+            Bez pb-20 znaczek zasłaniał pierwszą ikonę social media — na 375 px
+            ikona IG zajmuje x 24–60, znaczek x 10–58, więc Instagram był
+            nieklikalny na telefonach (zmierzone na produkcji 2026-10-08).
+            Na desktopie kolizji nie ma — ikony siedzą wtedy po prawej stronie. */}
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pb-20 pt-7 md:pb-0 md:pr-48">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground/70">
             © {year} Air/Squad · Wszystkie prawa zastrzeżone
             {/* Zmiana/wycofanie zgody na cookies — polityka prywatności odsyła tutaj. */}
