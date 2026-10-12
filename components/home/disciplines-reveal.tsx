@@ -1,3 +1,4 @@
+import { CoverImage } from '@/components/cover-image'
 import Link from 'next/link'
 
 export type Discipline = {
@@ -44,14 +45,10 @@ export function DisciplinesReveal({ disciplines }: { disciplines: readonly Disci
             ['--clip' as string]: i === last ? CLIP_LEFT : CLIP_RIGHT,
           }}
         >
-          <span
-            aria-hidden
-            className="absolute inset-0 bg-cover"
-            style={{
-              backgroundImage: `url('${d.photo}')`,
-              backgroundPosition: d.photoPosition ?? 'center',
-              backgroundSize: d.photoSize ?? 'cover',
-            }}
+          <CoverImage
+            src={d.photo}
+            position={d.photoPosition ?? 'center'}
+            fit={d.photoSize === 'contain' ? 'contain' : 'cover'}
           />
           <span
             aria-hidden

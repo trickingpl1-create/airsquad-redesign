@@ -1,3 +1,4 @@
+import { CoverImage } from '@/components/cover-image'
 const audience = [
   {
     title: 'Dzieci 7–10 lat',
@@ -58,11 +59,7 @@ export function HowAudienceSection() {
               }`}
               style={{ ['--clip' as string]: i === last ? CLIP_LEFT : CLIP_RIGHT }}
             >
-              <span
-                aria-hidden
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url('${a.photo}')` }}
-              />
+              <CoverImage src={a.photo} />
               <span
                 aria-hidden
                 className="absolute inset-0"

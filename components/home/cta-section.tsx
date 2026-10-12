@@ -1,3 +1,4 @@
+import { CoverImage } from '@/components/cover-image'
 import { CtaMiniForm } from './cta-mini-form'
 import type { EnrolCity } from '@/lib/content/enrol-cities'
 
@@ -14,11 +15,7 @@ export function CTASection({ cities }: { cities: EnrolCity[] }) {
       className="relative overflow-hidden bg-background px-6 py-24 md:px-10 md:py-32"
     >
       {/* Semitransparent background photo */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-cover bg-center opacity-10"
-        style={{ backgroundImage: "url('/images/bg-zapisz.jpg')" }}
-      />
+      <CoverImage src="/images/bg-zapisz.jpg" className="opacity-10" />
       {/* Gradient overlay to darken edges and keep text legible */}
       <div
         aria-hidden

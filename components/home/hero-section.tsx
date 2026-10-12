@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Instagram } from 'lucide-react'
 import { TEAM } from '@/lib/content/team'
 import { BackgroundVideo } from '@/components/background-video'
+import { CoverImage } from '@/components/cover-image'
 
 const YOUTUBE_ID = 'uFobcH0aQ7g'
 
@@ -169,15 +170,9 @@ export function HeroSection() {
                 background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%)',
               }}
             >
-              {/* Semi-transparent background image */}
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-cover bg-center opacity-35"
-                style={{
-                  backgroundImage:
-                    "url('/images/old-site/dzieci-airtrack.jpg')",
-                }}
-              />
+              {/* Dekoracja kafelka. priority, bo to pierwszy ekran — jako tło CSS
+                  przeglądarka znajdowała ten plik dopiero po zbudowaniu stylów. */}
+              <CoverImage src="/images/old-site/dzieci-airtrack.jpg" priority className="opacity-35" />
               {/* Dashed circle decoration */}
               <div
                 aria-hidden
@@ -207,15 +202,7 @@ export function HeroSection() {
                   background: 'linear-gradient(135deg, #06d6ff 0%, #00d9ff 100%)',
                 }}
               >
-                {/* Semi-transparent background image */}
-                <div
-                  aria-hidden
-                  className="absolute inset-0 bg-cover bg-center opacity-30"
-                  style={{
-                    backgroundImage:
-                      "url('/images/old-site/hala-airspace.jpg')",
-                  }}
-                />
+                <CoverImage src="/images/old-site/hala-airspace.jpg" priority className="opacity-30" />
                 <div className="relative">
                   <div
                     style={{ fontFamily: 'var(--font-covered-by-your-grace)', letterSpacing: '0.025em' }}
@@ -242,13 +229,7 @@ export function HeroSection() {
                   background: 'linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%)',
                 }}
               >
-                <div
-                  aria-hidden
-                  className="absolute inset-0 bg-cover bg-center opacity-30"
-                  style={{
-                    backgroundImage: "url('/images/hero/instagram.jpg')",
-                  }}
-                />
+                <CoverImage src="/images/hero/instagram.jpg" priority className="opacity-30" />
                 <div
                   aria-hidden
                   className="absolute inset-0"
