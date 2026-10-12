@@ -39,13 +39,20 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     // Bez sufiksu "| Air Squad" — dokleja go szablon title z app/layout.tsx
     meta_title: 'Akrobatyka Rzeszów — zajęcia dla dzieci i dorosłych',
     meta_description:
-      'Zajęcia akrobatyki w Rzeszowie dla dzieci od 4 lat, młodzieży i dorosłych. Małe grupy, doświadczeni trenerzy, maty AirTrack. Zapisz się na zajęcia próbne.',
+      'Akrobatyka dla dzieci, młodzieży i dorosłych w Rzeszowie — sala AIR SPACE. Małe grupy, dwóch trenerów na zajęciach, maty AirTrack. Zapisz się na trening próbny.',
     h1_title: 'Akrobatyka Rzeszów',
     hero_tagline: null,
     hero_content:
       '<p>Akrobatyka, tricking i tumbling dla dzieci, młodzieży i dorosłych. Każde zajęcia prowadzi <strong>dwóch wykwalifikowanych trenerów</strong> na super-miękkich matach AirTrack.</p>',
+    // Nagłówek H2 z frazą lokalną: żaden z pozostałych nagłówków na tej stronie
+    // jej nie nosił („Którą grupę wybrać?", „Sala AIR SPACE Rzeszów", „Kadra
+    // Rzeszów", „Wybierz swój plan"), a Google czyta nagłówki jako mapę tematu.
+    // Akapit o Tyczynie domyka audyt F76: /tyczyn/ przekierowuje 301 tutaj, więc
+    // ta strona powinna przejąć temat po adresie, który zastąpiła.
+    // „od 7. roku życia" wprost z grafiku (groups_info: AcroRzeszów NABÓR 7+) —
+    // nie z ogólnego „od 4 lat", które jest nieprawdą (audyt F10).
     main_content:
-      '<p><strong>Tricking</strong> to połączenie akrobatyki z elementami sztuk walki (np. kopnięcia) oraz elementami breakdance&rsquo;u — widowiskowa forma ruchu dla młodzieży i dorosłych.</p><p><strong>Tumbling</strong>, czyli skoki na ścieżce, to nauka przewrotów, przerzutów i salt — od podstaw po zaawansowane akrobacje.</p>',
+      '<h2>Akrobatyka dla dzieci w Rzeszowie</h2><p>Nabór prowadzimy od 7. roku życia. Dzieci zaczynają od przewrotów, mostków i równowagi, a przez rundak i przerzuty dochodzą do flik-flaka i salt. Grupy dobieramy według poziomu, nie rocznika, więc nikt nie zostaje w tyle ani się nie nudzi.</p><p>Zajęcia w Tyczynie są zawieszone — zapraszamy do sali AIR SPACE w Rzeszowie.</p><p><strong>Tricking</strong> to połączenie akrobatyki z elementami sztuk walki (np. kopnięcia) oraz elementami breakdance&rsquo;u — widowiskowa forma ruchu dla młodzieży i dorosłych.</p><p><strong>Tumbling</strong>, czyli skoki na ścieżce, to nauka przewrotów, przerzutów i salt — od podstaw po zaawansowane akrobacje.</p>',
     schedule_content: null,
     // Grafik 1:1 z kalendarzy AIPAX Rzeszów (sezon 2026/27): formularz naborowy
     // (aipax_form_id) + formularz kontynuacji (aipax_form_id_continuation).

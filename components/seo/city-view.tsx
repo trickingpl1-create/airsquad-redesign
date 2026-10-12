@@ -557,8 +557,18 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
         {/* Opis dyscyplin (oryginalna treść) */}
         {city.main_content && (
           <section className="container mx-auto px-4 pt-10">
+            {/* Style dopisane wprost, bo `prose`/`prose-invert` NIC tu nie robi:
+                @tailwindcss/typography nie jest zainstalowany (ani w package.json,
+                ani jako @plugin w globals.css). Bez tego treść z `main_content`
+                renderowała się jako jeden ciąg 16-px tekstu — akapity bez odstępu,
+                <h2> nieodróżnialny od zdania. Nagłówek dostaje font odręczny w
+                wadze 500, czyli to samo co sąsiednie tytuły kart („Sala AIR SPACE
+                Rzeszów"), zgodnie z konwencją z CLAUDE.md.
+                Ta sama martwa klasa siedzi jeszcze w 8 miejscach (camp-view,
+                page-layout, views.tsx) — do osobnej decyzji: doinstalować wtyczkę
+                czy wszędzie rozpisać utility. */}
             <div
-              className="prose prose-invert max-w-3xl text-foreground/80 [&_strong]:text-foreground"
+              className="max-w-3xl text-foreground/80 [&_h2]:mb-3 [&_h2]:mt-10 [&_h2]:font-[family-name:var(--font-display)] [&_h2]:text-2xl [&_h2]:font-medium [&_h2]:text-foreground [&_p]:mb-4 [&_p:last-child]:mb-0 [&_strong]:text-foreground"
               dangerouslySetInnerHTML={{ __html: city.main_content }}
             />
           </section>

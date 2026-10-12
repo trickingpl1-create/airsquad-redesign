@@ -11,9 +11,19 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
   name: 'Akrobatyka',
   // Bez sufiksu "| Air Squad" — dokleja go szablon title z app/layout.tsx
   // (ta sama konwencja co w lib/content/cities.ts; wiersze w DB też jej wymagają)
-  meta_title: 'Akrobatyka dla dzieci i dorosłych — Rzeszów i Podkarpacie',
+  // Tytuł CELOWO bez nazwy miasta. Wcześniej brzmiał „…— Rzeszów i Podkarpacie",
+  // przez co o frazę „akrobatyka rzeszów" konkurowały trzy własne strony naraz:
+  // ta, /rzeszow/ i strona główna. Google wybiera wtedy jedną, nie zawsze tę
+  // właściwą — audyt odnotował skakanie pozycji między stroną główną a /rzeszow/
+  // (R5.3). Podział ról: tu frazy ogólne („akrobatyka dla dzieci", „zajęcia
+  // akrobatyczne"), konkretne miasta biorą własne landingi, do których ta strona
+  // linkuje w sekcji „Wybierz swoje miasto".
+  meta_title: 'Akrobatyka dla dzieci i dorosłych',
+  // Bez deklaracji wieku: „od 4 lat" było nieprawdą (najmłodsza grupa w całym
+  // klubie to 6 lat wg grafików w cities.ts), a prawidłowa wartość wymaga
+  // decyzji klubu — audyt F10. Do czasu jej podania nie powielamy liczby.
   meta_description:
-    'Zajęcia akrobatyki od 4 lat w 6 miastach na Podkarpaciu. Małe grupy, dwóch trenerów, ścieżki AirTrack. Pierwszy trening za 40 zł. Zapisz się!',
+    'Akrobatyka dla dzieci, młodzieży i dorosłych — od pierwszego przewrotu do salta. Małe grupy, dwóch trenerów na sali, ścieżki AirTrack. Pierwszy trening 40 zł.',
   h1_title: 'Akrobatyka',
   hero_tagline: 'od pierwszego przewrotu do salta.',
   hero_image_url: '/images/akrobatyka/hero-salto.jpg',
@@ -24,7 +34,9 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
   age_requirement: 'od 4 lat',
   benefits: [],
   stats: [
-    { value: '7', label: 'miast na Podkarpaciu' },
+    // 6, nie 7 — Tyczyn wycofany (zajęcia zawieszone, adres 301 na /rzeszow/,
+    // patrz lib/content/withdrawn-locations.json).
+    { value: '6', label: 'miast na Podkarpaciu' },
     { value: '4+', label: 'zaczynamy od 4. roku życia' },
     { value: '12', label: 'maks. osób w grupie' },
     { value: '2', label: 'trenerów na każdej sali' },
@@ -211,7 +223,9 @@ export const TUMBLING_DISCIPLINE: Discipline = {
   stats: [
     { value: '12', label: 'maks. osób w grupie' },
     { value: '2', label: 'trenerów na każdej sali' },
-    { value: '7', label: 'miast na Podkarpaciu' },
+    // 6, nie 7 — Tyczyn wycofany (zajęcia zawieszone, adres 301 na /rzeszow/,
+    // patrz lib/content/withdrawn-locations.json).
+    { value: '6', label: 'miast na Podkarpaciu' },
   ],
   levels: [
     { num: '01', title: 'Przewroty i mostki', desc: 'Kontrola ciała i bezpieczne lądowanie — fundament każdego skoku.', tag: 'POZIOM START' },
