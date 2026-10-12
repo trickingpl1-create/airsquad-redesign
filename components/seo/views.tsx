@@ -348,7 +348,7 @@ export function DisciplineView({
 
           {/* Full Description */}
           {discipline.full_description && (
-            <section className="prose prose-invert max-w-none">
+            <section className="rich-text max-w-none">
               <div
                 dangerouslySetInnerHTML={{ __html: discipline.full_description }}
               />
@@ -559,7 +559,7 @@ export function EventView({
 
           {/* Description */}
           {event.description && (
-            <section className="prose prose-invert max-w-none">
+            <section className="rich-text max-w-none">
               <div dangerouslySetInnerHTML={{ __html: event.description }} />
             </section>
           )}
@@ -598,7 +598,7 @@ export function EventView({
                 Co zawiera to wydarzenie?
               </h2>
               <div
-                className="prose prose-invert max-w-none"
+                className="rich-text max-w-none"
                 dangerouslySetInnerHTML={{ __html: event.includes }}
               />
             </section>
@@ -759,7 +759,7 @@ export function StaticPageView({
         <div className="container mx-auto px-4 py-12">
           <div className="mx-auto max-w-3xl space-y-8">
             {page.content && (
-              <div className="prose prose-invert max-w-none">
+              <div className="rich-text max-w-none">
                 <div dangerouslySetInnerHTML={{ __html: page.content }} />
               </div>
             )}

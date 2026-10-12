@@ -58,7 +58,13 @@ export function SEOPageLayout({
 
       {/* Content */}
       <div className="container mx-auto px-4 py-16 md:py-20">
-        <div className="prose prose-lg mx-auto max-w-3xl prose-headings:font-[family-name:var(--font-display)] prose-headings:font-normal prose-headings:tracking-[0.025em] prose-h2:text-4xl prose-h3:text-2xl prose-strong:text-foreground prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline prose-li:my-1">
+        {/* Wcześniej 10 modyfikatorów `prose-*` — wszystkie martwe, bo wtyczka
+            typografii nie jest zainstalowana. Zastąpione klasą `rich-text`
+            z globals.css, która daje to samo: font odręczny w nagłówkach,
+            linki, listy, odstępy. Uwaga: ten layout nie renderuje się dziś na
+            żadnej stronie (tabela `static_pages` jest pusta), więc zmiana ma
+            charakter profilaktyczny. */}
+        <div className="rich-text mx-auto max-w-3xl">
           {children}
         </div>
       </div>
@@ -73,7 +79,7 @@ interface FAQSectionProps {
 
 export function FAQSection({ items }: { items: FAQSectionProps[] }) {
   return (
-    <div className="my-12 not-prose border-2 border-foreground bg-card p-8 shadow-sticker-lg">
+    <div className="my-12 border-2 border-foreground bg-card p-8 shadow-sticker-lg">
       <h2 className="mb-6 font-[family-name:var(--font-display)] text-3xl font-normal tracking-[0.025em] text-foreground">
         Często zadawane pytania
       </h2>
@@ -104,7 +110,7 @@ interface GroupInfo {
 
 export function GroupsInfoSection({ groups }: { groups: GroupInfo[] }) {
   return (
-    <div className="my-12 not-prose">
+    <div className="my-12">
       <h2 className="mb-8 font-[family-name:var(--font-display)] text-3xl font-normal tracking-[0.025em] text-foreground">
         Grupy treningowe
       </h2>

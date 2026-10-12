@@ -193,7 +193,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
             </h2>
             {camp.description && (
               <div
-                className="prose prose-invert mx-auto mt-5 max-w-2xl text-[15px] leading-[1.8] text-muted-foreground [&_p]:mt-4 [&_p:first-child]:mt-0 [&_strong]:text-foreground"
+                className="rich-text mx-auto mt-5 max-w-2xl text-[15px] leading-[1.8] text-muted-foreground"
                 dangerouslySetInnerHTML={{ __html: camp.description }}
               />
             )}

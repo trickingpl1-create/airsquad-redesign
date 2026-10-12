@@ -388,3 +388,61 @@
     animation: none;
   }
 }
+
+/* ─── Treść z HTML-a (opisy wydarzeń, miast, obozów, stron statycznych) ───
+   Zastępuje klasy `prose`/`prose-invert`, które w tym projekcie NIC nie robiły:
+   @tailwindcss/typography nigdy nie został zainstalowany (ani w package.json,
+   ani jako @plugin wyżej), a klasy zostały w 9 miejscach po wcześniejszej
+   wersji kodu. Efekt był uśpiony — dopóki treści są jednoakapitowe, nie widać
+   różnicy; przy dłuższym tekście akapity zlewały się w jeden blok, a <h2>
+   renderował się jak zwykłe zdanie (16 px Inter).
+
+   Celowo bez wtyczki: jej domyślne style narzucają własną skalę typograficzną
+   i kolory linków na wszystkie 9 bloków naraz, co rozjechałoby się z resztą
+   serwisu. Tu trzymamy się fontów i wag z CLAUDE.md — nagłówki fontem
+   odręcznym, waga 500 jak tytuły kart. */
+.rich-text > * + * {
+  margin-top: 1rem;
+}
+
+.rich-text h2,
+.rich-text h3 {
+  font-family: var(--font-covered-by-your-grace, 'Covered By Your Grace', cursive);
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  line-height: 1.2;
+  color: var(--foreground);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.rich-text h2 { font-size: 1.5rem; }
+.rich-text h3 { font-size: 1.25rem; }
+
+/* Pierwszy nagłówek nie odpycha się od góry — kontener ma już swój odstęp. */
+.rich-text > :first-child {
+  margin-top: 0;
+}
+
+.rich-text strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.rich-text a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.rich-text a:hover {
+  text-decoration: underline;
+}
+
+.rich-text ul,
+.rich-text ol {
+  padding-left: 1.25rem;
+  list-style: revert;
+}
+.rich-text li + li {
+  margin-top: 0.25rem;
+}
