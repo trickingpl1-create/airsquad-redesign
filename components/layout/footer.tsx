@@ -20,7 +20,6 @@ const linkGroups = [
       { href: '/letni/', label: 'air camp' },
       { href: '/obozy-sportowe/', label: 'obozy sportowe' },
       { href: '/airmeeting/', label: 'airmeeting' },
-      { href: '/gravityjam/', label: 'gravity jam' },
     ],
   },
   {

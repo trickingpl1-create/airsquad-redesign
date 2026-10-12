@@ -153,10 +153,14 @@ export const LETNI_EVENT: Event = {
   updated_at: '',
 }
 
-// Fallback treści /airmeeting/ i /gravityjam/ — treść wzięta z już zatwierdzonych
-// opisów na stronie głównej (components/home/promo-section.tsx), żeby nowy
-// dropdown „Obozy i wydarzenia" w menu nie prowadził na puste strony 404.
-// Po podłączeniu i zaseedowaniu bazy wiersz z DB ma priorytet.
+// Fallback treści /airmeeting/. Po podłączeniu i zaseedowaniu bazy wiersz
+// z DB ma priorytet.
+//
+// GRAVITYJAM_EVENT usunięty 2026-10-12 (decyzja klubu). Sam adres
+// /gravityjam/ ŻYJE DALEJ jako 301 na /wydarzenia/ — jest w kontrakcie
+// chronionych URL-i (docs/03-mapa-url.md) i w starej sitemapie Yoasta,
+// więc zwykłe skasowanie dałoby 404 na adresie z historią w Google.
+// Reguła: lib/content/legacy-redirects.json.
 export const AIRMEETING_EVENT: Event = {
   id: 'fallback-airmeeting',
   slug: 'airmeeting',
@@ -235,36 +239,8 @@ export const AIRMEETING_EVENT: Event = {
   updated_at: '',
 }
 
-export const GRAVITYJAM_EVENT: Event = {
-  id: 'fallback-gravityjam',
-  slug: 'gravityjam',
-  title: 'Gravity Jam — święto kultury ulicznej',
-  meta_title: 'Gravity Jam — jam akrobatyczny i święto kultury ulicznej',
-  meta_description:
-    'Gravity Jam — warsztaty rolkowe, akrobatyczne, strefa longboardowa i gier drewnianych. Air Squad razem z MB Park i Street Life Rzeszów.',
-  event_type: 'gravityjam',
-  event_date: null,
-  event_time: null,
-  location: 'Rzeszów',
-  tagline: 'święto kultury ulicznej.',
-  image_url: null,
-  description:
-    '<p>Warsztaty rolkowe, akrobatyczne, strefa longboardowa i gier drewnianych. Gravity Jam to wspólna inicjatywa Air Squad, MB Park i Street Life Rzeszów.</p>',
-  program: [],
-  pricing: [],
-  includes: null,
-  form_url: null,
-  stats: [],
-  attractions: [],
-  gallery: [],
-  is_active: true,
-  is_published: true,
-  created_at: '',
-  updated_at: '',
-}
 
 export const FALLBACK_EVENTS: Record<string, Event> = {
   letni: LETNI_EVENT,
   airmeeting: AIRMEETING_EVENT,
-  gravityjam: GRAVITYJAM_EVENT,
 }

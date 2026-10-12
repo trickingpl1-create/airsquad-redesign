@@ -118,7 +118,7 @@ export default async function RootSlugPage({ params }: RootSlugPageProps) {
     }
     case 'event':
       // /letni/ (Air Camp) ma bogaty dedykowany widok — reszta wydarzeń
-      // (airmeeting, gravityjam) używa generycznego EventView.
+      // (airmeeting) używa generycznego EventView.
       if (resolved.data.slug === 'letni') {
         return <CampView data={resolved.data} currentPath={currentPath} />
       }

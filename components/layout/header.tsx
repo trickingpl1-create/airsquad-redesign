@@ -17,7 +17,6 @@ import {
 const eventLinks = [
   { href: '/letni', label: 'Air Camp' },
   { href: '/airmeeting', label: 'Air Meeting' },
-  { href: '/gravityjam', label: 'Gravity Jam' },
 ]
 
 const cityLinks = [

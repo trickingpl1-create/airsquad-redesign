@@ -58,5 +58,11 @@
     "to": "/debica/",
     "reason": "Warsztaty na szarfach powietrznych w AIR SPACE Dębica (czerwiec 2026) — sala i zajęcia są na landingu Dębicy. Poprawione 2026-10-06 (wcześniej /sklep/, błędnie opisane jako sprzedaż szarf).",
     "status": "propozycja"
+  },
+  {
+    "from": "/gravityjam/",
+    "to": "/wydarzenia/",
+    "reason": "Wydarzenie wycofane z oferty (decyzja klubu 2026-10-12). Adres chroniony (03-mapa-url.md) i obecny w starej sitemapie Yoasta — zamiast 404 kieruje na hub wydarzeń, tak samo jak /stickit/ i /spotkanie/.",
+    "status": "zatwierdzone"
   }
 ]

@@ -10,14 +10,13 @@ import { Calendar, MapPin, ArrowRight } from 'lucide-react'
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Wydarzenia',
   description:
-    'Nadchodzące wydarzenia Air Squad — AirMeeting, spotkania akrobatyczne i Gravity Jam.',
+    'Nadchodzące wydarzenia Air Squad — AirMeeting i spotkania akrobatyczne.',
   canonical: '/wydarzenia/',
 })
 
 const EVENT_TYPE_LABELS = {
   airmeeting: 'AirMeeting',
   spotkanie: 'Spotkania akrobatyczne',
-  gravityjam: 'Gravity Jam',
 } as const
 
 const TILE_GRADIENTS = [
@@ -60,7 +59,6 @@ export default async function EventsPage() {
   const eventsByType = {
     airmeeting: events.filter((e) => e.event_type === 'airmeeting'),
     spotkanie: events.filter((e) => e.event_type === 'spotkanie'),
-    gravityjam: events.filter((e) => e.event_type === 'gravityjam'),
   }
   // Licznik = karty faktycznie pokazane na stronie (getEvents() zwraca też Air
   // Camp, który ma własną sekcję obozów) — wcześniej „3 wydarzeń" przy 2 kartach.
@@ -84,7 +82,7 @@ export default async function EventsPage() {
               Wydarzenia
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-medium text-primary-foreground/85 md:text-xl">
-              AirMeeting, spotkania akrobatyczne, Gravity Jam. Środowisko, które pcha do przodu.
+              AirMeeting i spotkania akrobatyczne. Środowisko, które pcha do przodu.
             </p>
           </div>
         </section>
