@@ -31,13 +31,15 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
   short_description:
     'Uczymy akrobatyki od podstaw — bezpiecznie, metodycznie i z frajdą. Małe grupy do 12 osób, dwóch trenerów na sali i profesjonalne ścieżki AirTrack, na których pierwsze salto przychodzi szybciej, niż myślisz.',
   full_description: null,
-  age_requirement: 'od 4 lat',
+  // 7, nie 4 — potwierdzone przez klub 2026-10-12. Wcześniejsze „od 4 lat"
+  // nie miało pokrycia w żadnym grafiku (audyt F10).
+  age_requirement: 'od 7 lat',
   benefits: [],
   stats: [
     // 6, nie 7 — Tyczyn wycofany (zajęcia zawieszone, adres 301 na /rzeszow/,
     // patrz lib/content/withdrawn-locations.json).
     { value: '6', label: 'miast na Podkarpaciu' },
-    { value: '4+', label: 'zaczynamy od 4. roku życia' },
+    { value: '7+', label: 'zaczynamy od 7. roku życia' },
     { value: '12', label: 'maks. osób w grupie' },
     { value: '2', label: 'trenerów na każdej sali' },
   ],
@@ -91,7 +93,11 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
   ],
   age_groups: [
     {
-      age: '4–6',
+      // Dolna granica podniesiona z 4 na 7 (potwierdzenie klubu 2026-10-12).
+      // Górna wzięta z podziału naborów w grafikach: NABÓR 7+ i NABÓR 9+,
+      // więc najmłodsza grupa to 7–8. Zakresy celowo zachodzą na sąsiednie —
+      // klub dzieli grupy „wg poziomu, nie wieku" (opis Acro Sport niżej).
+      age: '7–8',
       name: 'AcroKids',
       desc: 'Zabawa ruchowa z elementami akrobatyki. Przewroty, równowaga, pierwsze mostki. 60 min.',
     },
@@ -129,7 +135,7 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
     {
       question: 'Od ilu lat dziecko może zacząć?',
       answer:
-        'Od 4. roku życia w grupach AcroKids. Górnej granicy nie ma — mamy też grupy dla dorosłych.',
+        'Od 7. roku życia w grupach AcroKids. Górnej granicy nie ma — mamy też grupy dla dorosłych.',
     },
     {
       question: 'Czy akrobatyka jest bezpieczna?',

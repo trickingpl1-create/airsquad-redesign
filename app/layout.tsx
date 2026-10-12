@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     template: '%s | Air Squad',
   },
   description:
-    'Klub akrobatyczny Air Squad — akrobatyka, tricking, tumbling, longboard i obozy dla dzieci od 4 lat, młodzieży i dorosłych. 6 lokalizacji na Podkarpaciu.',
+    'Klub akrobatyczny Air Squad — akrobatyka, tricking, tumbling, longboard i obozy dla dzieci od 7 lat, młodzieży i dorosłych. 6 lokalizacji na Podkarpaciu.',
   keywords: [
     'akrobatyka',
     'tricking',

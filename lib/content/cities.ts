@@ -156,7 +156,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     slug: 'debica',
     meta_title: 'Akrobatyka Dębica — zajęcia dla dzieci i dorosłych',
     meta_description:
-      'Zajęcia akrobatyki w Dębicy dla dzieci od 4 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
+      'Zajęcia akrobatyki w Dębicy dla dzieci od 7 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
     h1_title: 'Akrobatyka Dębica',
     hero_tagline: null,
     hero_content:
@@ -253,7 +253,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     slug: 'jaslo',
     meta_title: 'Akrobatyka Jasło — zajęcia dla dzieci i dorosłych',
     meta_description:
-      'Zajęcia akrobatyki w Jaśle dla dzieci od 4 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
+      'Zajęcia akrobatyki w Jaśle dla dzieci od 7 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
     h1_title: 'Akrobatyka Jasło',
     hero_tagline: null,
     hero_content:
@@ -272,7 +272,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     faq: [
       {
         question: 'Od ilu lat dziecko może trenować w Jaśle?',
-        answer: 'Grupy naborowe w Jaśle przyjmują dzieci od 6. roku życia. Poziom grupy dobiera trener po pierwszych zajęciach.',
+        answer: 'Grupy naborowe w Jaśle przyjmują dzieci od 7. roku życia. Poziom grupy dobiera trener po pierwszych zajęciach.',
       },
       {
         question: 'Gdzie odbywają się zajęcia w Jaśle?',
@@ -334,7 +334,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     slug: 'biecz',
     meta_title: 'Akrobatyka Biecz — zajęcia dla dzieci i dorosłych',
     meta_description:
-      'Zajęcia akrobatyki w Bieczu dla dzieci od 4 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
+      'Zajęcia akrobatyki w Bieczu dla dzieci od 7 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
     h1_title: 'Akrobatyka Biecz',
     hero_tagline: null,
     hero_content:
@@ -343,8 +343,8 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       '<p>Sekcja w Bieczu prowadzi pełną ścieżkę rozwoju: od pierwszych przewrotów w grupach naborowych, przez grupę podstawową i średniozaawansowaną, aż po treningi zawodnicze w poniedziałki i środy.</p>',
     schedule_content: null,
     groups_info: [
-      { name: 'Acro Biecz NABÓR (nowe dzieci)', days: 'pn', hours: '17:20–18:20', age: 'od 6 lat', level: 'grupa początkująca', enrolling: true },
-      { name: 'Acro Biecz NABÓR 2 (nowe dzieci)', days: 'śr', hours: '17:20–18:20', age: 'od 6 lat', level: 'grupa początkująca', enrolling: true },
+      { name: 'Acro Biecz NABÓR (nowe dzieci)', days: 'pn', hours: '17:20–18:20', age: 'od 7 lat', level: 'grupa początkująca', enrolling: true },
+      { name: 'Acro Biecz NABÓR 2 (nowe dzieci)', days: 'śr', hours: '17:20–18:20', age: 'od 7 lat', level: 'grupa początkująca', enrolling: true },
       { name: 'Acro Biecz 1', days: 'pn', hours: '18:20–19:20', age: 'od 7 lat', level: 'grupa podstawowa (kontynuacja)' },
       { name: 'Acro Biecz 1.1', days: 'śr', hours: '18:20–19:20', age: 'od 7 lat', level: 'grupa podstawowa (kontynuacja)' },
       { name: 'Acro Biecz 2', days: 'pn · śr', hours: '18:20–19:20', level: 'średniozaawansowana (kontynuacja)' },
@@ -353,7 +353,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     faq: [
       {
         question: 'Od ilu lat są zajęcia w Bieczu?',
-        answer: 'Grupy naborowe przyjmują dzieci od 6. roku życia — w poniedziałki i środy o 17:20.',
+        answer: 'Grupy naborowe przyjmują dzieci od 7. roku życia — w poniedziałki i środy o 17:20.',
       },
       {
         question: 'Gdzie dokładnie odbywają się treningi?',
@@ -413,11 +413,11 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     slug: 'brzostek',
     meta_title: 'Akrobatyka Brzostek — zajęcia dla dzieci i dorosłych',
     meta_description:
-      'Zajęcia akrobatyki w Brzostku dla dzieci od 4 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
+      'Zajęcia akrobatyki w Brzostku dla dzieci od 7 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
     h1_title: 'Akrobatyka Brzostek',
     hero_tagline: null,
     hero_content:
-      '<p>Treningi akrobatyki w Hali Widowiskowo-Sportowej w Brzostku — od grupy naborowej dla dzieci od 6 lat po grupę zawodniczą. Zajęcia na profesjonalnych matach <strong>AirTrack</strong>.</p>',
+      '<p>Treningi akrobatyki w Hali Widowiskowo-Sportowej w Brzostku — od grupy naborowej dla dzieci od 7 lat po grupę zawodniczą. Zajęcia na profesjonalnych matach <strong>AirTrack</strong>.</p>',
     main_content:
       '<p>Zapisy online obowiązują wszystkich uczestników — zarówno nowe dzieci, jak i kontynuujących. O ostatecznej kwalifikacji do grupy decyduje trener prowadzący sekcję.</p>',
     schedule_content: null,
@@ -485,16 +485,16 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     slug: 'pilzno',
     meta_title: 'Akrobatyka Pilzno — zajęcia dla dzieci i dorosłych',
     meta_description:
-      'Zajęcia akrobatyki w Pilźnie dla dzieci od 4 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
+      'Zajęcia akrobatyki w Pilźnie dla dzieci od 7 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
     h1_title: 'Akrobatyka Pilzno',
     hero_tagline: null,
     hero_content:
       '<p>ACRO Pilzno — wtorkowe treningi akrobatyki w Strzegocicach. Zajęcia maksymalnie 25-osobowe na profesjonalnym sprzęcie <strong>AirTrack</strong>, prowadzone przez dwóch wykwalifikowanych trenerów.</p>',
     main_content:
-      '<p>Trening akrobatyki w Pilźnie to poprawa postawy, rozwój motoryki i orientacji przestrzennej, a przy tym nauka pracy zespołowej, koncentracji i dyscypliny — od 6. roku życia po grupy zaawansowane.</p>',
+      '<p>Trening akrobatyki w Pilźnie to poprawa postawy, rozwój motoryki i orientacji przestrzennej, a przy tym nauka pracy zespołowej, koncentracji i dyscypliny — od 7. roku życia po grupy zaawansowane.</p>',
     schedule_content: null,
     groups_info: [
-      { name: 'ACRO Pilzno NABÓR', days: 'wt', hours: '18:00–19:00', age: 'od 6 lat', level: 'grupa naborowa', enrolling: true },
+      { name: 'ACRO Pilzno NABÓR', days: 'wt', hours: '18:00–19:00', age: 'od 7 lat', level: 'grupa naborowa', enrolling: true },
       { name: 'ACRO Pilzno 1', days: 'wt', hours: '18:00–19:00', age: 'od 7 lat', level: 'poziom podstawowy' },
       { name: 'ACRO Pilzno 2', days: 'wt', hours: '19:00–20:00', age: 'od 10 lat', level: 'średnio zaawansowana' },
       { name: 'ACRO Pilzno 3', days: 'wt', hours: '19:00–20:00', age: 'od 10 lat', level: 'grupa zaawansowana' },
@@ -506,7 +506,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       },
       {
         question: 'Od ilu lat można zapisać dziecko?',
-        answer: 'Grupa naborowa przyjmuje dzieci od 6. roku życia; grupy zaawansowane od 10 lat.',
+        answer: 'Grupa naborowa przyjmuje dzieci od 7. roku życia; grupy zaawansowane od 10 lat.',
       },
       {
         question: 'Jak duże są grupy?',
@@ -561,16 +561,16 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     slug: 'tyczyn',
     meta_title: 'Akrobatyka Tyczyn — zajęcia dla dzieci i dorosłych',
     meta_description:
-      'Zajęcia akrobatyki w Tyczynie dla dzieci od 4 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
+      'Zajęcia akrobatyki w Tyczynie dla dzieci od 7 lat, młodzieży i dorosłych. Małe grupy i doświadczeni trenerzy. Zapisz się na zajęcia próbne.',
     h1_title: 'Akrobatyka Tyczyn',
     hero_tagline: null,
     hero_content:
-      '<p>Wtorkowe treningi akrobatyki w Tyczynie — grupy maksymalnie 20-osobowe dla dzieci od 6. roku życia, na profesjonalnym sprzęcie <strong>AirTrack</strong>. Zajęcia wzbogacone o tricking.</p>',
+      '<p>Wtorkowe treningi akrobatyki w Tyczynie — grupy maksymalnie 20-osobowe dla dzieci od 7. roku życia, na profesjonalnym sprzęcie <strong>AirTrack</strong>. Zajęcia wzbogacone o tricking.</p>',
     main_content:
       '<p>Akrobatyka w Tyczynie to poprawa sylwetki i wad postawy, rozwój zdolności motorycznych, równowagi i orientacji w przestrzeni. Uczymy pracy indywidualnej i zespołowej, skupienia oraz dyscypliny.</p>',
     schedule_content: null,
     groups_info: [
-      { name: 'Acro Tyczyn — grupy wg wieku', days: 'wt', hours: '15:30–18:30', age: 'od 6 lat', enrolling: true },
+      { name: 'Acro Tyczyn — grupy wg wieku', days: 'wt', hours: '15:30–18:30', age: 'od 7 lat', enrolling: true },
     ],
     faq: [
       {
