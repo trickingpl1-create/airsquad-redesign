@@ -1,4 +1,8 @@
 import type { Event } from '@/lib/types/database'
+// Numer trenera z jednego miejsca — cities.ts nie importuje letni.ts, więc
+// cyklu nie ma. Wcześniej numer bywał wpisywany ręcznie i rozjeżdżał się
+// przy zmianie (ostatnia: 722 248 546 → 728 559 101).
+import { CLUB_CONTACT } from '@/lib/content/cities'
 
 // Fallback treści strony /letni/ (Air Camp — obóz letni) na czas, gdy Supabase
 // nie jest podłączony. Treść zaimportowana z projektu Claude Design
@@ -156,24 +160,74 @@ export const LETNI_EVENT: Event = {
 export const AIRMEETING_EVENT: Event = {
   id: 'fallback-airmeeting',
   slug: 'airmeeting',
-  title: 'Air Meeting 2026',
-  meta_title: 'Air Meeting 2026 — zlot akrobatyczny',
+  // Treść odtworzona 2026-10-12 z oryginalnego wpisu Elementora w zrzucie bazy
+  // starego WordPressa (airsquad-archiwum/stara-strona-wordpress-baza-danych.zip,
+  // dup-database → wp_postmeta, _elementor_data). Wcześniej strona miała 46 słów
+  // wobec 269 na starej wersji — audyt nazywał to jedyną realną regresją SEO na
+  // chronionym adresie (docs/zamiana_strony.md 7.6).
+  //
+  // Tytuł CELOWO bez rocznika: /airmeeting/ to adres stały, obsługujący każdą
+  // edycję. Rocznik w tytule starzeje się wraz ze stroną — edycja 2026 odbyła
+  // się 18 kwietnia, więc „Air Meeting 2026" jako H1 sugerowałoby wydarzenie,
+  // którego już nie ma.
+  title: 'Air Meeting',
+  // Bez „Air Squad" na końcu — szablon dokleja sufiks „| Air Squad" sam
+  // (app/layout.tsx, title.template), inaczej wychodzi „…Air Squad | Air Squad".
+  meta_title: 'Air Meeting — klubowy zlot akrobatyczny',
   meta_description:
-    'Air Meeting 2026 — spotkanie, zawody i wspólne emocje. Niezapomniane wydarzenie dla członków klubu Air Squad.',
+    'Air Meeting — doroczny zlot klubu Air Squad: wspólne warsztaty akrobatyki, tumblingu, trickingu i szarf, wewnętrzne zawody, medale i integracja wszystkich sekcji.',
   event_type: 'airmeeting',
-  event_date: null,
-  event_time: null,
-  location: 'Podkarpacie',
+  // Data minionej edycji, nie nadchodzącej. Widok podpisuje ją neutralnie
+  // („Data"), a pierwsze zdanie opisu mówi wprost, że edycja już się odbyła —
+  // dzięki temu dane strukturalne Event mają poprawny startDate, a czytelnik
+  // nie bierze archiwum za zaproszenie (wymóg checklisty publikacji:
+  // „archiwalne wydarzenia jasno oznaczone").
+  event_date: '2026-04-18',
+  event_time: '9:00 – 18:00',
+  location: 'Zespół Szkół nr 1, ul. Towarnickiego 4, Rzeszów',
   tagline: 'spotkanie, zawody, wspólne emocje.',
   image_url: null,
   description:
-    '<p>Spotkanie, zawody i wspólne emocje. Niezapomniane, przepełnione pozytywną energią wydarzenie dla członków klubu Air Squad. Szczegóły najbliższej edycji wkrótce.</p>',
-  program: [],
+    '<p><strong>Edycja 2026 odbyła się 18 kwietnia</strong> w Zespole Szkół nr 1 w Rzeszowie. Kolejny Air Meeting planujemy wiosną — termin podamy u trenerów i na tej stronie.</p>' +
+    '<p>Air Meeting to niezapomniane, przepełnione pozytywną energią spotkanie dla członków klubu. W programie wspólny trening, na którym poznajesz osoby z innych sekcji trenujących z nami, gry i zabawy integracyjne, wewnętrzne zawody oraz posiłek dla każdego uczestnika. Każdy dostaje pamiątkowy medal, a oprócz koszulki — AIR MEETINGOWE gadżety niespodzianki.</p>' +
+    '<h2>Dla kogo jest Air Meeting</h2>' +
+    '<p>Wydarzenie jest skierowane do osób trenujących w klubie. <strong>Grupy naborowe zapraszamy na kolejną edycję za rok</strong> — pierwszy sezon to czas na oswojenie się z treningami.</p>' +
+    '<p>Udział w wydarzeniu nie jest jednoznaczny z udziałem w zawodach. Osoby chętne zgłaszają się do swojego trenera.</p>' +
+    '<h2>Dojazd</h2>' +
+    `<p>Z Jasła i Dębicy organizujemy wspólny dojazd autobusem z trenerami. Szczegóły u trenerów prowadzących albo pod numerem <a href="tel:${CLUB_CONTACT.phoneSchema}">${CLUB_CONTACT.phone}</a>.</p>`,
+  // Plan 1:1 z oryginalnej strony (blok „PLAN WYDARZENIA").
+  program: [
+    { time: '9:00', title: 'Rozpoczęcie wydarzenia', description: 'Rejestracja uczestników.' },
+    { time: '9:30', title: 'Wspólna rozgrzewka' },
+    { time: '10:00', title: 'Warsztaty — blok I', description: 'Akrobatyka / tumbling / szarfy / tricking.' },
+    { time: '11:00', title: 'Warsztaty — blok II', description: 'Akrobatyka / tumbling / szarfy / tricking.' },
+    { time: '12:30', title: 'Przerwa obiadowa', description: 'Animacje i konkursy.' },
+    { time: '14:30', title: 'Rozpoczęcie zawodów' },
+    { time: '17:00', title: 'Wolny trening', description: 'Konkursy.' },
+    { time: '17:30', title: 'Dekoracja' },
+    { time: '18:00', title: 'Zakończenie wydarzenia' },
+  ],
   pricing: [],
-  includes: null,
+  includes:
+    '<p>Udział w warsztatach, wewnętrzne zawody, posiłek, pamiątkowy medal, koszulka AIR MEETING oraz gadżety niespodzianki.</p>' +
+    '<p><strong>Płatność</strong> u trenera prowadzącego, najpóźniej trzy dni przed wydarzeniem.</p>' +
+    '<p><strong>Rozmiary koszulek:</strong> 7–8 (128–134 cm), 9–11 (134–140 cm), 12–14 (146–152 cm), XS, S, M.</p>',
   form_url: null,
   stats: [],
-  attractions: [],
+  attractions: [
+    {
+      title: 'Warsztaty w sześciu dyscyplinach',
+      desc: 'Tumbling, akrobatyka, tricking, taniec, szarfy i longboardy. Uczestnicy sami wybierają, w czym biorą udział.',
+    },
+    {
+      title: 'Wewnętrzne zawody',
+      desc: 'Rywalizacja w gronie klubowiczów, zakończona dekoracją. Udział dobrowolny — zgłoszenia u trenera.',
+    },
+    {
+      title: 'Integracja wszystkich sekcji',
+      desc: 'Wspólna rozgrzewka, gry i konkursy. Okazja, żeby poznać osoby trenujące w pozostałych miastach.',
+    },
+  ],
   gallery: [],
   is_active: true,
   is_published: true,
