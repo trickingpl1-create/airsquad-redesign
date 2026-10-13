@@ -6,6 +6,20 @@ Stan: `airsquad.pl` serwuje nową stronę od 2026-10-05 ok. 14:50 (przebieg: `za
 
 ## Stan prac (aktualizowany)
 
+**2026-10-13 (wieczór) — treść: Air Camp przeniesiony na edycję 2027, WDROŻONE.**
+
+Obóz: **24–31 lipca 2027, 8 dni, 12. edycja** (poprzednio 25.07–02.08.2026, 9 dni, 11. edycja). Ceny bez zmian (2 600 / 2 800 zł — potwierdzone przez klub). Zmiana objęła 11 plików, bo rok występował też w tytule strony, w kartach na `/aktualnosci/` i `/zapisy/` oraz w danych strukturalnych. Przy okazji naprawione: `endDate` w danych dla Google był równy `startDate`, więc wyszukiwarka widziała obóz jako wydarzenie jednodniowe — doszło pole `event_end_date` (`lib/types/database.ts`). Długość turnusu była wpisana na sztywno w JSX w dwóch miejscach i przeżyła poprzednią zmianę terminu — teraz czytana z danych.
+
+**Kadra klubu: 20 trenerów** (potwierdzone przez klub 2026-10-13). To NIE jest `TEAM.length` — lista w `lib/content/team.ts` ma 9 osób z gotowym profilem (zdjęcie + rola), a klub jest większy. Liczba trafiła do stałej `LICZBA_TRENEROW`, z której czytają kafelek „KADRA" na stronie głównej i nagłówek `/trenerzy/`. Dopóki nie dojdą profile pozostałych, `/trenerzy/` pokazuje „Kadra · 20 osób" przy 9 portretach — świadoma decyzja klubu.
+
+Usunięte zdanie „połowa miejsc wyprzedana" z karty Air Campu na `/aktualnosci/` — dotyczyło minionej edycji 2026, a dla 2027 nie było potwierdzone. Zastąpione „Zapisy na edycję 2027 otwarte".
+
+Z drugiego okna doszła w tym samym commicie dedykowana podstrona `/airmeeting/` (317 linii, zastępuje generyczny EventView; `airmeeting` wykluczony z `generateStaticParams` w catch-allu, wpis zostaje w `FALLBACK_EVENTS` dla listy i sitemapy) oraz przebudowany `/kontakt/`. Zweryfikowane przed wdrożeniem: `/airmeeting/` → 200, canonical na siebie, 1468 słów, bez `noindex`, obecny w sitemapie. Tło `/kontakt/` przyszło jako PNG 362 kB — skonwertowane na WebP 25 kB (pierwszy ekran tej strony 393 → 56 kB).
+
+Weryfikacja po wdrożeniu: **28/28 adresów z sitemapy → 200**; `www`, `/tyczyn/`, `/gravityjam/`, `/sitemap_index.xml` → 301 na właściwe cele; `wp-login.php` i `public_html_wp/` → 404; strona główna bez `x-robots-tag`; stary `kontakt-hala.png` → 404.
+
+**Do zrobienia poza kodem:** formularz zapisów na obóz to AIPAX (`aipaxFormId` w `letni.ts`) — jeśli ma w sobie termin 2026, trzeba go poprawić w panelu, inaczej strona mówi 2027, a formularz 2026.
+
 **2026-10-13 — F21 (WebP i warianty zdjęć) ZAMKNIĘTE, WDROŻONE NA PRODUKCJĘ** (`1b247ee`, `deploy-ftp.sh production`; bez przerwy w działaniu). Weryfikacja na żywo po wdrożeniu: 24 strony × wszystkie zdjęcia = **107/107 adresów → 200**, skasowane JPEG-i → 404, pliki zostawione świadomie → 200; `www`, `/tyczyn/`, `/sitemap_index.xml`, `/gravityjam/` → 301 na właściwe cele; strona główna bez `x-robots-tag`; stare media z `wp-content/uploads` → 200 (synchronizacja z usuwaniem ich nie ruszyła); `wp-login.php` i `public_html_wp/` → 404.
 
 Trzy niezależne dźwignie, wszystkie zmierzone na zbudowanej paczce (`out/`), nie na szacunkach:
