@@ -486,18 +486,18 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
                   <div className="flex-1 text-left">
                     <div className="text-[15px] font-bold text-foreground">@airsquad_akrobatyka</div>
                     <div className="mt-0.5 font-mono text-[11px] text-muted-foreground">
-                      1893 obserwujących · 254 posty
+                      Akrobatyka · tricking · pokazy
                     </div>
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-0.5">
                   {[
-                    '/images/bg-tricking.webp',
-                    '/images/bg-showdance.webp',
-                    '/images/bg-tumbling.webp',
-                    '/images/bg-akrobatyka.webp',
-                    '/images/old-site/dzieci-airtrack.webp',
-                    '/images/old-site/hala-airspace.webp',
+                    '/images/ig/post-01.jpg',
+                    '/images/ig/post-02.jpg',
+                    '/images/ig/post-03.jpg',
+                    '/images/ig/post-04.jpg',
+                    '/images/ig/post-05.jpg',
+                    '/images/ig/post-06.jpg',
                   ].map((src) => (
                     <a
                       key={src}
