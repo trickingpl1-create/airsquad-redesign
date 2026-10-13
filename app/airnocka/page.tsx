@@ -204,7 +204,7 @@ export default function AirNockaPage() {
                             /\s/g,
                             '',
                           )}?body=${encodeURIComponent(
-                            `Zapisy AkroNocka — ${t.city}, ${t.day}.${t.year}`,
+                            `Zapisy AkroNocka [Imię i Nazwisko] ${t.city}, ${t.day}.${t.year}`,
                           )}`}
                           className="rounded-full bg-gradient-to-r from-blue-deep to-violet-soft px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.1em] text-white transition-transform hover:scale-[1.03]"
                         >
