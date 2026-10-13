@@ -6,7 +6,7 @@ Stan: `airsquad.pl` serwuje nową stronę od 2026-10-05 ok. 14:50 (przebieg: `za
 
 ## Stan prac (aktualizowany)
 
-**2026-10-13 — F21 (WebP i warianty zdjęć) ZAMKNIĘTE. Jeszcze NIE wdrożone na produkcję.**
+**2026-10-13 — F21 (WebP i warianty zdjęć) ZAMKNIĘTE, WDROŻONE NA PRODUKCJĘ** (`1b247ee`, `deploy-ftp.sh production`; bez przerwy w działaniu). Weryfikacja na żywo po wdrożeniu: 24 strony × wszystkie zdjęcia = **107/107 adresów → 200**, skasowane JPEG-i → 404, pliki zostawione świadomie → 200; `www`, `/tyczyn/`, `/sitemap_index.xml`, `/gravityjam/` → 301 na właściwe cele; strona główna bez `x-robots-tag`; stare media z `wp-content/uploads` → 200 (synchronizacja z usuwaniem ich nie ruszyła); `wp-login.php` i `public_html_wp/` → 404.
 
 Trzy niezależne dźwignie, wszystkie zmierzone na zbudowanej paczce (`out/`), nie na szacunkach:
 
@@ -16,7 +16,7 @@ Trzy niezależne dźwignie, wszystkie zmierzone na zbudowanej paczce (`out/`), n
 
 **Wynik — waga pierwszego ekranu (suma po wszystkich 42 stronach): 9911 → 5687 kB.** Największe pojedyncze spadki: `/lokalizacje/` 899 → 188 kB, `/rzeszow/` 388 → 169 kB, `/debica/` 398 → 182 kB, strona główna 435 → 394 kB. Sprawdzone na zbudowanej paczce: 13 stron, **0 zepsutych adresów zdjęć** (każdy `src` → 200), 0 błędów typów, build przechodzi. LCP-u nie dało się zmierzyć w panelu przeglądarki — przy ukrytym panelu przeglądarka w ogóle nie rejestruje tej metryki.
 
-**Zostało do zrobienia ręcznie:** `node scripts/usun-osierocone-zdjecia.mjs --apply` — 70 plików (10,9 MB) bez jednego odwołania w kodzie: stare JPEG-i po konwersji, stare warianty `-w…jpg`, nieużywane `aircamp-2026-logo.png` (1,4 MB) i 4 pliki martwe już wcześniej. Skrypt sam je wyszukuje (nie z zamrożonej listy) i kasuje przez `git rm`, więc zostają w historii. **Źródeł wariantów nie wolno ruszać** — `kadra/*.jpg` i `trenerzy/*.jpg` bez sufiksu nie występują w kodzie, bo kod odwołuje się wyłącznie do generowanych wariantów.
+**Sprzątanie wykonane:** `node scripts/usun-osierocone-zdjecia.mjs --apply` usunął 70 plików (10,9 MB) bez jednego odwołania w kodzie: stare JPEG-i po konwersji, stare warianty `-w…jpg`, nieużywane `aircamp-2026-logo.png` (1,4 MB) i 4 pliki martwe już wcześniej. Skrypt sam je wyszukuje (nie z zamrożonej listy) i kasuje przez `git rm`, więc zostają w historii. Z serwera zniknęły przy tym samym wdrożeniu (`lftp mirror --delete`). **Źródeł wariantów nie wolno ruszać** — `kadra/*.jpg` i `trenerzy/*.jpg` bez sufiksu nie występują w kodzie, bo kod odwołuje się wyłącznie do generowanych wariantów.
 
 **Dalszy zapas w zdjęciach — już nie w formacie, tylko w wymiarach.** Kafelki galerii (`h-72`, ok. 400 px szerokości na desktopie) dostają pliki 1600 px — 4× za duże. Wymagałoby to `srcset` w `CoverImage` i wariantów `-w800`. Wszystkie te zdjęcia są już leniwe, więc nie obciążają pierwszego ekranu; kosztują dopiero przy przewijaniu (`/letni/` 2441 kB, strona główna 1781 kB).
 
