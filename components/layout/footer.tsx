@@ -15,7 +15,7 @@ const linkGroups = [
     ],
   },
   {
-    label: '/obozy',
+    label: '/wydarzenia',
     links: [
       { href: '/letni/', label: 'air camp' },
       { href: '/obozy-sportowe/', label: 'obozy sportowe' },
