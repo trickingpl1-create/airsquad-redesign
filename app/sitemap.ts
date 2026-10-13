@@ -91,6 +91,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      // AkroNocki — dedykowana podstrona (app/airnocka/page.tsx), nie event,
+      // więc nie wchodzi przez getEvents(); wpis dodany ręcznie.
+      url: `${SITE_URL}/airnocka/`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
       url: `${SITE_URL}/sklep/`,
       lastModified: new Date(),
       changeFrequency: 'weekly',

@@ -17,6 +17,7 @@ import {
 const eventLinks = [
   { href: '/letni', label: 'Air Camp' },
   { href: '/airmeeting', label: 'Air Meeting' },
+  { href: '/airnocka', label: 'AirNocka' },
 ]
 
 const cityLinks = [
@@ -38,7 +39,7 @@ type NavLink =
 const navLinks: NavLink[] = [
   { href: '/', label: 'STRONA GŁÓWNA' },
   { href: '/aktualnosci', label: 'AKTUALNOŚCI' },
-  { label: 'OBOZY I WYDARZENIA', badge: 'LATO 2026', items: eventLinks },
+  { label: 'OBOZY I WYDARZENIA', items: eventLinks },
   { label: 'LOKALIZACJE', items: cityLinks },
   { href: '/sklep', label: 'SKLEP' },
   { href: '/kontakt', label: 'KONTAKT' },

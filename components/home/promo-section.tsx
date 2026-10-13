@@ -5,10 +5,11 @@ const promoCards = [
     kicker: 'WYDARZENIE KLUBOWE',
     title: 'AkroNocki',
     desc: 'Nocowanie na sali razem z treningiem wieczorem i rano, integracja, dyskoteka, karaoke i film. Niezapomniana noc dla członków klubu.',
-    // Na /aktualnosci/ nie ma wpisu o AkroNockach — do czasu ogłoszenia z terminem
-    // i ceną CTA prowadzi do kontaktu zamiast donikąd (audyt 2026-10-06, F38).
-    cta: 'Zapytaj o termin',
-    href: '/kontakt/',
+    // Od 2026-10-13 AkroNocki mają własną podstronę evergreen (/airnocka,
+    // AIRNOCKA_EVENT) — karta prowadzi tam, a strona dalej kieruje do kontaktu
+    // po termin. Rozwiązuje F38 (wcześniej CTA szło wprost do /kontakt/).
+    cta: 'Więcej informacji',
+    href: '/airnocka/',
     accentColor: 'var(--blue-deep)',
     gradientFrom: 'from-blue-deep/42',
     gradientTo: 'to-blue-deep/22',
