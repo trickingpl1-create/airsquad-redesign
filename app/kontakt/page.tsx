@@ -65,7 +65,7 @@ export default function ContactPage() {
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element -- eksport statyczny, images.unoptimized */}
           <img
-            src="/images/kontakt-hala.png"
+            src="/images/kontakt-hala.webp"
             alt=""
             className="h-full w-full object-cover opacity-[0.35]"
           />
