@@ -48,8 +48,8 @@ export function CTASection({ cities }: { cities: EnrolCity[] }) {
             <span className="gradient-text">pierwszy trening</span>.
           </h2>
           <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
-            Pierwszy trening kosztuje 40 zł. Odzywamy się w ciągu 24 godzin,
-            żeby dobrać grupę do poziomu dziecka i dogodne dni treningu.
+            Odzywamy się w ciągu 48 godzin, aby dobrać grupę poziomem do
+            dziecka. Pierwszy trening kosztuje 40 zł — przyjdź i sprawdź…
           </p>
 
           <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-6">

@@ -3,19 +3,19 @@ const audience = [
   {
     title: 'Dzieci 7–10 lat',
     num: '7–10',
-    desc: 'Bezpieczne podstawy, miękkie maty, krótkie sesje. Pierwsza akrobatyka w życiu — bez stresu.',
+    desc: 'Bezpieczne podstawy, miękkie maty, krótkie sesje. Pierwsza akrobatyka w życiu — profesjonalnie i bez stresu.',
     accent: 'var(--primary)',
     photo: '/images/old-site/dzieci-airtrack.webp',
   },
   {
     title: 'Młodzież 11–17',
     num: '11–17',
-    desc: 'Tricking, tumbling zaawansowany, pierwsze konkursy i pokazy. Mocne zaplecze techniczne i progres widoczny co miesiąc.',
+    desc: 'Tricking, akrobatyka, tumbling — podstawa i zaawansowanie, pierwsze konkursy, pokazy i zawody. Mocne zaplecze techniczne i progres widoczny co miesiąc.',
     accent: 'var(--cyan)',
     photo: '/images/old-site/mlodziez-oboz.webp',
   },
   {
-    title: 'Dorośli i rodziny',
+    title: 'Dorośli',
     num: '18+',
     desc: 'Wieczorne grupy dla dorosłych. Akrobatyka w każdym wieku — w komfortowym tempie.',
     accent: 'var(--pink)',
@@ -43,8 +43,8 @@ export function HowAudienceSection() {
             Dla kogo
           </p>
           <h2 className="display-bold mt-2.5 text-balance text-3xl text-foreground md:text-4xl lg:text-5xl" style={{ fontWeight: 400 }}>
-            Trening dla{' '}
-            <span className="gradient-text" style={{ fontWeight: 400 }}>każdego wieku</span>.
+            Trenuj w{' '}
+            <span className="gradient-text" style={{ fontWeight: 400 }}>każdym wieku</span>.
           </h2>
         </div>
 

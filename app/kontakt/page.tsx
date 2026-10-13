@@ -69,7 +69,7 @@ export default function ContactPage() {
             gradientPart="Zadzwoń."
             titleFontWeight={400}
             gradientFontWeight={400}
-            meta="[Odpowiadamy w 24h] // pn–pt"
+            meta="[Odpowiadamy w 48h] // pn–pt"
             className="mb-8 md:mb-10"
           />
 

@@ -526,7 +526,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
               będzie mówić cały rok.
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed opacity-90">
-              Limitowana liczba miejsc na każdy turnus. Zapisy online, potwierdzenie w 24h.
+              Limitowana liczba miejsc na każdy turnus. Zapisy online, potwierdzenie w 48h.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
               <a

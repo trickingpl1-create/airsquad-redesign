@@ -11,7 +11,7 @@ const steps = [
   {
     n: '1',
     title: 'Krótkie zapisy',
-    desc: 'Wybierasz miasto, dyscyplinę i poziom dziecka. Formularz zajmuje minutę — odpisujemy w 24 godziny.',
+    desc: 'Wybierasz miasto, dyscyplinę i poziom dziecka. Formularz zajmuje minutę — odpisujemy w 48 godzin.',
   },
   {
     n: '2',
