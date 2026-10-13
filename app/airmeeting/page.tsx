@@ -203,8 +203,8 @@ export default function AirMeetingPage() {
           </div>
         </section>
 
-        {/* POPRZEDNIE EDYCJE — 2025 (film) + 2024 (film wkrótce) */}
-        <section className="relative px-6 py-16 md:px-10 md:py-20">
+        {/* POPRZEDNIE EDYCJE — 2026 / 2025 (filmy) + 2024 (film wkrótce) */}
+        <section className="relative px-6 pb-24 pt-16 md:px-10 md:pb-32 md:pt-20">
           <div className="mx-auto max-w-6xl">
             <SectionHeader
               kicker="Z poprzednich lat"
@@ -276,37 +276,6 @@ export default function AirMeetingPage() {
                   wideo dodamy, gdy tylko go odnajdziemy.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA / kontakt */}
-        <section className="relative px-6 pb-24 md:px-10 md:pb-32">
-          <div className="mx-auto max-w-6xl rounded-3xl border border-cyan/30 bg-gradient-to-br from-cyan/15 to-primary/10 p-6 md:p-8">
-            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-cyan">
-              Chcesz wziąć udział?
-            </p>
-            <h2
-              className="display-bold mt-2 text-2xl text-foreground md:text-3xl"
-              style={{ fontWeight: 400 }}
-            >
-              Edycja 2027 w przygotowaniu.
-            </h2>
-            <p className="mt-3 max-w-xl leading-relaxed text-muted-foreground">
-              Udział w Air Meeting zgłaszasz u swojego trenera. Daty i szczegóły
-              najbliższej edycji podamy wkrótce — zapytaj trenera albo odezwij się
-              do nas bezpośrednio.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 font-mono text-sm">
-              <a href={telHref} className="text-cyan hover:underline">
-                ☎ {CLUB_CONTACT.phoneTrainer} (trener)
-              </a>
-              <a
-                href={`mailto:${CLUB_CONTACT.email}`}
-                className="text-cyan hover:underline"
-              >
-                {CLUB_CONTACT.email}
-              </a>
             </div>
           </div>
         </section>
