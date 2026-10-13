@@ -59,8 +59,27 @@ export default function ContactPage() {
         }}
       />
       <Header />
-      <main className="flex-1 bg-background pt-24">
-        <section className="container mx-auto px-4 pb-20 pt-12">
+      <main className="relative flex-1 overflow-hidden bg-background pt-24">
+        {/* Tło — zdjęcie hali Air Squad z winietą, 35% krycia. Dekoracyjne
+            (alt=""), pod treścią (z-0); treść sekcji na z-10. */}
+        <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element -- eksport statyczny, images.unoptimized */}
+          <img
+            src="/images/kontakt-hala.png"
+            alt=""
+            className="h-full w-full object-cover opacity-[0.35]"
+          />
+          {/* Winieta — przyciemnienie krawędzi do koloru tła */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(120% 95% at 50% 38%, transparent 0%, color-mix(in oklch, var(--background) 55%, transparent) 58%, var(--background) 100%)',
+            }}
+          />
+        </div>
+
+        <section className="container relative z-10 mx-auto px-4 pb-20 pt-12">
           <SectionHeader
             as="h1"
             kicker="Kontakt"
@@ -83,19 +102,19 @@ export default function ContactPage() {
               grupę, wypełniasz formularz i gotowe. O ostatecznym przydziale do grupy decyduje
               trener.
             </p>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-2.5">
               {CITY_CHIPS.map((c) => (
                 <Link
                   key={c.slug}
                   href={c.slug}
-                  className="rounded-full border border-violet-soft/30 bg-violet-soft/10 px-4 py-1.5 font-mono text-xs text-violet-soft transition-colors hover:bg-violet-soft/20"
+                  className="rounded-full border border-violet-soft/30 bg-violet-soft/10 px-5 py-2.5 font-mono text-sm text-violet-soft transition-colors hover:bg-violet-soft/20 md:text-base"
                 >
                   {c.city}
                 </Link>
               ))}
               <Link
                 href="/grafik/"
-                className="rounded-full border border-border px-4 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+                className="rounded-full border border-border px-5 py-2.5 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground md:text-base"
               >
                 Pełny grafik →
               </Link>
@@ -112,7 +131,7 @@ export default function ContactPage() {
               <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-emerald">
                 Telefon
               </p>
-              <p className="display-bold mt-2 text-xl text-foreground" style={{ fontWeight: 500 }}>
+              <p className="mt-2 text-xl font-semibold text-foreground">
                 {CLUB_CONTACT.phone}
               </p>
               <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">

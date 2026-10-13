@@ -53,7 +53,7 @@ export function CampsSection() {
         <BackgroundVideo
           youtubeId={AIRCAMP_YOUTUBE_ID}
           className="pointer-events-none absolute inset-0 h-full w-full scale-150 border-0 opacity-70 md:scale-100"
-          title="Air Camp 2026 — wideo w tle"
+          title="Air Camp 2027 — wideo w tle"
           activation="visible"
         />
       </div>
@@ -69,7 +69,7 @@ export function CampsSection() {
             // WebP 782×600 zamiast PNG 2457×1885 (1,4 MB) i bez priority — sekcja
             // jest daleko pod zgięciem, a preload zabierał pasmo hero (audyt F22).
             src="/images/aircamp-2026-logo.webp"
-            alt="Air Camp 2026 — Obóz sportowo-rekreacyjny"
+            alt="Air Camp 2027 — Obóz sportowo-rekreacyjny"
             width={782}
             height={600}
             loading="lazy"

@@ -5,7 +5,7 @@ import { Metadata } from 'next'
 
 // /aircamp/ dubluje treść /letni/ — kanoniczny jest historyczny adres Air Camp
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'Air Camp 2026 — Obóz sportowo-rekreacyjny',
+  title: 'Air Camp 2027 — Obóz sportowo-rekreacyjny',
   description:
     'Letni obóz Air Squad — akrobatyka, longboard, kajaki, paintball. Zapisy dla dzieci i młodzieży.',
   canonical: '/letni/',
@@ -35,7 +35,7 @@ export default function AircampPage() {
           <div className="mb-8 flex justify-center">
             <Image
               src="/images/aircamp-2026-logo.webp"
-              alt="Air Camp 2026"
+              alt="Air Camp 2027"
               width={782}
               height={600}
               className="h-[160px] w-auto object-contain drop-shadow-[0_0_24px_rgba(16,185,129,0.4)]"

@@ -26,7 +26,7 @@ export const metadata: Metadata = generateSEOMetadata({
 const EVENTS = [
   {
     href: '/letni/',
-    kicker: 'Lato 2026 · Air Camp',
+    kicker: 'Lato 2027 · Air Camp',
     label: 'Air Camp',
     desc: 'Letni obóz sportowy — akrobatyka, kajaki, longboardy, paintball.',
     accent: 'var(--emerald)',

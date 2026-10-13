@@ -62,6 +62,12 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
     { name: 'Letni', url: currentPath },
   ]
 
+  // Długość turnusu pojawia się w dwóch miejscach układu. Wpisana w JSX
+  // rozjechała się z danymi przy zmianie terminu (zostało „9 dni", gdy obóz
+  // skrócono do 8) — bierzemy ją z tej samej statystyki, którą pokazuje
+  // sekcja liczb. Jedna liczba, jedno źródło.
+  const dniObozu = camp.stats?.find((s) => s.label === 'dni obozu')?.value ?? ''
+
   const pricingTiers = normalizePricing(camp.pricing)
   const gallery = camp.gallery ?? []
   const featuredGallery = gallery.slice(0, 4).map((g) => g.url)
@@ -78,7 +84,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
             description: camp.meta_description || camp.description,
             image: camp.image_url ? `${SITE_URL}${camp.image_url}` : undefined,
             startDate: camp.event_date,
-            endDate: camp.event_date,
+            endDate: camp.event_end_date ?? camp.event_date,
             url: `${SITE_URL}${currentPath}/`,
             eventLocation: {
               '@type': 'Place',
@@ -133,7 +139,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
             )}
             <Image
               src="/images/aircamp-2026-logo.webp"
-              alt="Air Camp 2026"
+              alt="Air Camp 2027"
               width={782}
               height={600}
               className="mx-auto mb-5 h-[110px] w-auto object-contain drop-shadow-[0_0_34px_rgba(16,185,129,0.45)]"
@@ -184,7 +190,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
               Co to takiego?
             </p>
             <h2 className="display-bold m-0 mt-2.5 text-4xl" style={{ fontWeight: 500 }}>
-              9 dni <span className="gradient-text">pełnych przygody.</span>
+              {dniObozu} dni <span className="gradient-text">pełnych przygody.</span>
             </h2>
             {camp.description && (
               <div
@@ -360,7 +366,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
                         </span>
                       </div>
                       <div className="mt-0.5 font-mono text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                        9 dni
+                        {dniObozu} dni
                       </div>
                       <div className="mt-6 flex flex-col gap-3.5 text-left">
                         {tier.features.map((f) => (
@@ -409,7 +415,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
             </h2>
           </div>
           <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-3xl border-2 border-dashed border-emerald/50 bg-emerald/5">
-            <CityAipaxCalendar formId={camp.aipaxFormId} cityName="Air Camp 2026" />
+            <CityAipaxCalendar formId={camp.aipaxFormId} cityName="Air Camp 2027" />
           </div>
           <p className="mx-auto mt-4 max-w-2xl text-center font-mono text-[11px] leading-relaxed text-muted-foreground">
             Pytania: {CLUB_CONTACT.phone} · {CLUB_CONTACT.email}

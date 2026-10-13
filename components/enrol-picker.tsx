@@ -6,7 +6,7 @@ import type { EnrolCity } from '@/lib/content/enrol-cities'
 // Kafelki wydarzeń prowadzą na podstrony (brak osobnych formularzy AIPAX
 // dla wydarzeń — decyzja użytkownika 2026-08-09, wariant "a").
 const EVENTS = [
-  { label: 'Air Camp 2026', note: 'obóz letni', href: '/letni/', accent: 'var(--emerald)' },
+  { label: 'Air Camp 2027', note: 'obóz letni', href: '/letni/', accent: 'var(--emerald)' },
   { label: 'Air Meeting 2026', note: 'zawody', href: '/airmeeting/', accent: 'var(--cyan)' },
 ] as const
 

@@ -6,7 +6,7 @@ import { Footer } from '@/components/layout/footer'
 import { SectionHeader } from '@/components/home/section-header'
 import { TeamPhotoBackdrop } from '@/components/team/team-photo-backdrop'
 import { TeamPortraitCard, initials, photoVariant } from '@/components/team/team-portrait-card'
-import { TEAM, TEAM_FEATURED, TEAM_REST } from '@/lib/content/team'
+import { TEAM_FEATURED, TEAM_REST, LICZBA_TRENEROW } from '@/lib/content/team'
 import { TEAM_PHOTOS } from '@/lib/content/team-photos'
 
 export const metadata: Metadata = generateSEOMetadata({
@@ -39,7 +39,7 @@ export default function TrainersPage() {
                 as="h1"
                 tone="on-photo"
                 className="mb-0 md:mb-0"
-                kicker={`Kadra · ${TEAM.length} osób · Est. 2003`}
+                kicker={`Kadra · ${LICZBA_TRENEROW} osób · Est. 2003`}
                 kickerColorClass="text-cyan"
                 title="Trenerzy, którym"
                 gradientPart="ufają rodzice."

@@ -13,6 +13,18 @@
  * użytkownika, żeby sekcja nie wracała do „za dużo osób małą czcionką",
  * co było zarzutem wobec starej strony.
  */
+/**
+ * Liczba trenerów w klubie. To NIE jest `TEAM.length` — lista niżej zawiera
+ * wyłącznie osoby z gotowym profilem (zdjęcie + rola), a kadra klubu jest
+ * szersza. Potwierdzone przez klub 2026-10-13: 20 trenerów.
+ *
+ * Trzymamy to jako osobną stałą, a nie wpisujemy w JSX: dokładnie tak
+ * powstała poprzednia rozbieżność — na stronie głównej widniało „15",
+ * a /trenerzy/ liczyło „9 osób" z listy. Obie strony czytają teraz stąd.
+ * Gdy dojdą profile pozostałych trenerów, ta liczba i `TEAM.length` się zrównają.
+ */
+export const LICZBA_TRENEROW = 20
+
 export type TeamMember = {
   name: string
   role: string

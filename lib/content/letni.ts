@@ -6,8 +6,8 @@ import { CLUB_CONTACT } from '@/lib/content/cities'
 
 // Fallback treści strony /letni/ (Air Camp — obóz letni) na czas, gdy Supabase
 // nie jest podłączony. Treść zaimportowana z projektu Claude Design
-// ("Air Squad - Letni (Obóz).dc.html", projekt 23a11689-…) — 11. edycja obozu,
-// ośrodek ZOOM Przygoda w Janowie Lubelskim, 25.07–02.08.2026. Renderowana przez
+// ("Air Squad - Letni (Obóz).dc.html", projekt 23a11689-…) — ośrodek ZOOM
+// Przygoda w Janowie Lubelskim. Edycja 2027: 24–31.07.2027, 8 dni. Renderowana przez
 // dedykowany CampView (components/seo/camp-view.tsx), nie generyczny EventView.
 // Filmy i część galerii linkują bezpośrednio do plików na airsquad.pl (WordPress,
 // wciąż live) — przenieść do Supabase Storage przed wygaszeniem WordPressa.
@@ -15,29 +15,30 @@ import { CLUB_CONTACT } from '@/lib/content/cities'
 export const LETNI_EVENT: Event = {
   id: 'fallback-letni',
   slug: 'letni',
-  title: 'Air Camp 2026',
+  title: 'Air Camp 2027',
   // Bez sufiksu "| Air Squad" — dokleja go szablon title z app/layout.tsx
   // (ta sama konwencja co w lib/content/cities.ts; wiersze w DB też jej wymagają)
-  meta_title: 'Air Camp 2026 — letni obóz sportowy dla dzieci i młodzieży',
+  meta_title: 'Air Camp 2027 — letni obóz sportowy dla dzieci i młodzieży',
   meta_description:
-    'Air Camp 2026: akrobatyka, tricking, kajaki, longboardy, paintball. 25 lipca – 2 sierpnia 2026, Janów Lubelski. Małe grupy, dwóch trenerów. Zarezerwuj turnus!',
+    'Air Camp 2027: akrobatyka, tricking, kajaki, longboardy, paintball. 24–31 lipca 2027, Janów Lubelski. Małe grupy, dwóch trenerów. Zarezerwuj turnus!',
   event_type: 'oboz',
-  event_date: '2026-07-25',
+  event_date: '2027-07-24',
+  event_end_date: '2027-07-31',
   event_time: null,
   location: 'Janów Lubelski, Ośrodek ZOOM Przygoda',
   image_url: '/images/letni/hero.webp',
-  editionBadge: '11. edycja · zapisy otwarte',
+  editionBadge: '12. edycja · zapisy otwarte',
   heroLine1: 'Letni obóz, na który',
   heroLine2: 'czeka się cały rok.',
   heroSubtitle:
-    '25 lipca – 2 sierpnia 2026 · Janów Lubelski, Ośrodek ZOOM Przygoda. Akrobatyka, tricking, kajaki, longboardy, paintball i przyjaźnie na całe życie.',
+    '24–31 lipca 2027 · Janów Lubelski, Ośrodek ZOOM Przygoda. Akrobatyka, tricking, kajaki, longboardy, paintball i przyjaźnie na całe życie.',
   description:
-    '<p>Air Camp to obóz sportowo-rekreacyjny prowadzony przez trenerów Air Squad. To nie jest siedzenie w stołówce — to sport i ruch, nowi przyjaciele, przygody i pewność siebie, którą dziecko przywozi do domu razem z pamiątkami.</p><p>To już jedenasta edycja obozu — organizujemy je nieprzerwanie od 2016 roku. Tegoroczna edycja odbędzie się w ośrodku ZOOM Przygoda w Janowie Lubelskim, tuż przy zbiorniku wodnym, a program dnia dopasowujemy do wieku i poziomu sprawności uczestników. Opiekę sprawuje 12-osobowy zespół trenerów — od akrobatyki i trickingu, przez judo i street workout, po showdance i fizjoterapię — pod kierownictwem Gabriela Myśliwca i Łukasza Pacochy. W cenie: zakwaterowanie w 8-osobowych domkach z pełnym węzłem sanitarnym, pełne wyżywienie, transport na miejsce i z powrotem, ubezpieczenie NNW, pamiątkowa koszulka oraz zdjęcia i filmiki z obozu.</p>',
+    '<p>Air Camp to obóz sportowo-rekreacyjny prowadzony przez trenerów Air Squad. To nie jest siedzenie w stołówce — to sport i ruch, nowi przyjaciele, przygody i pewność siebie, którą dziecko przywozi do domu razem z pamiątkami.</p><p>To już dwunasta edycja obozu — organizujemy je nieprzerwanie od 2016 roku. Edycja 2027 odbędzie się w ośrodku ZOOM Przygoda w Janowie Lubelskim, tuż przy zbiorniku wodnym, a program dnia dopasowujemy do wieku i poziomu sprawności uczestników. Opiekę sprawuje 12-osobowy zespół trenerów — od akrobatyki i trickingu, przez judo i street workout, po showdance i fizjoterapię — pod kierownictwem Gabriela Myśliwca i Łukasza Pacochy. W cenie: zakwaterowanie w 8-osobowych domkach z pełnym węzłem sanitarnym, pełne wyżywienie, transport na miejsce i z powrotem, ubezpieczenie NNW, pamiątkowa koszulka oraz zdjęcia i filmiki z obozu.</p>',
   stats: [
-    { value: '9', label: 'dni obozu' },
+    { value: '8', label: 'dni obozu' },
     { value: '20', label: 'kadra trenerów' },
     { value: '20+', label: 'aktywności' },
-    { value: '11.', label: 'edycja Air Camp' },
+    { value: '12.', label: 'edycja Air Camp' },
   ],
   activityCards: [
     { label: 'Akrobatyka i Tricking', desc: 'Salta, przerzuty i efektowne tricki — od podstaw do zaawansowania.', accent: 'var(--primary)', img: '/images/bg-akrobatyka.webp' },
@@ -60,7 +61,7 @@ export const LETNI_EVENT: Event = {
   pricing: [
     {
       badge: 'Dla klubowiczów',
-      dates: '25.07 – 02.08 2026',
+      dates: '24.07 – 31.07 2027',
       price: '2 600',
       accent: 'cyan',
       features: [
@@ -71,7 +72,7 @@ export const LETNI_EVENT: Event = {
     },
     {
       badge: 'Acro Open',
-      dates: '25.07 – 02.08 2026',
+      dates: '24.07 – 31.07 2027',
       price: '2 800',
       accent: 'primary',
       features: [
@@ -186,13 +187,16 @@ export const AIRMEETING_EVENT: Event = {
   // dzięki temu dane strukturalne Event mają poprawny startDate, a czytelnik
   // nie bierze archiwum za zaproszenie (wymóg checklisty publikacji:
   // „archiwalne wydarzenia jasno oznaczone").
-  event_date: '2026-04-18',
-  event_time: '9:00 – 18:00',
-  location: 'Zespół Szkół nr 1, ul. Towarnickiego 4, Rzeszów',
+  // Strona /airmeeting ma własny, stylizowany route (app/airmeeting/page.tsx);
+  // ten obiekt zasila już tylko listę /wydarzenia i sitemapę. Data pusta, bo
+  // edycja 2027 jest w przygotowaniu — szczegóły podajemy na stronie, nie tutaj.
+  event_date: null,
+  event_time: null,
+  location: null,
   tagline: 'spotkanie, zawody, wspólne emocje.',
   image_url: null,
   description:
-    '<p><strong>Edycja 2026 odbyła się 18 kwietnia</strong> w Zespole Szkół nr 1 w Rzeszowie. Kolejny Air Meeting planujemy wiosną — termin podamy u trenerów i na tej stronie.</p>' +
+    '<p><strong>Edycja 2027 jest w przygotowaniu</strong> — termin, miejsce i szczegóły dojazdu podamy wkrótce u trenerów i na stronie Air Meeting.</p>' +
     '<p>Air Meeting to niezapomniane, przepełnione pozytywną energią spotkanie dla członków klubu. W programie wspólny trening, na którym poznajesz osoby z innych sekcji trenujących z nami, gry i zabawy integracyjne, wewnętrzne zawody oraz posiłek dla każdego uczestnika. Każdy dostaje pamiątkowy medal, a oprócz koszulki — AIR MEETINGOWE gadżety niespodzianki.</p>' +
     '<h2>Dla kogo jest Air Meeting</h2>' +
     '<p>Wydarzenie jest skierowane do osób trenujących w klubie. <strong>Grupy naborowe zapraszamy na kolejną edycję za rok</strong> — pierwszy sezon to czas na oswojenie się z treningami.</p>' +

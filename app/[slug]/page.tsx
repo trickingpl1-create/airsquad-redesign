@@ -90,6 +90,11 @@ export async function generateStaticParams() {
     if (item.slug) slugs.add(item.slug)
   }
 
+  // /airmeeting ma własny, stylizowany route (app/airmeeting/page.tsx), więc nie
+  // generujemy go tutaj — inaczej eksport statyczny wywala zdublowaną ścieżkę.
+  // AIRMEETING_EVENT zostaje w danych (lista /wydarzenia + sitemapa) — stąd wyklucz.
+  slugs.delete('airmeeting')
+
   return Array.from(slugs).map((slug) => ({ slug }))
 }
 

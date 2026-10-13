@@ -1,15 +1,16 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Instagram } from 'lucide-react'
-import { TEAM } from '@/lib/content/team'
+import { LICZBA_TRENEROW } from '@/lib/content/team'
 import { BackgroundVideo } from '@/components/background-video'
 import { CoverImage } from '@/components/cover-image'
 
 const YOUTUBE_ID = 'uFobcH0aQ7g'
 
-// Kafelek „KADRA" liczy ten sam skład, który renderują /trenerzy/ i sekcja
-// „Zespół" (lib/content/team.ts). Wcześniej stała „15" w JSX rozjeżdżała się
-// z „9 osób" na /trenerzy/ — jedna liczba, jedno źródło.
+// Kafelek „KADRA" bierze liczbę z `LICZBA_TRENEROW` (lib/content/team.ts) —
+// tej samej, którą pokazuje /trenerzy/. Nie z `TEAM.length`: lista zawiera
+// tylko trenerów z gotowym profilem (9), a klub ma ich 20. Wcześniej stała
+// „15" wpisana w JSX rozjeżdżała się z podstroną — jedna liczba, jedno źródło.
 // Odmiana: 1 trener · 2–4 trenerzy · 5–21 trenerów · 22–24 trenerzy · …
 function odmianaTrener(n: number): string {
   if (n === 1) return 'trener'
@@ -211,10 +212,10 @@ export function HeroSection() {
                     KADRA
                   </div>
                   <div className="mt-2 font-[family-name:var(--font-display)] text-6xl font-black text-white" style={{ fontWeight: 400 }}>
-                    {TEAM.length}
+                    {LICZBA_TRENEROW}
                   </div>
                   <div className="mt-1 text-xs text-white/75">
-                    {odmianaTrener(TEAM.length)}
+                    {odmianaTrener(LICZBA_TRENEROW)}
                   </div>
                 </div>
               </div>

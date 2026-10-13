@@ -256,6 +256,10 @@ export interface Event {
   meta_description: string | null
   event_type: 'airmeeting' | 'spotkanie' | 'gravityjam' | 'oboz'
   event_date: string | null
+  /** Ostatni dzień wydarzenia — dla obozów kilkudniowych. Bez niego dane
+   *  strukturalne podają Google'owi endDate = startDate, czyli wydarzenie
+   *  jednodniowe (Air Camp trwa 8 dni). */
+  event_end_date?: string | null
   event_time: string | null
   location: string | null
   description: string | null

@@ -17,7 +17,7 @@ const promoCards = [
     fullWidth: true,
   },
   {
-    kicker: 'LATO 2026',
+    kicker: 'LATO 2027',
     title: 'Air Camp',
     desc: 'Longboardy, kajaki, SUP, paintball, akrobatyka, tricking, taniec, gry terenowe. Sprawdzeni instruktorzy i program pełen wyzwań. Tel: 728 559 101',
     cta: 'Zapisz dziecko',

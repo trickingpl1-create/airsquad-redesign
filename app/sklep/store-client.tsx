@@ -285,7 +285,7 @@ export function StoreClient() {
         meta={
           loadState === 'ready' && products.length > 0
             ? `[Sklep] // ${plProducts(products.length)} — odbiór i płatność u trenera.`
-            : '[Sklep] // Odbiór i płatność u trenera, bez płatności online.'
+            : 'Zamówienia, odbiór i płatności u trenera.'
         }
       />
 
@@ -692,7 +692,7 @@ function CartPanel({
             Wybierz coś z listy — rozmiar i kolor ustawisz w oknie produktu.
           </p>
           <p className="mt-4 border-t border-violet-soft/30 pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
-            ↳ {PAYMENT_NOTICE_SHORT}
+            ↳ Informacje o płatności u trenera sekcji.
           </p>
         </div>
       ) : (

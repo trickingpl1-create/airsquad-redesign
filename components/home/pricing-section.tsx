@@ -216,7 +216,7 @@ export function PricingSection({
                 Letnie przygody
               </p>
               <h3 className="display-bold mt-3 text-3xl text-foreground md:text-4xl" style={{ fontWeight: 400 }}>
-                Air Camp 2026
+                Air Camp 2027
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
                 Cały dzień pełen aktywności — akrobatyka, longboard, kajaki, paintball i wiele więcej. Zajęcia dla dzieci i młodzieży w grupach do 20 osób.
@@ -244,7 +244,7 @@ export function PricingSection({
             <div className="flex justify-center md:justify-end">
               <Image
                 src="/images/aircamp-2026-logo.webp"
-                alt="Air Camp 2026 — Obóz sportowo-rekreacyjny"
+                alt="Air Camp 2027 — Obóz sportowo-rekreacyjny"
                 width={782}
                 height={600}
                 className="h-[120px] w-auto object-contain drop-shadow-[0_0_16px_rgba(16,185,129,0.3)]"
