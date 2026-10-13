@@ -3,8 +3,8 @@ import { generateSEOMetadata } from '@/lib/seo/metadata'
 import Link from 'next/link'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { AipaxWidget } from '@/components/aipax-widget'
 import { SectionHeader } from '@/components/home/section-header'
+import { SOCIALS } from '@/lib/content/socials'
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Grafik zajęć',
@@ -25,6 +25,8 @@ const CITY_TILES = [
 ] as const
 
 export default function SchedulePage() {
+  const ig = SOCIALS.find((s) => s.short === 'IG')?.href
+  const fb = SOCIALS.find((s) => s.short === 'FB')?.href
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -71,12 +73,45 @@ export default function SchedulePage() {
           </div>
         </section>
 
-        {/* Zapisy online — pełny kalendarz klubu (widget AIPAX) */}
+        {/* Zapisy wkrótce — kalendarz AIPAX uruchomimy po ogłoszeniu terminów */}
         <section className="container mx-auto px-4 pb-16 pt-14">
-          <p className="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-emerald">
-            Pełny kalendarz zajęć klubu
-          </p>
-          <AipaxWidget />
+          <div className="relative overflow-hidden rounded-3xl border border-emerald/30 bg-gradient-to-br from-emerald/15 to-cyan/10 p-8 text-center md:p-12">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-emerald">
+              Zapisy
+            </p>
+            <h2
+              className="display-bold mt-3 text-3xl text-foreground md:text-4xl"
+              style={{ fontWeight: 400 }}
+            >
+              Zapisy ruszają już{' '}
+              <span className="gradient-text" style={{ fontWeight: 400 }}>
+                wkrótce
+              </span>
+              .
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl leading-relaxed text-muted-foreground">
+              Grafik grup i zapisy online pojawią się tutaj niebawem. Śledźcie nas
+              na Instagramie i Facebooku — tam ogłaszamy terminy jako pierwsi.
+            </p>
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
+              <a
+                href={ig}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-gradient-to-r from-primary to-accent px-7 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white transition-transform hover:scale-[1.03]"
+              >
+                Instagram →
+              </a>
+              <a
+                href={fb}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-foreground/25 bg-foreground/5 px-7 py-3 font-mono text-xs font-bold uppercase tracking-[0.12em] text-foreground transition-colors hover:border-cyan hover:text-cyan"
+              >
+                Facebook ↗
+              </a>
+            </div>
+          </div>
         </section>
       </main>
       <Footer />
