@@ -7,6 +7,7 @@ import { CitiesSection } from '@/components/home/cities-section'
 import { HowStepsSection } from '@/components/home/how-steps-section'
 import { ENROL_CITIES } from '@/lib/content/enrol-cities'
 import { MarqueeSection } from '@/components/home/marquee-section'
+import { ShopBanner } from '@/components/home/shop-banner'
 import { TrainingTypesSection } from '@/components/home/training-types-section'
 import { DisciplinesSection } from '@/components/home/disciplines-section'
 import { HowAudienceSection } from '@/components/home/how-audience-section'
@@ -109,6 +110,7 @@ export default async function HomePage() {
         <HowStepsSection cities={ENROL_CITIES} />
         <PromoSection />
         <MarqueeSection />
+        <ShopBanner />
         <TeamSection />
         <TrainingTypesSection trainingTypes={trainingTypes} />
         <SectionVideoBand>
