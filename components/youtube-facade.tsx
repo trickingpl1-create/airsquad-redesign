@@ -15,10 +15,14 @@ export function YouTubeFacade({
   youtubeId,
   title,
   className = '',
+  ccLang,
 }: {
   youtubeId: string
   title: string
   className?: string
+  /** Kod języka napisów (np. 'pl') — włącza napisy i ustawia je jako domyślne.
+      Działa tylko, gdy film ma napisy w tym języku (własne lub auto-tłumaczone). */
+  ccLang?: string
 }) {
   const [playing, setPlaying] = useState(false)
   const frameRef = useRef<HTMLIFrameElement>(null)
@@ -30,10 +34,13 @@ export function YouTubeFacade({
   }, [playing])
 
   if (playing) {
+    const cc = ccLang
+      ? `&cc_load_policy=1&cc_lang_pref=${ccLang}&hl=${ccLang}`
+      : ''
     return (
       <iframe
         ref={frameRef}
-        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1${cc}`}
         title={title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"

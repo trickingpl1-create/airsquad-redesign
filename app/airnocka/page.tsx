@@ -60,8 +60,8 @@ export default function AirNockaPage() {
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1 bg-background">
-        {/* HERO z filmem w tle */}
-        <section className="relative overflow-hidden bg-background">
+        {/* HERO z filmem w tle — wideo wypełnia cały obszar sekcji */}
+        <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-background">
           <div className="absolute inset-0 z-0" aria-hidden="true">
             <div
               className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -72,16 +72,17 @@ export default function AirNockaPage() {
             >
               <BackgroundVideo
                 youtubeId={YOUTUBE_ID}
-                className="absolute inset-0 h-full w-full border-0 opacity-95"
+                className="absolute inset-0 h-full w-full border-0"
                 title="AkroNocki — tło wideo"
               />
             </div>
-            {/* Przyciemnienie — ku dołowi wtapia się w tło strony */}
+            {/* Lekki scrim: po lewej dla czytelności tekstu, na samym dole
+                delikatne wtopienie w tło — wideo pozostaje widoczne w całym hero. */}
             <div
               className="absolute inset-0"
               style={{
                 background:
-                  'linear-gradient(180deg, color-mix(in oklch, var(--background) 55%, transparent) 0%, color-mix(in oklch, var(--background) 32%, transparent) 42%, color-mix(in oklch, var(--background) 92%, transparent) 88%, var(--background) 100%), linear-gradient(90deg, color-mix(in oklch, var(--background) 72%, transparent) 0%, transparent 62%)',
+                  'linear-gradient(90deg, color-mix(in oklch, var(--background) 82%, transparent) 0%, color-mix(in oklch, var(--background) 34%, transparent) 42%, transparent 70%), linear-gradient(180deg, transparent 58%, color-mix(in oklch, var(--background) 68%, transparent) 88%, var(--background) 100%)',
               }}
             />
             <div
@@ -90,7 +91,7 @@ export default function AirNockaPage() {
             />
           </div>
 
-          <div className="relative z-10 mx-auto max-w-6xl px-6 pb-20 pt-40 md:px-10 md:pb-28 md:pt-52">
+          <div className="relative z-10 mx-auto w-full max-w-6xl px-6 py-24 md:px-10 md:py-28">
             <SectionHeader
               as="h1"
               kicker="Wydarzenie klubowe"
@@ -228,7 +229,11 @@ export default function AirNockaPage() {
               className="mb-8 md:mb-10"
             />
             <div className="aspect-video overflow-hidden rounded-3xl border border-border bg-black">
-              <YouTubeFacade youtubeId="HDsJ4MABaCk" title="AkroNocki — film" />
+              <YouTubeFacade
+                youtubeId="HDsJ4MABaCk"
+                title="AkroNocki — film"
+                ccLang="pl"
+              />
             </div>
           </div>
         </section>
