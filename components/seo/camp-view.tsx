@@ -327,24 +327,6 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
           </section>
         )}
 
-        {/* Galeria */}
-        {featuredGallery.length > 0 && (
-          <section className="relative bg-background px-6 py-20">
-            <div className="mx-auto max-w-7xl">
-              <SectionHeader
-                kicker="Z poprzednich turnusów"
-                kickerColorClass="text-pink"
-                title="Galeria"
-                gradientPart="z obozu."
-                titleFontWeight={400}
-                gradientFontWeight={400}
-                className="mb-8"
-              />
-              <ExpandableGallery featured={featuredGallery} extra={extraGallery} cityLabel="Air Camp" />
-            </div>
-          </section>
-        )}
-
         {/* Turnusy / Cennik */}
         {pricingTiers.length > 0 && (
           <section
@@ -439,6 +421,24 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
               <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
                 Cena zawiera nocleg, wyżywienie, opiekę trenerów, sprzęt i wszystkie atrakcje.
               </p>
+            </div>
+          </section>
+        )}
+
+        {/* Galeria */}
+        {featuredGallery.length > 0 && (
+          <section className="relative bg-background px-6 py-20">
+            <div className="mx-auto max-w-7xl">
+              <SectionHeader
+                kicker="Z poprzednich turnusów"
+                kickerColorClass="text-pink"
+                title="Galeria"
+                gradientPart="z obozu."
+                titleFontWeight={400}
+                gradientFontWeight={400}
+                className="mb-8"
+              />
+              <ExpandableGallery featured={featuredGallery} extra={extraGallery} cityLabel="Air Camp" />
             </div>
           </section>
         )}
