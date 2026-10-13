@@ -85,6 +85,8 @@ export function CityVideo({
             <img
               src={poster}
               alt=""
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 h-full w-full object-cover opacity-90"
             />
           ) : (

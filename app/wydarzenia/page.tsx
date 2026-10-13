@@ -110,6 +110,8 @@ export default async function EventsPage() {
                           <img
                             src={event.image_url || '/placeholder.svg'}
                             alt={event.title}
+                            loading={idx === 0 ? 'eager' : 'lazy'}
+                            decoding="async"
                             className="h-full w-full object-cover mix-blend-luminosity opacity-70 transition-transform duration-500 group-hover:scale-105"
                           />
                         ) : (

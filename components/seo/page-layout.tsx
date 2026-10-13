@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import { Breadcrumb } from '@/lib/seo/metadata'
 import { Sticker } from '@/components/ui/sticker'
+import { CoverImage } from '@/components/cover-image'
 
 interface SEOPageLayoutProps {
   title: string
@@ -24,10 +25,10 @@ export function SEOPageLayout({
       {/* Hero band — gradient violet, brutal typo */}
       <div className="relative overflow-hidden border-b-2 border-foreground bg-gradient-to-br from-primary via-primary to-accent">
         {heroImage && (
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-luminosity"
-            style={{ backgroundImage: `url(${heroImage})` }}
+          <CoverImage
+            src={heroImage}
+            priority
+            className="opacity-25 mix-blend-luminosity"
           />
         )}
         <div

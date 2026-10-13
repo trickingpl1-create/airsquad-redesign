@@ -26,7 +26,7 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
     'Akrobatyka dla dzieci, młodzieży i dorosłych — od pierwszego przewrotu do salta. Małe grupy, dwóch trenerów na sali, ścieżki AirTrack. Pierwszy trening 40 zł.',
   h1_title: 'Akrobatyka',
   hero_tagline: 'od pierwszego przewrotu do salta.',
-  hero_image_url: '/images/akrobatyka/hero-salto.jpg',
+  hero_image_url: '/images/akrobatyka/hero-salto.webp',
   hero_video_url: null,
   short_description:
     'Uczymy akrobatyki od podstaw — bezpiecznie, metodycznie i z frajdą. Małe grupy do 12 osób, dwóch trenerów na sali i profesjonalne ścieżki AirTrack, na których pierwsze salto przychodzi szybciej, niż myślisz.',
@@ -119,11 +119,11 @@ export const AKROBATYKA_DISCIPLINE: Discipline = {
   ],
   gallery: [
     {
-      url: '/images/akrobatyka/galeria-dzieci.jpg',
+      url: '/images/akrobatyka/galeria-dzieci.webp',
       caption: '// trening grupy 7–10 lat',
     },
     {
-      url: '/images/akrobatyka/galeria-szpagaty.jpg',
+      url: '/images/akrobatyka/galeria-szpagaty.webp',
       caption: '// gibkość i szpagaty',
     },
     {
@@ -182,7 +182,7 @@ export const TRICKING_DISCIPLINE: Discipline = {
     'Tricking w Air Squad: salta, kopnięcia i kombinacje na matach AirTrack. Grupy naborowe od 9 lat oraz grupa zaawansowana. Rzeszów i Podkarpacie.',
   h1_title: 'Tricking Akademia',
   hero_tagline: 'akrobatyka, która wygląda jak film.',
-  hero_image_url: '/images/dyscypliny/tricking.jpg',
+  hero_image_url: '/images/dyscypliny/tricking.webp',
   hero_video_url: null,
   short_description:
     'Połączenie akrobatyki z elementami sztuk walki i breakdance’u — widowiskowa forma ruchu dla młodzieży i dorosłych. Uczymy od pierwszego kopnięcia po pełne kombinacje.',
@@ -219,7 +219,7 @@ export const TUMBLING_DISCIPLINE: Discipline = {
     'Tumbling w Air Squad — nauka przewrotów, przerzutów i salt na profesjonalnej ścieżce akrobatycznej. Zajęcia dla dzieci i młodzieży na Podkarpaciu.',
   h1_title: 'Tumbling',
   hero_tagline: 'seria skoków na jednym oddechu.',
-  hero_image_url: '/images/old-site/tumbling.jpg',
+  hero_image_url: '/images/old-site/tumbling.webp',
   hero_video_url: null,
   short_description:
     'Skoki na ścieżce akrobatycznej: nauka przewrotów, przerzutów i salt — od podstaw po zaawansowane akrobacje. Miękka nawierzchnia AirTrack pozwala powtarzać element bez obciążania stawów.',

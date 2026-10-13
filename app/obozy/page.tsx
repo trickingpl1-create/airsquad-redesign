@@ -80,7 +80,7 @@ export default async function CampsPage() {
                 </span>
               </div>
               <div className="grid gap-8 md:grid-cols-2">
-                {upcomingCamps.map((camp) => (
+                {upcomingCamps.map((camp, idx) => (
                   <article
                     key={camp.id}
                     className="group overflow-hidden border-2 border-foreground bg-card shadow-sticker-lg transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-sticker-xl"
@@ -90,6 +90,8 @@ export default async function CampsPage() {
                         <img
                           src={camp.image_url || '/placeholder.svg'}
                           alt={camp.name}
+                          loading={idx === 0 ? 'eager' : 'lazy'}
+                          decoding="async"
                           className="h-full w-full object-cover mix-blend-luminosity opacity-70 transition-transform duration-500 group-hover:scale-105"
                         />
                       ) : (

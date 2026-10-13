@@ -18,10 +18,10 @@ export default function NotFound() {
         {/* Logo */}
         <Link href="/">
           <Image
-            src="/images/airsquad-logo.webp"
+            src="/images/airsquad-logo-w400.webp"
             alt="Air Squad"
-            width={592}
-            height={355}
+            width={400}
+            height={240}
             className="h-[72px] w-auto object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.55)]"
             priority
           />

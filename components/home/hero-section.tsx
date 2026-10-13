@@ -82,10 +82,10 @@ export function HeroSection() {
             {/* Hero logo */}
             <div className="mb-6">
               <Image
-                src="/images/airsquad-logo.webp"
+                src="/images/airsquad-logo-w400.webp"
                 alt="Air Squad"
-                width={592}
-                height={355}
+                width={400}
+                height={240}
                 className="h-[90px] w-auto object-contain drop-shadow-[0_0_24px_rgba(168,85,247,0.6)]"
                 priority
               />
@@ -172,7 +172,7 @@ export function HeroSection() {
             >
               {/* Dekoracja kafelka. priority, bo to pierwszy ekran — jako tło CSS
                   przeglądarka znajdowała ten plik dopiero po zbudowaniu stylów. */}
-              <CoverImage src="/images/old-site/dzieci-airtrack.jpg" priority className="opacity-35" />
+              <CoverImage src="/images/old-site/dzieci-airtrack.webp" priority className="opacity-35" />
               {/* Dashed circle decoration */}
               <div
                 aria-hidden
@@ -202,7 +202,7 @@ export function HeroSection() {
                   background: 'linear-gradient(135deg, #06d6ff 0%, #00d9ff 100%)',
                 }}
               >
-                <CoverImage src="/images/old-site/hala-airspace.jpg" priority className="opacity-30" />
+                <CoverImage src="/images/old-site/hala-airspace.webp" priority className="opacity-30" />
                 <div className="relative">
                   <div
                     style={{ fontFamily: 'var(--font-covered-by-your-grace)', letterSpacing: '0.025em' }}
@@ -229,7 +229,7 @@ export function HeroSection() {
                   background: 'linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%)',
                 }}
               >
-                <CoverImage src="/images/hero/instagram.jpg" priority className="opacity-30" />
+                <CoverImage src="/images/hero/instagram.webp" priority className="opacity-30" />
                 <div
                   aria-hidden
                   className="absolute inset-0"

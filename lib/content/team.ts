@@ -24,25 +24,25 @@ export const TEAM: TeamMember[] = [
   {
     name: 'Gabriel Myśliwiec',
     role: 'Prezes, główny trener AirSpace · akrobatyka, tricking',
-    photo: '/images/trenerzy/gabriel-mysliwiec.jpg',
+    photo: '/images/trenerzy/gabriel-mysliwiec.webp',
     featured: true,
   },
   {
     name: 'Łukasz Pacocha',
     role: 'Wiceprezes, trener · mgr wychowania fizycznego, instruktor judo',
-    photo: '/images/trenerzy/lukasz-pacocha.jpg',
+    photo: '/images/trenerzy/lukasz-pacocha.webp',
     featured: true,
   },
   {
     name: 'Paulina Bester-Myśliwiec',
     role: 'Trenerka koordynująca zajęcia dla dzieci',
-    photo: '/images/trenerzy/paulina-bester-mysliwiec.jpg',
+    photo: '/images/trenerzy/paulina-bester-mysliwiec.webp',
     featured: true,
   },
   {
     name: 'Wiktoria Goleń',
     role: 'Koordynatorka logistyki',
-    photo: '/images/trenerzy/wiktoria-golen.jpg',
+    photo: '/images/trenerzy/wiktoria-golen.webp',
     featured: true,
   },
 
@@ -57,7 +57,7 @@ export const TEAM: TeamMember[] = [
   {
     name: 'Gabriela Cichoń',
     role: 'Trenerka · magister fizjoterapii',
-    photo: '/images/trenerzy/gabriela-cichon.jpg',
+    photo: '/images/trenerzy/gabriela-cichon.webp',
     featured: false,
   },
   {
@@ -69,13 +69,13 @@ export const TEAM: TeamMember[] = [
   {
     name: 'Maja Bieniek',
     role: 'Trenerka dla dzieci',
-    photo: '/images/trenerzy/maja-bieniek.jpg',
+    photo: '/images/trenerzy/maja-bieniek.webp',
     featured: false,
   },
   {
     name: 'Karol Rączy',
     role: 'Trener zaawansowany',
-    photo: '/images/trenerzy/karol-raczy.jpg',
+    photo: '/images/trenerzy/karol-raczy.webp',
     featured: false,
   },
 ]

@@ -884,6 +884,8 @@ function ProductDialog({
         <img
           src={product.image_url}
           alt={product.name}
+          loading="lazy"
+          decoding="async"
           className="mt-5 h-56 w-full rounded-2xl border border-border object-cover"
         />
       )}

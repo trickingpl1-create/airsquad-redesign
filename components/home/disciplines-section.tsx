@@ -8,7 +8,7 @@ import { DisciplinesReveal, type Discipline } from './disciplines-reveal'
  * Możesz użyć:
  * - URL z Unsplash: https://images.unsplash.com/...
  * - URL z własnego hostingu
- * - Ścieżka do pliku lokalnego: /images/dyscypliny/akrobatyka.jpg
+ * - Ścieżka do pliku lokalnego: /images/dyscypliny/akrobatyka.webp
  * 
  * Wymiary: min. 600x400px, format: JPG/PNG
  */
@@ -20,7 +20,7 @@ const DISCIPLINES: Discipline[] = [
     age: 'OD 7 LAT',
     desc: 'Salta z miejsca, rondaty, flik-flaki. Ścieżka rozwoju od podstaw.',
     gradient: 'linear-gradient(135deg, var(--primary), var(--blue-deep))',
-    photo: '/images/dyscypliny/akrobatyka.jpg', // Edytuj tutaj
+    photo: '/images/dyscypliny/akrobatyka.webp', // Edytuj tutaj
   },
   {
     num: '02',
@@ -29,7 +29,7 @@ const DISCIPLINES: Discipline[] = [
     age: 'OD 7 LAT',
     desc: 'Salta, kicki, twisty — ekspresja i estetyka. Najszybciej rosnąca strefa.',
     gradient: 'linear-gradient(135deg, var(--pink), var(--primary))',
-    photo: '/images/dyscypliny/tricking.jpg', // Edytuj tutaj
+    photo: '/images/dyscypliny/tricking.webp', // Edytuj tutaj
   },
   {
     num: '03',
@@ -38,7 +38,7 @@ const DISCIPLINES: Discipline[] = [
     age: 'OD 7 LAT',
     desc: 'Ścieżka akrobatyczna, AirTrack — do śrub i łączeń.',
     gradient: 'linear-gradient(135deg, var(--violet-soft), var(--accent))',
-    photo: '/images/old-site/tumbling.jpg', // Edytuj tutaj
+    photo: '/images/old-site/tumbling.webp', // Edytuj tutaj
   },
   {
     num: '04',
@@ -48,7 +48,7 @@ const DISCIPLINES: Discipline[] = [
     age: 'OD 7 LAT',
     desc: 'Choreografie, technika, lekcje indywidualne.',
     gradient: 'linear-gradient(135deg, var(--amber), var(--pink))',
-    photo: '/images/dyscypliny/showdance.jpg', // Edytuj tutaj
+    photo: '/images/dyscypliny/showdance.webp', // Edytuj tutaj
   },
   {
     num: '05',
@@ -69,7 +69,7 @@ const DISCIPLINES: Discipline[] = [
     age: 'OD 7 LAT',
     desc: 'Wyjazdy zimowe, technika, pierwsze tricki w snowparku.',
     gradient: 'linear-gradient(135deg, var(--cyan), var(--primary))',
-    photo: '/images/old-site/snowboard.jpg', // Edytuj tutaj
+    photo: '/images/old-site/snowboard.webp', // Edytuj tutaj
   },
 ]
 

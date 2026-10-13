@@ -17,7 +17,7 @@ import { join } from 'node:path'
  * - `chmod 644` na plikach — inaczej Apache na hostingu zwraca 403 (lftp
  *   zachowuje uprawnienia; zdarzyło się to już wcześniej).
  * - Po wgraniu oryginału uruchom `node scripts/make-image-variants.mjs` — robi
- *   warianty <nazwa>-w900.jpg (telefony) i <nazwa>-w1600.jpg (desktop). Strona
+ *   warianty <nazwa>-w900.webp (telefony) i <nazwa>-w1600.webp (desktop). Strona
  *   ma `images.unoptimized: true` (wymuszone przez `output: 'export'`), więc
  *   srcset trzeba dostarczyć samemu; kod odwołuje się WYŁĄCZNIE do wariantów,
  *   oryginał jest tylko źródłem dla skryptu.
@@ -64,8 +64,8 @@ const URL_BAZA = '/images/kadra'
 
 export const TEAM_PHOTOS: TeamPhoto[] = KANDYDACI.flatMap(({ file, caption }) => {
   const baza = file.replace(/\.jpe?g$/i, '')
-  const w900 = `${baza}-w900.jpg`
-  const w1600 = `${baza}-w1600.jpg`
+  const w900 = `${baza}-w900.webp`
+  const w1600 = `${baza}-w1600.webp`
   const jest = (nazwa: string) => existsSync(join(KATALOG, nazwa))
 
   if (jest(w900) && jest(w1600)) {

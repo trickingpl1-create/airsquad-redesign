@@ -10,6 +10,7 @@ import { CityAipaxCalendar } from '@/components/seo/city-aipax-calendar'
 import { CityVideo } from '@/components/seo/city-video'
 import { ExpandableGallery } from '@/components/seo/expandable-gallery'
 import { CLUB_CONTACT } from '@/lib/content/cities'
+import { CoverImage } from '@/components/cover-image'
 import type { Event } from '@/lib/types/database'
 
 // Landing /letni/ (Air Camp, chroniony URL SEO — docs/03-mapa-url.md).
@@ -109,13 +110,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
 
         {/* Hero */}
         <section className="relative mt-6 overflow-hidden">
-          {camp.image_url && (
-            <div
-              aria-hidden
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${camp.image_url})` }}
-            />
-          )}
+          {camp.image_url && <CoverImage src={camp.image_url} priority />}
           <div
             aria-hidden
             className="absolute inset-0"
@@ -244,11 +239,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
                     className="relative overflow-hidden rounded-[20px] border p-6"
                     style={{ borderColor: `color-mix(in oklch, ${card.accent} 40%, transparent)` }}
                   >
-                    <div
-                      aria-hidden
-                      className="absolute inset-0 bg-cover bg-center opacity-55"
-                      style={{ backgroundImage: `url(${card.img})` }}
-                    />
+                    <CoverImage src={card.img} className="opacity-55" />
                     <div
                       aria-hidden
                       className="absolute inset-0"
@@ -479,10 +470,10 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
                 <div className="flex items-center gap-3.5 border-b border-border p-5">
                   <div className="h-[52px] w-[52px] flex-shrink-0 rounded-full bg-gradient-to-br from-primary via-accent to-amber p-0.5">
                     <Image
-                      src="/images/airsquad-logo.webp"
+                      src="/images/airsquad-logo-w400.webp"
                       alt="Air Squad Akrobatyka"
-                      width={592}
-                      height={355}
+                      width={400}
+                      height={240}
                       className="h-full w-full rounded-full bg-background object-cover p-1.5"
                     />
                   </div>
@@ -495,21 +486,22 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
                 </div>
                 <div className="grid grid-cols-3 gap-0.5">
                   {[
-                    '/images/bg-tricking.jpg',
-                    '/images/bg-showdance.jpg',
-                    '/images/bg-tumbling.jpg',
-                    '/images/bg-akrobatyka.jpg',
-                    '/images/old-site/dzieci-airtrack.jpg',
-                    '/images/old-site/hala-airspace.jpg',
+                    '/images/bg-tricking.webp',
+                    '/images/bg-showdance.webp',
+                    '/images/bg-tumbling.webp',
+                    '/images/bg-akrobatyka.webp',
+                    '/images/old-site/dzieci-airtrack.webp',
+                    '/images/old-site/hala-airspace.webp',
                   ].map((src) => (
                     <a
                       key={src}
                       href="https://instagram.com/airsquad_akrobatyka"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="relative block aspect-square bg-cover bg-center"
-                      style={{ backgroundImage: `url(${src})` }}
-                    />
+                      className="relative block aspect-square overflow-hidden"
+                    >
+                      <CoverImage src={src} />
+                    </a>
                   ))}
                 </div>
                 <a

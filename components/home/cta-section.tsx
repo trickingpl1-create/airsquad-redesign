@@ -15,7 +15,7 @@ export function CTASection({ cities }: { cities: EnrolCity[] }) {
       className="relative overflow-hidden bg-background px-6 py-24 md:px-10 md:py-32"
     >
       {/* Semitransparent background photo */}
-      <CoverImage src="/images/bg-zapisz.jpg" className="opacity-10" />
+      <CoverImage src="/images/bg-zapisz.webp" className="opacity-10" />
       {/* Gradient overlay to darken edges and keep text legible */}
       <div
         aria-hidden

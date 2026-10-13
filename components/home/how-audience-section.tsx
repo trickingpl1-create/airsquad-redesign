@@ -5,14 +5,14 @@ const audience = [
     num: '7–10',
     desc: 'Bezpieczne podstawy, miękkie maty, krótkie sesje. Pierwsza akrobatyka w życiu — bez stresu.',
     accent: 'var(--primary)',
-    photo: '/images/old-site/dzieci-airtrack.jpg',
+    photo: '/images/old-site/dzieci-airtrack.webp',
   },
   {
     title: 'Młodzież 11–17',
     num: '11–17',
     desc: 'Tricking, tumbling zaawansowany, pierwsze konkursy i pokazy. Mocne zaplecze techniczne i progres widoczny co miesiąc.',
     accent: 'var(--cyan)',
-    photo: '/images/old-site/mlodziez-oboz.jpg',
+    photo: '/images/old-site/mlodziez-oboz.webp',
   },
   {
     title: 'Dorośli i rodziny',

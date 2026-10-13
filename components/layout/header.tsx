@@ -110,10 +110,10 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="group flex items-center gap-2">
             <Image
-              src="/images/airsquad-logo.webp"
+              src="/images/airsquad-logo-w400.webp"
               alt="Air Squad"
-              width={592}
-              height={355}
+              width={400}
+              height={240}
               className="h-[42px] w-auto object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]"
               priority
             />

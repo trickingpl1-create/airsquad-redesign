@@ -65,6 +65,8 @@ export function InstagramFeed({ limit = 6 }: { limit?: number }) {
           <img
             src={post.image_url}
             alt={post.caption || 'Instagram post'}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform"
           />
           {post.caption && (

@@ -105,7 +105,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     updated_at: '',
     city_name: 'Rzeszów',
     city_locative: 'w Rzeszowie',
-    hero_image_url: '/images/miasta/rzeszow-hero.jpg',
+    hero_image_url: '/images/miasta/rzeszow-hero.webp',
     // Rolka z YT (youtube.com/shorts/yrYqJvyhZLA) jako tło hero — ten sam
     // wzorzec co Dębica/Jasło. hero_image_url zostaje jako poster pod iframe'em.
     hero_youtube_id: 'yrYqJvyhZLA',
@@ -116,14 +116,14 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       address: 'ul. Boya-Żeleńskiego 15',
       city: 'Rzeszów',
       mapQuery: 'Air Space, Boya-Żeleńskiego 15, Rzeszów',
-      image_url: '/images/miasta/rzeszow-sala.jpg',
+      image_url: '/images/miasta/rzeszow-sala.webp',
       hideMap: true,
     },
     trainers: [
       { name: 'Gabriel Myśliwiec', role: 'instruktor akrobatyki, trener trickingu' },
       { name: 'Łukasz Pacocha', role: 'instruktor akrobatyki' },
     ],
-    trainers_image_url: '/images/miasta/rzeszow-trenerzy.jpg',
+    trainers_image_url: '/images/miasta/rzeszow-trenerzy.webp',
     first_training: [
       { title: 'Wygodny strój i woda', desc: 'Nic więcej nie potrzebujesz na start.' },
       { title: 'Rozgrzewka z grupą', desc: 'Pod okiem dwóch trenerów.' },
@@ -132,15 +132,15 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     ],
     benefits: ['prawidłowa postawa', 'motoryka i koordynacja', 'równowaga', 'koncentracja', 'pewność siebie'],
     gallery: [
-      { url: '/images/miasta/rzeszow-galeria-1.jpg', caption: 'Trening akrobatyki w Air Space' },
-      { url: '/images/miasta/rzeszow-galeria-2.jpg', caption: 'Salto na ścieżce' },
-      { url: '/images/miasta/rzeszow-galeria-3.jpg', caption: 'Zajęcia grupowe' },
-      { url: '/images/miasta/rzeszow-galeria-4.jpg', caption: 'Skoki na AirTracku' },
+      { url: '/images/miasta/rzeszow-galeria-1.webp', caption: 'Trening akrobatyki w Air Space' },
+      { url: '/images/miasta/rzeszow-galeria-2.webp', caption: 'Salto na ścieżce' },
+      { url: '/images/miasta/rzeszow-galeria-3.webp', caption: 'Zajęcia grupowe' },
+      { url: '/images/miasta/rzeszow-galeria-4.webp', caption: 'Skoki na AirTracku' },
     ],
     videos: [
       {
         url: 'https://youtube.com/shorts/yrYqJvyhZLA',
-        poster: '/images/miasta/rzeszow-zajawka.jpg',
+        poster: '/images/miasta/rzeszow-zajawka.webp',
         label: 'Skoki na ścieżce / Tumbling',
       },
       {
@@ -209,7 +209,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     updated_at: '',
     city_name: 'Dębica',
     city_locative: 'w Dębicy',
-    hero_image_url: '/images/miasta/debica-hero.jpg',
+    hero_image_url: '/images/miasta/debica-hero.webp',
     // Rolka z zajęć w Dębicy (YouTube Short) — grana jako tło hero
     hero_youtube_id: 'x3iyx0UW76w',
     hero_image_position: 'right 46%',
@@ -230,7 +230,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       { name: 'Patryk Dębski', role: 'licencjat fizjoterapii' },
       { name: 'Paulina Bester-Myśliwiec' },
     ],
-    trainers_image_url: '/images/miasta/debica-trenerzy.jpg',
+    trainers_image_url: '/images/miasta/debica-trenerzy.webp',
     first_training: [
       { title: 'Wygodny strój i woda', desc: 'To wszystko, czego potrzebuje dziecko na start.' },
       { title: 'Poznanie grupy', desc: 'Rozgrzewka i pierwsze ćwiczenia z trenerami.' },
@@ -241,7 +241,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     videos: [
       {
         url: 'https://youtube.com/shorts/x3iyx0UW76w',
-        poster: '/images/miasta/debica-zajawka.jpg',
+        poster: '/images/miasta/debica-zajawka.webp',
         label: 'Trening w AIR SPACE Dębica',
       },
     ],
@@ -295,7 +295,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     city_name: 'Jasło',
     training_days_label: 'poniedziałki, środy i piątki',
     city_locative: 'w Jaśle',
-    hero_image_url: '/images/miasta/jaslo-hero.jpg',
+    hero_image_url: '/images/miasta/jaslo-hero.webp',
     // Rolka z zajęć w Jaśle (YouTube Short, pion 9:16) — grana jako tło hero
     hero_youtube_id: 'cVqSuMi2WEc',
     // Zapisy jako pełny formularz AIPAX (bez ?mode=calendar) — decyzja 2026-08-13
@@ -311,7 +311,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       { name: 'Agnieszka Sobczyk', role: 'samoobrona, judo, trening personalny' },
       { name: 'Łukasz Pacocha', role: 'akrobatyka, judo, ratownik' },
     ],
-    trainers_image_url: '/images/miasta/jaslo-biecz-trenerzy.jpg',
+    trainers_image_url: '/images/miasta/jaslo-biecz-trenerzy.webp',
     first_training: [
       { title: 'Strój sportowy i woda', desc: 'Ćwiczymy boso lub w skarpetkach.' },
       { title: 'Rozgrzewka', desc: 'Wspólny start całej grupy z trenerami.' },
@@ -383,7 +383,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     // bo filtr działa przez includes() i literówka po cichu przestaje ukrywać pozycję.
     pricing_hide_drop_ins: ['Pojedynczy trening', 'Open Training', 'Trening w małej grupie', 'Pakiet 4 treningi'],
     pricing_enrol_via_aipax: true,
-    hero_image_url: '/images/miasta/biecz-hero.jpg',
+    hero_image_url: '/images/miasta/biecz-hero.webp',
     hero_video_url: `${WP_UPLOADS}/2025/07/akro-biecz.mp4`,
     hall: {
       name: 'Hala Sportowa (ZSZ im. Św. Jadwigi Królowej)',
@@ -396,7 +396,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       { name: 'Agnieszka Sobczyk', role: 'samoobrona, judo, trening personalny' },
       { name: 'Łukasz Pacocha', role: 'akrobatyka, judo, ratownik' },
     ],
-    trainers_image_url: '/images/miasta/jaslo-biecz-trenerzy.jpg',
+    trainers_image_url: '/images/miasta/jaslo-biecz-trenerzy.webp',
     first_training: [
       { title: 'Wygodny strój', desc: 'Plus woda — nic więcej nie trzeba.' },
       { title: 'Wspólna rozgrzewka', desc: 'Całą grupą, pod okiem trenerów.' },
@@ -454,7 +454,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     city_name: 'Brzostek',
     training_days_label: 'wtorki i czwartki',
     city_locative: 'w Brzostku',
-    hero_image_url: '/images/miasta/brzostek-hero.jpg',
+    hero_image_url: '/images/miasta/brzostek-hero.webp',
     hall: {
       name: 'Hala Widowiskowo-Sportowa w Brzostku',
       address: 'Hala Widowiskowo-Sportowa',
@@ -462,7 +462,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
       mapQuery: 'Hala Widowiskowo-Sportowa Brzostek',
     },
     trainers: [{ name: 'Zespół trenerski Air Squad', role: 'trenerzy sekcji Brzostek' }],
-    trainers_image_url: '/images/miasta/brzostek-trenerzy.jpg',
+    trainers_image_url: '/images/miasta/brzostek-trenerzy.webp',
     first_training: [
       { title: 'Strój i woda', desc: 'Wygodny strój sportowy wystarczy na start.' },
       { title: 'Rozgrzewka z grupą', desc: 'Wprowadzenie w trening pod okiem trenerów.' },
@@ -526,7 +526,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     updated_at: '',
     city_name: 'Pilzno',
     city_locative: 'w Pilźnie',
-    hero_image_url: '/images/miasta/pilzno-hero.jpg',
+    hero_image_url: '/images/miasta/pilzno-hero.webp',
     hall: {
       name: 'Szkoła Podstawowa w Strzegocicach',
       address: 'Strzegocice 54',
@@ -541,10 +541,10 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     ],
     benefits: ['postawa', 'motoryka', 'orientacja przestrzenna', 'praca zespołowa', 'koncentracja'],
     gallery: [
-      { url: '/images/miasta/pilzno-galeria-1.jpg', caption: 'Trening ACRO Pilzno' },
-      { url: '/images/miasta/pilzno-galeria-2.jpg', caption: 'Ćwiczenia na sali' },
-      { url: '/images/miasta/pilzno-galeria-3.jpg', caption: 'Zajęcia grupowe' },
-      { url: '/images/miasta/pilzno-galeria-4.jpg', caption: 'Akrobatyka dzieci' },
+      { url: '/images/miasta/pilzno-galeria-1.webp', caption: 'Trening ACRO Pilzno' },
+      { url: '/images/miasta/pilzno-galeria-2.webp', caption: 'Ćwiczenia na sali' },
+      { url: '/images/miasta/pilzno-galeria-3.webp', caption: 'Zajęcia grupowe' },
+      { url: '/images/miasta/pilzno-galeria-4.webp', caption: 'Akrobatyka dzieci' },
     ],
     videos: [
       {
@@ -615,7 +615,7 @@ export const FALLBACK_CITY_PAGES: Record<string, CityPage> = {
     videos: [
       {
         url: `${WP_UPLOADS}/2024/07/rolka-akro-dzien-34-1.mp4`,
-        poster: '/images/miasta/tyczyn-zajawka.jpg',
+        poster: '/images/miasta/tyczyn-zajawka.webp',
         label: 'Rolka z treningów',
       },
     ],

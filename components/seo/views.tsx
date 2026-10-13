@@ -4,6 +4,7 @@ import { StructuredData, Breadcrumb } from '@/lib/seo/metadata'
 import { SITE_URL } from '@/lib/seo/site'
 import { FAQSection } from '@/components/seo/page-layout'
 import { Button } from '@/components/ui/button'
+import { CoverImage } from '@/components/cover-image'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import {
@@ -100,10 +101,8 @@ export function DisciplineView({
 
         {/* Hero Section */}
         {discipline.hero_image_url ? (
-          <div
-            className="relative h-64 bg-cover bg-center md:h-96"
-            style={{ backgroundImage: `url(${discipline.hero_image_url})` }}
-          >
+          <div className="relative h-64 overflow-hidden md:h-96">
+            <CoverImage src={discipline.hero_image_url} priority />
             <div className="absolute inset-0 bg-gradient-to-b from-background/40 to-background" />
             <div className="container mx-auto px-4 relative flex h-full flex-col justify-center">
               <h1 className="text-4xl font-bold text-white md:text-5xl">
@@ -207,10 +206,9 @@ export function DisciplineView({
           {sessionFlow.length > 0 && (
             <section className="grid gap-10 md:grid-cols-2 md:items-center">
               {discipline.hero_image_url && (
-                <div
-                  className="min-h-[320px] rounded-3xl bg-cover bg-center"
-                  style={{ backgroundImage: `url(${discipline.hero_image_url})` }}
-                />
+                <div className="relative min-h-[320px] overflow-hidden rounded-3xl">
+                  <CoverImage src={discipline.hero_image_url} />
+                </div>
               )}
               <div>
                 <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-amber">
@@ -287,9 +285,9 @@ export function DisciplineView({
                 {gallery.map((g, i) => (
                   <div
                     key={i}
-                    className="relative h-72 overflow-hidden rounded-3xl bg-cover bg-center"
-                    style={{ backgroundImage: `url(${g.url})` }}
+                    className="relative h-72 overflow-hidden rounded-3xl"
                   >
+                    <CoverImage src={g.url} />
                     {g.caption && (
                       <span className="absolute bottom-3 left-3 right-3 font-mono text-xs text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
                         {g.caption}
@@ -468,11 +466,12 @@ export function EventView({
 
         {/* Hero Section */}
         <div className="relative h-64 bg-gradient-to-br from-primary to-accent md:h-96">
+          {/* Zmiana kadru przy okazji: ten blok nie miał `bg-cover`, więc tło
+              leżało w naturalnej skali — widać było powiększony wycinek z lewego
+              górnego narożnika pliku 1600 px. `object-cover` pokazuje całe
+              zdjęcie, tak jak w pozostałych hero. */}
           {event.image_url && (
-            <div
-              className="absolute inset-0 opacity-30"
-              style={{ backgroundImage: `url(${event.image_url})` }}
-            />
+            <CoverImage src={event.image_url} priority className="opacity-30" />
           )}
           <div className="container mx-auto px-4 relative flex h-full flex-col justify-center">
             <h1 className="text-4xl font-bold text-white md:text-5xl">
@@ -665,9 +664,9 @@ export function EventView({
                 {gallery.map((g, i) => (
                   <div
                     key={i}
-                    className="relative h-72 overflow-hidden rounded-3xl bg-cover bg-center"
-                    style={{ backgroundImage: `url(${g.url})` }}
+                    className="relative h-72 overflow-hidden rounded-3xl"
                   >
+                    <CoverImage src={g.url} />
                     {g.caption && (
                       <span className="absolute bottom-3 left-3 right-3 font-mono text-xs text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
                         {g.caption}

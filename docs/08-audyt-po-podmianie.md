@@ -6,6 +6,20 @@ Stan: `airsquad.pl` serwuje nową stronę od 2026-10-05 ok. 14:50 (przebieg: `za
 
 ## Stan prac (aktualizowany)
 
+**2026-10-13 — F21 (WebP i warianty zdjęć) ZAMKNIĘTE. Jeszcze NIE wdrożone na produkcję.**
+
+Trzy niezależne dźwignie, wszystkie zmierzone na zbudowanej paczce (`out/`), nie na szacunkach:
+
+1. **Format.** 50 zdjęć przekonwertowanych na WebP (`scripts/make-webp.mjs`): 8239 → 4341 kB, **−47%**. Konwertowane tylko tam, gdzie zysk przekracza 8% — 14 plików zostało JPEG-ami, bo były już tak ciasno spakowane, że WebP nic nie dawał. Bez `<picture>` i bez zapasowego JPEG-a: serwis i tak podaje logo wyłącznie jako WebP od początku, a `<picture>` jest tu pułapką — gdy `<source>` pasuje typem, ale plik zwróci 404, przeglądarka NIE cofa się do `<img>`.
+2. **Leniwe ładowanie — dokończone.** Pozostałe **13 teł CSS** (hero miast i dyscyplin, karty `/letni/`, galerie, kafelki Instagrama, karty aktualności) zamienione na `<img>` przez `components/cover-image.tsx`; w repo nie ma już ani jednego `backgroundImage`. Do tego **10 zwykłych `<img>` bez atrybutu `loading`** ładowało się wszystkie naraz — m.in. siatki kart na `/lokalizacje/` i `/dyscypliny/` (odpowiednio 7 i 5 zdjęć w pierwszym ekranie). Teraz pierwsza karta ładuje się od razu, reszta przy przewijaniu.
+3. **Rozmiar logo.** Plik 592×355 (51 kB) leciał na każdej podstronie, a jest wyświetlany na wysokości 42 px (nagłówek), 64 px (stopka), 72 px (404) i 90 px (hero). Nowy wariant `airsquad-logo-w400.webp` (32 kB) pokrywa największe z tych użyć z zapasem gęstości 2,7×.
+
+**Wynik — waga pierwszego ekranu (suma po wszystkich 42 stronach): 9911 → 5687 kB.** Największe pojedyncze spadki: `/lokalizacje/` 899 → 188 kB, `/rzeszow/` 388 → 169 kB, `/debica/` 398 → 182 kB, strona główna 435 → 394 kB. Sprawdzone na zbudowanej paczce: 13 stron, **0 zepsutych adresów zdjęć** (każdy `src` → 200), 0 błędów typów, build przechodzi. LCP-u nie dało się zmierzyć w panelu przeglądarki — przy ukrytym panelu przeglądarka w ogóle nie rejestruje tej metryki.
+
+**Zostało do zrobienia ręcznie:** `node scripts/usun-osierocone-zdjecia.mjs --apply` — 70 plików (10,9 MB) bez jednego odwołania w kodzie: stare JPEG-i po konwersji, stare warianty `-w…jpg`, nieużywane `aircamp-2026-logo.png` (1,4 MB) i 4 pliki martwe już wcześniej. Skrypt sam je wyszukuje (nie z zamrożonej listy) i kasuje przez `git rm`, więc zostają w historii. **Źródeł wariantów nie wolno ruszać** — `kadra/*.jpg` i `trenerzy/*.jpg` bez sufiksu nie występują w kodzie, bo kod odwołuje się wyłącznie do generowanych wariantów.
+
+**Dalszy zapas w zdjęciach — już nie w formacie, tylko w wymiarach.** Kafelki galerii (`h-72`, ok. 400 px szerokości na desktopie) dostają pliki 1600 px — 4× za duże. Wymagałoby to `srcset` w `CoverImage` i wariantów `-w800`. Wszystkie te zdjęcia są już leniwe, więc nie obciążają pierwszego ekranu; kosztują dopiero przy przewijaniu (`/letni/` 2441 kB, strona główna 1781 kB).
+
 **2026-10-12 — wdrożone na produkcję, cztery pozycje zamknięte:**
 
 - **F10 (wiek) — ZAMKNIĘTE.** Klub potwierdził: nabór **od 7 lat**, sześciolatków nie przyjmujemy. Poprawione 19 miejsc: opis całej witryny, opisy 7 miast, `age_requirement`, statystyka i FAQ na `/akrobatyka/`, grupa AcroKids (4–6 → 7–8). Wyrównane też same grafiki — 4 grupy naborowe deklarowały „od 6 lat" (Biecz ×2, Pilzno, Tyczyn), a opisy i FAQ 5 miast „od 6. roku życia"; zostawienie ich dałoby sprzeczność na jednej stronie. W repo nie ma już deklaracji wieku poniżej 7.
@@ -25,7 +39,7 @@ Weryfikacja niezależna (4 kontrole + sceptycy): 0 blokerów, 0 „major”; 13 
 
 **Gotowe do pracy właściciela:** `08a-pakiet-gabriela.md` (panele: GSC, Cookiebot, GTM, wizytówki, Bing, AIPAX + kwestionariusz treści) i `08b-polityka-prywatnosci-projekt.md` (projekt nowej polityki, F01 — publikacja dopiero po rozdzieleniu statystyki i marketingu w GTM, decyzja D3).
 
-**Wstrzymane:** F20 (przekodowanie filmów — wymaga `ffmpeg`), F21 (WebP i warianty zdjęć — osobna paczka), F45 (krytyczny CSS — osobna paczka), treści z kwestionariusza (F10, F09, F36, F37, F06, F07, F27, F26, F08, F40).
+**Wstrzymane:** F20 (przekodowanie filmów — wymaga `ffmpeg`), ~~F21~~ **ZROBIONE 2026-10-13** (WebP i warianty zdjęć), F45 (krytyczny CSS — osobna paczka), treści z kwestionariusza (F10, F09, F36, F37, F06, F07, F27, F26, F08, F40).
 
 ---
 
@@ -144,7 +158,7 @@ Priorytety: **P1** — w tym tygodniu · **P2** — w tym miesiącu · **P3** �
 | ID | Co | Kto | Wys. | Jak naprawić |
 |---|---|---|---|---|
 | F20 | Ciężkie MP4 z autoplay: hero `/biecz/` 33,5 MB, „Nasze zajawki” 13–68 MB, kafle `/letni/` do 124 MB | kod | M | Przekodować do pętli 720p, 8–15 s, ≤ 2–5 MB (+ WebM, `faststart`); na mobile plakat |
-| F21 | Obrazy bez WebP/AVIF i wariantów, tła CSS bez lazy, preload zdjęć spod zgięcia — `/` waży 10,2 MB | kod | L | Rozszerzyć `scripts/make-image-variants.mjs` o WebP w640/w1024/w1600 + `srcset`; tła jako `<img loading=lazy>` |
+| ~~F21~~ **ZROBIONE 2026-10-13** | Obrazy bez WebP/AVIF i wariantów, tła CSS bez lazy, preload zdjęć spod zgięcia — `/` waży 10,2 MB | kod | L | WebP przez `scripts/make-webp.mjs` (−47%), wszystkie tła CSS → `<img>` z `loading`, warianty generowane jako WebP, logo zmniejszone do 400 px. Suma pierwszych ekranów 9911 → 5687 kB. Zostaje `srcset` dla kafelków galerii |
 | F22 | Logo Air Camp (PNG 1,4 MB) i logo nagłówka (152 KB) preloadowane z wysokim priorytetem | kod | S | Logo Air Camp ≤ 100 KB bez `priority`; logo nagłówka SVG/WebP 2× |
 | F45 | CSS blokuje renderowanie (FCP mobile 3,4–3,6 s) | kod | S | Sprawdzić `experimental.inlineCss` na stagingu albo preload fontów |
 | F18 | Na mobile baner Cookiebot zajmuje cały ekran i jest elementem LCP | Gabriel + kod | S | Kompaktowy baner u dołu w panelu Cookiebot; duży element w mobilnym hero; link „Ustawienia cookies” w stopce |

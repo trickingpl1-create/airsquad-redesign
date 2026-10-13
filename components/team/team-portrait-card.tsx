@@ -15,7 +15,10 @@ export function initials(name: string): string {
  * Oryginał (768×1365) zostaje jako największy kandydat w srcset.
  */
 export function photoVariant(photo: string, width: number): string {
-  return photo.replace(/\.jpg$/, `-w${width}.jpg`)
+  // Wejście może być .webp (lib/content/team.ts) albo .jpg (gdyby któryś portret
+  // nie dał się opłacalnie skonwertować) — wariant jest zawsze .webp, bo tak je
+  // zapisuje scripts/make-image-variants.mjs.
+  return photo.replace(/\.(jpe?g|webp)$/, `-w${width}.webp`)
 }
 
 type TeamPortraitCardProps = {

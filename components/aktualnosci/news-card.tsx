@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { CoverImage } from '@/components/cover-image'
 
 export interface NewsItem {
   kicker: string
@@ -47,9 +48,10 @@ export function NewsCard({
     >
       <div
         aria-hidden
-        className={`relative bg-cover bg-center ${featured ? 'h-52 md:h-auto md:min-h-[320px] md:w-[46%]' : 'h-48'}`}
-        style={{ backgroundImage: `url('${photo}')` }}
+        className={`relative overflow-hidden ${featured ? 'h-52 md:h-auto md:min-h-[320px] md:w-[46%]' : 'h-48'}`}
       >
+        {/* Karta wyróżniona jest w pierwszym ekranie — reszta listy czeka na przewinięcie. */}
+        <CoverImage src={photo} priority={featured} />
         {/* Na mobile foto jest u góry → gradient od dołu (to-t). Główny na
             desktopie ma foto z lewej, treść z prawej → gradient znika po stronie
             napisów (to-l: from-card przy prawej krawędzi, foto czyste po lewej). */}

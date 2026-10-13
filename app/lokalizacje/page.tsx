@@ -58,10 +58,16 @@ export default async function LocationsPage() {
               >
                 {/* Visual */}
                 <div className={`relative aspect-video overflow-hidden bg-gradient-to-br ${TILE_GRADIENTS[idx % TILE_GRADIENTS.length]}`}>
+                {/* Siatka kart: w pierwszym ekranie jest pewna tylko pierwsza
+                    (telefon = jedna kolumna). Resztę przeglądarka pobierze przy
+                    przewijaniu — na desktopie widoczne i tak pobierze od razu,
+                    bo leniwe ładowanie dotyczy wyłącznie tego, co leży poza ekranem. */}
                   {location.image_url ? (
                     <img
                       src={location.image_url || '/placeholder.svg'}
                       alt={location.name}
+                      loading={idx === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
                       className="h-full w-full object-cover mix-blend-luminosity opacity-60 transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (

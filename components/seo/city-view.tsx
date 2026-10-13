@@ -9,6 +9,7 @@ import { PricingSection } from '@/components/home/pricing-section'
 import { CityAipaxCalendar } from '@/components/seo/city-aipax-calendar'
 import { CityVideo } from '@/components/seo/city-video'
 import { BackgroundVideo } from '@/components/background-video'
+import { CoverImage } from '@/components/cover-image'
 import { CLUB_CONTACT, PAYMENT_INFO } from '@/lib/content/cities'
 import { cn } from '@/lib/utils'
 import type { CityPage } from '@/lib/types/database'
@@ -298,10 +299,7 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                 <div aria-hidden className="fixed inset-0 z-0 overflow-hidden">
                   {/* Poster pod iframe'em na czas ładowania playera */}
                   {city.hero_image_url && (
-                    <div
-                      className="absolute inset-0 bg-cover bg-center"
-                      style={{ backgroundImage: `url(${city.hero_image_url})` }}
-                    />
+                    <CoverImage src={city.hero_image_url} priority />
                   )}
                   <BackgroundVideo
                     youtubeId={city.hero_youtube_id}
@@ -337,13 +335,15 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                   <div aria-hidden className="absolute inset-0" style={{ backgroundColor: 'var(--hero-scrim)' }} />
                   <div
                     aria-hidden
-                    className="hero-media-fade absolute inset-y-0 right-0 h-full w-full bg-cover bg-no-repeat md:w-3/4"
-                    style={{
-                      backgroundImage: `url(${city.hero_image_url})`,
-                      backgroundPosition: city.hero_image_position ?? 'center',
-                      backgroundSize: city.hero_image_size ?? 'cover',
-                    }}
-                  />
+                    className="hero-media-fade absolute inset-y-0 right-0 w-full overflow-hidden md:w-3/4"
+                  >
+                    <CoverImage
+                      src={city.hero_image_url}
+                      position={city.hero_image_position ?? 'center'}
+                      fit={city.hero_image_size === 'contain' ? 'contain' : 'cover'}
+                      priority
+                    />
+                  </div>
                 </>
               )
             )}
@@ -463,6 +463,8 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                   <img
                     src={city.hall.image_url}
                     alt={`${city.hall.name} — sala treningowa`}
+                    loading="lazy"
+                    decoding="async"
                     className="h-56 w-full object-cover"
                   />
                 )}
@@ -529,6 +531,8 @@ export function CityPageView({ data: city, currentPath, parents = [] }: CityView
                   <img
                     src={city.trainers_image_url}
                     alt={`Trenerzy Air Squad — ${cityName}`}
+                    loading="lazy"
+                    decoding="async"
                     className="h-56 w-full object-cover object-top"
                   />
                 )}
