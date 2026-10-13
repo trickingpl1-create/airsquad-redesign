@@ -142,7 +142,7 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
               alt="Air Camp 2027"
               width={782}
               height={600}
-              className="mx-auto mb-5 h-[110px] w-auto object-contain drop-shadow-[0_0_34px_rgba(16,185,129,0.45)]"
+              className="mx-auto mb-5 h-[200px] w-auto object-contain drop-shadow-[0_0_34px_rgba(16,185,129,0.45)] md:h-[440px]"
               priority
             />
             <h1
@@ -263,6 +263,45 @@ export function CampView({ data: camp, currentPath, parents = [] }: CampViewProp
             </div>
           </section>
         )}
+
+        {/* Premiera filmu Air Camp 2026 — pełnoszerokościowa sekcja.
+            MAKIETA (link YT jeszcze nie nadszedł). Po otrzymaniu linku podmień
+            wnętrze kontenera na:
+            <YouTubeFacade youtubeId="XXXX" title="Air Camp 2026 — film"
+              ccLang="pl" className="h-full w-full" /> */}
+        <section className="relative w-full bg-black">
+          <div className="relative h-[56.25vw] max-h-[78vh] min-h-[320px] w-full overflow-hidden">
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(circle at 50% 38%, #1b1038 0%, #0a0a16 72%)',
+              }}
+            />
+            <div
+              aria-hidden
+              className="halftone-overlay absolute inset-0 text-primary opacity-[0.06]"
+            />
+            <div className="relative flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
+              <span className="grid h-20 w-20 place-items-center rounded-full border border-white/25 bg-white/5 text-2xl text-white/80 backdrop-blur-sm md:h-24 md:w-24">
+                <span className="ml-1">▶</span>
+              </span>
+              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.24em] text-emerald md:text-xs">
+                Premiera filmu
+              </p>
+              <h2
+                className="display-bold text-4xl text-white md:text-6xl lg:text-7xl"
+                style={{ fontWeight: 400 }}
+              >
+                Air Camp <span className="gradient-text">2026</span>.
+              </h2>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/70 md:text-sm">
+                Informacje już wkrótce
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* Filmy z obozu */}
         {camp.videos && camp.videos.length > 0 && (
