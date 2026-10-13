@@ -13,6 +13,7 @@ import {
   PAYMENT_NOTICE_LONG,
   PAYMENT_NOTICE_SHORT,
   PICKUP_INFO,
+  SHOP_COMING_SOON_NOTICE,
   SHOP_PHONE,
   SHOP_PHONE_HREF,
   SHOP_UNAVAILABLE_NOTICE,
@@ -288,6 +289,22 @@ export function StoreClient() {
         }
       />
 
+      {/* Baner sklepu — grupowe zdjęcie merchu Air Squad. Dekoracyjny, więc
+          loading=lazy; width/height z oryginału (1672×940) trzymają proporcję
+          i chronią przed CLS. Plain <img> + unoptimized jak w reszcie eksportu. */}
+      <div className="mb-10 overflow-hidden rounded-3xl border border-border md:mb-12">
+        {/* eslint-disable-next-line @next/next/no-img-element -- eksport statyczny, images.unoptimized */}
+        <img
+          src="/images/sklep-merch.webp"
+          alt="Gadżety i odzież Air Squad — koszulki, bluza z kapturem, kubek, worek na buty, skarpety treningowe i opaski"
+          width={1672}
+          height={941}
+          loading="lazy"
+          decoding="async"
+          className="block h-full w-full object-cover"
+        />
+      </div>
+
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         {/* ---------------------------------------------------------------- */}
         {/*  Katalog                                                          */}
@@ -331,20 +348,16 @@ export function StoreClient() {
             </div>
           ) : loadState === 'unconfigured' || loadState === 'error' ? (
             <EmptyPanel
-              tone="amber"
-              kicker={loadState === 'error' ? 'Błąd połączenia' : 'Sklep chwilowo offline'}
-              title={
-                loadState === 'error'
-                  ? 'Nie udało się pobrać produktów.'
-                  : 'Katalog jest chwilowo niedostępny.'
-              }
-              description={SHOP_UNAVAILABLE_NOTICE}
+              tone="neutral"
+              kicker="Sklep wkrótce"
+              title="Sklep będzie wkrótce dostępny."
+              description={SHOP_COMING_SOON_NOTICE}
               action={
                 <a
                   href={SHOP_PHONE_HREF}
-                  className="inline-flex items-center gap-2 rounded-full border border-amber/40 px-5 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-amber transition-colors hover:bg-amber/10"
+                  className="inline-flex items-center gap-2 rounded-full border border-foreground/35 px-5 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-foreground transition-colors hover:border-cyan hover:text-cyan"
                 >
-                  Zadzwoń {SHOP_PHONE} <span aria-hidden>→</span>
+                  Zapytaj trenera · {SHOP_PHONE} <span aria-hidden>→</span>
                 </a>
               }
             />

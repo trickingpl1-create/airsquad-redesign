@@ -44,3 +44,8 @@ export const SHOP_PHONE_HREF = 'tel:+48728559101'
 /** Komunikat, gdy backend zamówień jest niedostępny (brak konfiguracji Supabase). */
 export const SHOP_UNAVAILABLE_NOTICE =
   'Składanie zamówień jest chwilowo niedostępne. Zadzwoń do nas — przyjmiemy zamówienie telefonicznie.'
+
+/** Komunikat na /sklep przy launchu bez sklepu online — zamiast „błędu"
+    kieruje po informacje o gadżetach do trenerów sekcji. */
+export const SHOP_COMING_SOON_NOTICE =
+  'Już niedługo zamówisz gadżety i odzież Air Squad online. Na razie informacje o produktach i gadżetach znajdziesz u trenerów w swojej sekcji.'
