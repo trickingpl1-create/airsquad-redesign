@@ -53,6 +53,18 @@ const BRING = [
   'dobry humor',
 ] as const
 
+const TERMINY: {
+  day: string
+  year: string
+  weekday: string
+  city: string
+  soldOut: boolean
+  spots?: string
+}[] = [
+  { day: '16.10', year: '2026', weekday: 'piątek', city: 'AIRSPACE Dębica', soldOut: true },
+  { day: '17.10', year: '2026', weekday: 'sobota', city: 'AIRSPACE Rzeszów', soldOut: false, spots: '8 wolnych miejsc' },
+]
+
 export default function AirNockaPage() {
   const telHref = `tel:+48${CLUB_CONTACT.phoneTrainer.replace(/\s/g, '')}`
 
@@ -122,6 +134,92 @@ export default function AirNockaPage() {
                 Kontakt ↗
               </Link>
             </div>
+          </div>
+        </section>
+
+        {/* NAJBLIŻSZE TERMINY — banery „bilety" (Wariant A) */}
+        <section className="relative px-6 py-14 md:px-10 md:py-16">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeader
+              kicker="Zapisy na AkroNocki"
+              kickerColorClass="text-blue-deep"
+              title="Najbliższe"
+              gradientPart="terminy."
+              titleFontWeight={400}
+              gradientFontWeight={400}
+              className="mb-8 md:mb-10"
+            />
+            <div className="space-y-4">
+              {TERMINY.map((t) => (
+                <div
+                  key={t.city}
+                  className={`flex flex-col overflow-hidden rounded-3xl border border-border bg-card md:flex-row md:items-stretch ${
+                    t.soldOut ? 'opacity-70' : ''
+                  }`}
+                >
+                  <div className="flex flex-col justify-center border-b border-dashed border-white/15 px-6 py-5 md:w-[172px] md:shrink-0 md:border-b-0 md:border-r md:px-7">
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                      {t.weekday}
+                    </span>
+                    <span
+                      className="font-[family-name:var(--font-display)] text-4xl leading-none text-blue-deep md:text-5xl"
+                      style={{ fontWeight: 400 }}
+                    >
+                      {t.day}
+                    </span>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {t.year}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-1 flex-col justify-center px-6 py-5 md:px-7">
+                    <span
+                      className="display-bold text-2xl text-foreground"
+                      style={{ fontWeight: 400 }}
+                    >
+                      {t.city}
+                    </span>
+                    <span className="mt-1 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-blue-deep">
+                      AkroNocka · noc na sali
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3 px-6 pb-5 md:px-7 md:py-5">
+                    {t.soldOut ? (
+                      <span className="inline-flex items-center gap-2 rounded-full border border-pink/30 bg-pink/10 px-4 py-2 font-mono text-xs font-bold text-pink">
+                        <span className="h-2 w-2 rounded-full bg-pink" aria-hidden />
+                        Wyprzedane
+                      </span>
+                    ) : (
+                      <>
+                        <span className="inline-flex items-center gap-2 rounded-full border border-emerald/30 bg-emerald/15 px-4 py-2 font-mono text-xs font-bold text-emerald">
+                          <span className="relative flex h-2.5 w-2.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald opacity-75" />
+                            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald" />
+                          </span>
+                          {t.spots}
+                        </span>
+                        <a
+                          href={`sms:+48${CLUB_CONTACT.phoneTrainer.replace(
+                            /\s/g,
+                            '',
+                          )}?body=${encodeURIComponent(
+                            `Zapisy AkroNocka — ${t.city}, ${t.day}.${t.year}`,
+                          )}`}
+                          className="rounded-full bg-gradient-to-r from-blue-deep to-violet-soft px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.1em] text-white transition-transform hover:scale-[1.03]"
+                        >
+                          Zapisz się SMS →
+                        </a>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
+              ↳ Zapisy przez SMS do trenera ({CLUB_CONTACT.phoneTrainer}) — podaj
+              imię dziecka i wybrany termin.
+            </p>
           </div>
         </section>
 
