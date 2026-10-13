@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { Users, Gift, Bus, Check } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SectionHeader } from '@/components/home/section-header'
@@ -43,6 +44,37 @@ const PROGRAM = [
     desc: 'Wspólna rozgrzewka, gry i konkursy. Okazja, żeby poznać osoby trenujące w pozostałych miastach.',
     accent: 'var(--primary)',
   },
+] as const
+
+// Przebieg dnia 1:1 z oryginalnej strony (blok „PLAN WYDARZENIA" starego WP).
+const SCHEDULE: { time: string; title: string; desc?: string }[] = [
+  { time: '9:00', title: 'Rozpoczęcie wydarzenia', desc: 'Rejestracja uczestników.' },
+  { time: '9:30', title: 'Wspólna rozgrzewka' },
+  { time: '10:00', title: 'Warsztaty — blok I', desc: 'Akrobatyka / tumbling / szarfy / tricking.' },
+  { time: '11:00', title: 'Warsztaty — blok II', desc: 'Akrobatyka / tumbling / szarfy / tricking.' },
+  { time: '12:30', title: 'Przerwa obiadowa', desc: 'Animacje i konkursy.' },
+  { time: '14:30', title: 'Rozpoczęcie zawodów' },
+  { time: '17:00', title: 'Wolny trening', desc: 'Konkursy.' },
+  { time: '17:30', title: 'Dekoracja' },
+  { time: '18:00', title: 'Zakończenie wydarzenia' },
+]
+
+const INCLUDES = [
+  'Udział w warsztatach',
+  'Wewnętrzne zawody',
+  'Ciepły posiłek',
+  'Pamiątkowy medal',
+  'Koszulka AIR MEETING',
+  'Gadżety niespodzianki',
+] as const
+
+const SHIRT_SIZES = [
+  '7–8 · 128–134',
+  '9–11 · 134–140',
+  '12–14 · 146–152',
+  'XS',
+  'S',
+  'M',
 ] as const
 
 export default function AirMeetingPage() {
@@ -199,6 +231,138 @@ export default function AirMeetingPage() {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* PROGRAM DNIA — harmonogram z poprzednich edycji */}
+        <section className="relative px-6 py-10 md:px-10 md:py-14">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeader
+              kicker="Przebieg dnia"
+              kickerColorClass="text-violet-soft"
+              title="Program"
+              gradientPart="wydarzenia."
+              titleFontWeight={400}
+              gradientFontWeight={400}
+              className="mb-8 md:mb-10"
+            />
+            <div className="overflow-hidden rounded-3xl border border-border bg-card">
+              {SCHEDULE.map((s) => (
+                <div
+                  key={s.time}
+                  className="flex gap-4 border-b border-border/60 px-5 py-4 last:border-b-0 md:px-7"
+                >
+                  <span className="w-16 shrink-0 font-mono text-sm font-bold text-cyan">
+                    {s.time}
+                  </span>
+                  <div>
+                    <p className="font-semibold text-foreground">{s.title}</p>
+                    {s.desc && (
+                      <p className="mt-0.5 text-sm text-muted-foreground">
+                        {s.desc}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              Przykładowy przebieg z poprzednich edycji — dokładny harmonogram
+              edycji 2027 podamy wkrótce.
+            </p>
+          </div>
+        </section>
+
+        {/* DLA KOGO / CO OTRZYMUJESZ / DOJAZD */}
+        <section className="relative px-6 py-10 md:px-10 md:py-14">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-4 md:grid-cols-3">
+            {/* Dla kogo */}
+            <div className="group relative overflow-hidden rounded-3xl border border-border bg-card p-6 transition-colors hover:border-cyan/40 md:p-7">
+              <span
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-1 bg-cyan/70"
+              />
+              <span className="inline-grid h-11 w-11 place-items-center rounded-2xl bg-cyan/15 text-cyan">
+                <Users className="h-5 w-5" aria-hidden />
+              </span>
+              <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-cyan">
+                Dla kogo
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Dla osób trenujących w klubie. Grupy naborowe zapraszamy na
+                kolejną edycję za rok — pierwszy sezon to czas na oswojenie się z
+                treningami. Udział w zawodach jest dobrowolny; chętni zgłaszają
+                się do swojego trenera.
+              </p>
+            </div>
+
+            {/* Co otrzymujesz */}
+            <div className="group relative overflow-hidden rounded-3xl border border-border bg-card p-6 transition-colors hover:border-violet-soft/40 md:p-7">
+              <span
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-1 bg-violet-soft/70"
+              />
+              <span className="inline-grid h-11 w-11 place-items-center rounded-2xl bg-violet-soft/15 text-violet-soft">
+                <Gift className="h-5 w-5" aria-hidden />
+              </span>
+              <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-violet-soft">
+                Co otrzymujesz
+              </p>
+              <ul className="mt-3 space-y-2">
+                {INCLUDES.map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-2.5 text-sm text-foreground/90"
+                  >
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-cyan" aria-hidden />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 border-t border-border pt-4">
+                <p className="text-[13px] leading-relaxed text-muted-foreground">
+                  <span className="text-foreground">Płatność</span> u trenera
+                  prowadzącego, najpóźniej 3 dni przed wydarzeniem.
+                </p>
+                <p className="mt-3 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                  Rozmiary koszulek
+                </p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {SHIRT_SIZES.map((s) => (
+                    <span
+                      key={s}
+                      className="rounded-full border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Dojazd */}
+            <div className="group relative overflow-hidden rounded-3xl border border-border bg-card p-6 transition-colors hover:border-emerald/40 md:p-7">
+              <span
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-1 bg-emerald/70"
+              />
+              <span className="inline-grid h-11 w-11 place-items-center rounded-2xl bg-emerald/15 text-emerald">
+                <Bus className="h-5 w-5" aria-hidden />
+              </span>
+              <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-emerald">
+                Dojazd
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Z Jasła i Dębicy organizujemy wspólny dojazd autobusem z
+                trenerami. Szczegóły u trenerów prowadzących.
+              </p>
+              <a
+                href={telHref}
+                className="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald/30 bg-emerald/10 px-4 py-2 font-mono text-xs font-bold tracking-[0.08em] text-emerald transition-colors hover:bg-emerald/20"
+              >
+                ☎ {CLUB_CONTACT.phoneTrainer}
+              </a>
             </div>
           </div>
         </section>
